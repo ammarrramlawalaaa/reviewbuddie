@@ -23,6 +23,7 @@
 
   // run `fn` (returns a cancel function) while `el` is on screen
   function whileVisible(el, fn, threshold) {
+    if (reduce) return;
     var stop = null;
     new IntersectionObserver(function (es) {
       if (es[0].isIntersecting) { if (!stop) stop = fn() || function () {}; }
@@ -56,6 +57,7 @@
   var nav = $("#nav"), burger = $(".nav__burger"), menu = $("#menu");
   function setMenu(open) {
     nav.classList.toggle("is-open", open);
+    document.body.classList.toggle("menu-open", open);
     menu.hidden = !open;
     burger.setAttribute("aria-expanded", open);
     burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
@@ -93,7 +95,7 @@
     var bar = $(".stage__bar", stage), cap = $("[data-caption]", stage), step = $("[data-step]", stage);
     var feed = $("[data-feed]", stage), pp = $("[data-pp]", stage);
     var phone = $(".stage__phone .phone", stage), phoneBox = $(".stage__phone", stage);
-    var i = 0, timers = [], paused = reduce, visible = false;
+    var i = 0, fed = -1, timers = [], paused = reduce, visible = false;
 
     HERO.forEach(function (_, k) {
       var b = document.createElement("i");
@@ -138,8 +140,11 @@
       });
       cap.innerHTML = "<span>" + s.cap + "</span>";
       step.textContent = ("0" + (k + 1)).slice(-2);
-      if (k === 0) feed.innerHTML = "";
-      pushFeed(s.feed);
+      if (fed !== k) {
+        if (k === 0) feed.innerHTML = "";
+        pushFeed(s.feed);
+        fed = k;
+      }
       if (paused) return;
       timers.push(setTimeout(function () {
         tapdot.style.left = s.tap[0] + "%"; tapdot.style.top = s.tap[1] + "%";
@@ -182,7 +187,7 @@
     insert.classList.toggle("glow", p > 0.62 && p < 0.74);
     var ph = seg(p, 0.46, 0.62), big = desktop.matches;
     bxPhone.style.opacity = ph;
-    bxPhone.style.transform = "translate(" + lerp(big ? 260 : 150, big ? 170 : 92, ph) + "px," + lerp(240, big ? 10 : 34, ph) + "px) rotate(" + lerp(16, -6, ph) + "deg) scale(" + (big ? 1.2 : 0.78) + ")";
+    bxPhone.style.transform = "translate(" + lerp(big ? 260 : 150, big ? 170 : 100, ph) + "px," + lerp(240, big ? 10 : 34, ph) + "px) rotate(" + lerp(16, -6, ph) + "deg) scale(" + (big ? 1.2 : 0.7) + ")";
     bxScreen.style.setProperty("--sl", (200 + Math.sin(seg(p, 0.58, 0.7) * Math.PI) * 150) + "px");
     bxScreen.style.setProperty("--to", seg(p, 0.69, 0.76));
     chips[0].classList.toggle("on", p > 0.76);
@@ -276,7 +281,9 @@
   if (check) whileVisible(check, function () {
     var items = $$("li", check);
     items.forEach(function (li) { li.classList.remove("done"); });
-    return timeline(items.map(function (li, k) { return [600 + k * 700, function () { li.classList.add("done"); }]; }), 600 + items.length * 700 + 2600);
+    var steps = items.map(function (li, k) { return [600 + k * 700, function () { li.classList.add("done"); }]; });
+    steps.push([600 + items.length * 700 + 2400, function () { items.forEach(function (li) { li.classList.remove("done"); }); }]);
+    return timeline(steps, 600 + items.length * 700 + 3000);
   });
 
   /* ---------- 04 coded scenes ---------- */
@@ -343,7 +350,7 @@
     });
     $$(".seg button", ad).forEach(function (b) {
       b.addEventListener("click", function () {
-        $$(".seg button", ad).forEach(function (x) { x.classList.toggle("on", x === b); });
+        $$(".seg button", ad).forEach(function (x) { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
         var isCoupon = b.getAttribute("data-offer") === "coupon";
         coupon.hidden = !isCoupon; cash.hidden = isCoupon;
       });
@@ -391,15 +398,16 @@
       var n = +pin.value, r = n > 100 ? 0.30 : n > 10 ? 0.25 : 0.20;
       pout.textContent = n;
       pin.style.setProperty("--fill", ((n - pin.min) / (pin.max - pin.min)) * 100 + "%");
-      month.textContent = money(n * plan * r);
-      year.textContent = money(n * plan * r * 12);
+      var m = Math.round(n * plan * r);
+      month.textContent = money(m);
+      year.textContent = money(m * 12);
       rate.textContent = Math.round(r * 100) + "%";
     }
     pin.addEventListener("input", calc);
     $$("[data-plan]", partner).forEach(function (b) {
       b.addEventListener("click", function () {
         plan = +b.getAttribute("data-plan");
-        $$("[data-plan]", partner).forEach(function (x) { x.classList.toggle("on", x === b); });
+        $$("[data-plan]", partner).forEach(function (x) { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
         calc();
       });
     });
@@ -408,8 +416,10 @@
 
   /* ---------- testimonials: slow auto-scroll on desktop ---------- */
   var rail = $(".quotes__rail");
-  if (rail && !reduce) {
+  if (rail && !reduce && desktop.matches) {
+    var origCount = $$(".q", rail).length;
     $$(".q", rail).forEach(function (q) { var c = q.cloneNode(true); c.setAttribute("aria-hidden", "true"); rail.appendChild(c); });
+    var period = rail.children[origCount].offsetLeft - rail.children[0].offsetLeft;
     var hold = false, railOn = false, x = 0;
     rail.addEventListener("mouseenter", function () { hold = true; });
     rail.addEventListener("mouseleave", function () { hold = false; });
@@ -421,7 +431,7 @@
         rail.classList.add("auto");
         if (railOn && !hold) {
           x += 0.5;
-          if (x >= rail.scrollWidth / 2) x = 0;
+          if (x >= period) x -= period;
           rail.scrollLeft = x;
         }
       } else rail.classList.remove("auto");
@@ -431,15 +441,16 @@
 
   /* ---------- sticky mobile CTA ---------- */
   var sticky = $("#sticky"), heroCta = $(".hero__cta"), finalSec = $("#final");
-  var heroOut = false, finalIn = false;
+  var heroOut = false, finalIn = false, howIn = false;
   function syncSticky() {
-    var on = heroOut && !finalIn;
+    var on = heroOut && !finalIn && !howIn;
     sticky.classList.toggle("on", on);
     sticky.setAttribute("aria-hidden", !on);
     $$("a", sticky).forEach(function (b) { b.tabIndex = on ? 0 : -1; });
   }
   new IntersectionObserver(function (es) { heroOut = !es[0].isIntersecting && es[0].boundingClientRect.top < 0; syncSticky(); }).observe(heroCta);
   new IntersectionObserver(function (es) { finalIn = es[0].isIntersecting; syncSticky(); }).observe(finalSec);
+  new IntersectionObserver(function (es) { howIn = es[0].isIntersecting; syncSticky(); }).observe(boxSec);
 
   $("#yr").textContent = new Date().getFullYear();
 })();

@@ -80,6 +80,13 @@
     </div>
   </div>
 
+  <p class="hero__sub">One QR insert or link. Customers register warranty, rate honestly, write their review with AI help and claim your thank-you, while you collect reviews, customer contacts and repeat orders across 20+ marketplaces.</p>
+  <div class="hero__cta">
+    <a class="btn btn--lg" href="#" data-link="signup" data-track="hero_cta">Get started. It’s FREE! <i class="arr" aria-hidden="true"></i></a>
+    <a class="btn btn--lg btn--ghost hero__ghost" href="#how">See how it works</a>
+    <p class="micro"><span>✓ Free plan forever</span><span>✓ No credit card</span><span>✓ Setup in under 10 minutes</span></p>
+  </div>
+
   <!-- The hero "video". Set data-video="media/hero.mp4" to replace it with a real file. -->
   <div class="hero__stagewrap">
     <div class="stage" id="stage" data-video="">
@@ -101,19 +108,12 @@
       </div>
       <div class="stage__cap">
         <p class="stage__step" data-step aria-hidden="true">01</p>
-        <p class="stage__caption" data-caption aria-live="polite"></p>
+        <p class="stage__caption" data-caption></p>
       </div>
       <button class="stage__pp" data-pp aria-label="Pause demo"><span></span></button>
     </div>
   </div>
 
-  <div class="hero__cta">
-    <a class="btn btn--lg" href="#" data-link="signup" data-track="hero_cta">Get started. It’s FREE! <i class="arr" aria-hidden="true"></i></a>
-    <a class="btn btn--lg btn--ghost hero__ghost" href="#how">See how it works</a>
-    <p class="micro"><span>✓ Free plan forever</span><span>✓ No credit card</span><span>✓ Setup in under 10 minutes</span></p>
-  </div>
-
-  <p class="hero__sub">One QR insert or link. Customers register warranty, rate honestly, write their review with AI help and claim your thank-you, while you collect reviews, customer contacts and repeat orders across 20+ marketplaces.</p>
 </section>
 
 <!-- ================= MARKETPLACES ================= -->
@@ -243,7 +243,7 @@
     </header>
     <div class="dash-grid">
       <div class="widget widget--kpi reveal" data-kpi>
-        <div class="kpi"><span>Reviews this month</span><b data-count="128">0</b><small class="up">↑ 22% vs last month</small></div>
+        <div class="kpi"><span>Reviews posted this month</span><b data-count="231">0</b><small class="up">↑ 22% vs last month</small></div>
         <div class="kpi"><span>Scans</span><b data-count="412">0</b><small class="up">↑ 9%</small></div>
         <div class="kpi"><span>Claims to deliver</span><b data-count="13">0</b><small>needs you</small></div>
         <div class="bell" aria-hidden="true"><i></i><em>3</em></div>
@@ -252,15 +252,15 @@
         <h3>Customer journey · last 30 days</h3>
         <ol>
           <li><span>QR scans</span><i style="--w:100%"></i><b>412</b></li>
-          <li><span>Claim started</span><i style="--w:49%"></i><b>202</b><em>−51% drop</em></li>
-          <li><span>Claim completed</span><i style="--w:39%"></i><b>161</b></li>
-          <li><span>Review written</span><i style="--w:30%"></i><b>124</b></li>
-          <li><span>Posted on marketplace</span><i style="--w:24%"></i><b>99</b></li>
+          <li><span>Claim started</span><i style="--w:77%"></i><b>318</b><em>−23% drop</em></li>
+          <li><span>Claim completed</span><i style="--w:70%"></i><b>289</b></li>
+          <li><span>Review written</span><i style="--w:62%"></i><b>256</b></li>
+          <li><span>Review posted</span><i style="--w:56%"></i><b>231</b></li>
         </ol>
         <p class="tip">Tip: most people leave at the first form. Add your setup video above it. <span>Suggested by Intel</span></p>
       </div>
       <div class="widget widget--check reveal" data-check>
-        <h3>Set up in 3 steps</h3>
+        <h3>Setup checklist</h3>
         <ul><li>Add your first product</li><li>Create a promotion</li><li>Launch a campaign</li><li>Print the QR insert</li></ul>
       </div>
       <figure class="widget widget--shot reveal">
@@ -368,7 +368,7 @@
         <div class="demo__ctrl">
           <h3>Social Media Ad Pages</h3>
           <p>One product, one offer, one button. Coupon unlock or cashback, Buy on the marketplace or direct checkout, Meta, GA4 and TikTok pixels.</p>
-          <div class="seg" role="group" aria-label="Offer type"><button type="button" class="on" data-offer="coupon">Coupon unlock</button><button type="button" data-offer="cashback">Cashback</button></div>
+          <div class="seg" role="group" aria-label="Offer type"><button type="button" class="on" data-offer="coupon" aria-pressed="true">Coupon unlock</button><button type="button" data-offer="cashback" aria-pressed="false">Cashback</button></div>
           <small>10 currencies. Razorpay, Stripe, PayPal, Shopify and more for direct checkout.</small>
         </div>
         <div class="demo__phone">
@@ -446,8 +446,8 @@
       <article class="card card--calc reveal" data-partner>
         <h3>Partner program</h3>
         <p>20% of every plan you refer, monthly for 12 months. 25% past 10 active sellers, 30% past 100. Your audience gets 40% off.</p>
-        <label class="range"><span>Sellers you refer <output data-out>12</output></span><input type="range" min="1" max="150" value="12" data-in></label>
-        <div class="seg seg--sm" role="group" aria-label="Plan"><button type="button" data-plan="29">Starter $29</button><button type="button" class="on" data-plan="79">Growth $79</button><button type="button" data-plan="149">Pro $149</button></div>
+        <label class="range"><span>Sellers you refer <output data-out>12</output></span><input type="range" min="1" max="150" value="12" data-in aria-label="Sellers you refer"></label>
+        <div class="seg seg--sm" role="group" aria-label="Plan"><button type="button" data-plan="29" aria-pressed="false">Starter $29</button><button type="button" class="on" data-plan="79" aria-pressed="true">Growth $79</button><button type="button" data-plan="149" aria-pressed="false">Pro $149</button></div>
         <div class="calc__out"><div><small>Per month</small><b data-month>$237</b></div><div><small>Over 12 months</small><b data-year>$2,844</b></div><div><small>Your rate</small><b data-rate>25%</b></div></div>
         <small class="fine">Illustration: every referred seller on the chosen plan. Launch bonus: 100% of month one on your first 10 referrals. Paid via UPI, PayPal, Wise or Payoneer.</small>
         <a class="card__go" href="Partners.html">Partner program details →</a>
@@ -466,7 +466,7 @@
       <p class="lead lead--light reveal">Marketplace rules and FTC guidelines are built into every step. Nothing to configure.</p>
     </header>
 
-    <div class="same-reward reveal" aria-label="A 5-star and a 2-star review both receive the same reward">
+    <div class="same-reward reveal" role="img" aria-label="A 5-star review and a 2-star review both receive the same reward">
       <div class="rv"><span class="rv__stars">★★★★★</span><p>“Setup was easy and it’s whisper quiet.”</p><span class="rv__ok">✓ Reward delivered</span></div>
       <div class="rv__eq">=</div>
       <div class="rv"><span class="rv__stars">★★<s>★★★</s></span><p>“Works, but the wringer feels flimsy.”</p><span class="rv__ok">✓ Reward delivered</span></div>
@@ -476,7 +476,7 @@
       <article class="bento__c reveal"><h3>Marketplace-safe rewards</h3><ul><li>Never conditional on star rating</li><li>Customers keep rewards regardless</li><li>Marketplace-specific insert templates</li></ul><span class="stamp">Aligned</span></article>
       <article class="bento__c reveal"><h3>FTC-aligned flows</h3><ul><li>Honest-feedback language built in</li><li>Disclosure on every claim page</li><li>No review gating, ever</li></ul><span class="stamp">FTC ✓</span></article>
       <article class="bento__c reveal"><h3>Customer data protected</h3><ul><li>Order details stay private</li><li>Never shared or sold</li><li>Delete on request, anytime</li></ul></article>
-      <article class="bento__c reveal"><h3>You approve every claim</h3><ul><li>Feedback visible at approval</li><li>Fraud flags on duplicates</li><li>Bulk-approve when confident</li></ul></article>
+      <article class="bento__c reveal"><h3>You control every claim</h3><ul><li>Feedback visible at approval</li><li>Fraud flags on duplicates</li><li>Bulk-approve when confident</li></ul></article>
       <article class="bento__c bento__c--phone reveal">
         <div class="mini-phone"><img src="assets/shots/funnel-lowrate.webp" alt="A 2-star rating shows a support offer while the review step stays available" loading="lazy" width="540" height="1169"></div>
         <div><h3>Unhappy? Help comes first.</h3><p>A low rating shows your setup video and support right away. The review step stays open for every customer.</p></div>
@@ -518,11 +518,11 @@
     <h2 class="h2 reveal">Simple pricing. <span class="hl">Cancel anytime.</span></h2>
     <p class="lead reveal">Every plan includes all marketplaces, unlimited products, surveys, giveaways, users and integrations.</p>
     <div class="plans">
-      <article class="plan reveal"><h3>Free</h3><p class="plan__for">Try the whole engine, forever free.</p><p class="plan__price"><b>$0</b></p><ul><li><b>10</b> reviews / mo</li><li>10 leads &amp; redirections</li><li>All features included</li><li>No credit card</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_free">Start free</a></article>
-      <article class="plan reveal"><h3>Starter</h3><p class="plan__for">For your first product taking off.</p><p class="plan__price"><b>$29</b><span>/mo</span></p><p class="plan__per">$0.58 / review</p><ul><li><b>50</b> reviews / mo</li><li>50 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_starter">Start free trial</a></article>
-      <article class="plan plan--pop reveal"><span class="plan__tag">★ Most popular</span><h3>Growth</h3><p class="plan__for">For brands scaling multiple listings.</p><p class="plan__price"><b>$79</b><span>/mo</span></p><p class="plan__per">$0.32 / review</p><ul><li><b>250</b> reviews / mo</li><li>250 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--light btn--block" href="#" data-link="signup" data-track="plan_growth">Start free trial</a></article>
-      <article class="plan reveal"><h3>Pro</h3><p class="plan__for">For high-volume catalogs.</p><p class="plan__price"><b>$149</b><span>/mo</span></p><p class="plan__per">$0.21 / review</p><ul><li><b>700</b> reviews / mo</li><li>700 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_pro">Start free trial</a></article>
-      <article class="plan reveal"><h3>Enterprise</h3><p class="plan__for">For aggregators &amp; agencies.</p><p class="plan__price"><b>$299</b><span>/mo</span></p><ul><li><b>Unlimited</b> everything</li><li>Priority support</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="demo" data-track="plan_enterprise">Talk to us</a></article>
+      <article class="plan"><h3>Free</h3><p class="plan__for">Try the whole engine, forever free.</p><p class="plan__price"><b>$0</b></p><ul><li><b>10</b> reviews / mo</li><li>10 leads &amp; redirections</li><li>All features included</li><li>No credit card</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_free">Start free</a></article>
+      <article class="plan"><h3>Starter</h3><p class="plan__for">For your first product taking off.</p><p class="plan__price"><b>$29</b><span>/mo</span></p><p class="plan__per">$0.58 / review</p><ul><li><b>50</b> reviews / mo</li><li>50 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_starter">Start free trial</a></article>
+      <article class="plan plan--pop"><span class="plan__tag">★ Most popular</span><h3>Growth</h3><p class="plan__for">For brands scaling multiple listings.</p><p class="plan__price"><b>$79</b><span>/mo</span></p><p class="plan__per">$0.32 / review</p><ul><li><b>250</b> reviews / mo</li><li>250 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--light btn--block" href="#" data-link="signup" data-track="plan_growth">Start free trial</a></article>
+      <article class="plan"><h3>Pro</h3><p class="plan__for">For high-volume catalogs.</p><p class="plan__price"><b>$149</b><span>/mo</span></p><p class="plan__per">$0.21 / review</p><ul><li><b>700</b> reviews / mo</li><li>700 leads &amp; redirections</li><li>All features included</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="signup" data-track="plan_pro">Start free trial</a></article>
+      <article class="plan"><h3>Enterprise</h3><p class="plan__for">For aggregators &amp; agencies.</p><p class="plan__price"><b>$299</b><span>/mo</span></p><ul><li><b>Unlimited</b> everything</li><li>Priority support</li></ul><a class="btn btn--ghost btn--block" href="#" data-link="demo" data-track="plan_enterprise">Talk to us</a></article>
     </div>
     <p class="plans__note reveal">🛡 14-day money-back guarantee on every paid plan · cancel anytime, keep your data</p>
   </div>
@@ -539,7 +539,7 @@
       <details class="reveal"><summary>Which marketplaces are supported?</summary><p>20+ marketplaces, including Amazon in 22 regions, Flipkart, Shopify, eBay, Etsy, Walmart, Myntra, Nykaa, Google Business and Trustpilot. Customers are routed straight to the right review page.</p></details>
       <details class="reveal"><summary>What rewards can I offer?</summary><p>Warranty, extended warranty, cashback, coupon code, gift card, digital download, product information and product giveaway, or create your own. Claim rules can ask for a review with a screenshot, a rating only, or nothing at all.</p></details>
       <details class="reveal"><summary>What does the free plan include?</summary><p>10 reviews and 10 leads and redirections per month, with every feature included. No credit card needed.</p></details>
-      <details class="reveal"><summary>Do I approve rewards manually?</summary><p>Yes. Claims land in the Claim Center with the customer’s feedback in view. Approve, reject or bulk-deliver; duplicates get an amber fraud flag. Warranty claims can auto-approve.</p></details>
+      <details class="reveal"><summary>Do I approve rewards manually?</summary><p>By default, yes. Each claim shows the customer’s rating and feedback before you decide. If you prefer, warranty claims can be set to auto-approve; everything else waits for you.</p></details>
       <details class="reveal"><summary>How is cashback paid out?</summary><p>On local rails: UPI, GPay, PhonePe, Paytm and Amazon Pay in India, PayPal and Venmo in the US, SEPA in the EU, Interac in Canada and PayID in Australia.</p></details>
     </div>
   </div>
