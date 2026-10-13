@@ -1,46 +1,38 @@
 # ReviewBuddie landing page
 
-Mobile-first, single-page marketing site for reviewbuddie.com.
+Static, dependency-free landing page for reviewbuddie.com. Mobile-first, with a separate desktop layout for every section.
 
-## Editing copy
-
-All page copy, links and settings live in **`content.json`**. Edit it, then rebuild:
-
-```bash
-python3 build.py                  # production -> index.html
-python3 build.py --show-samples   # layout preview with sample reviews -> preview.html (git-ignored)
+```
+index.html            page markup and copy
+assets/styles.css     all styling (mobile first; desktop rules under @media (min-width:1000px))
+assets/app.js         hero demo player, feature-group hotspot engine, 3D box scroll story, counters, nav
+assets/shots/         real product screens (WebP) used by the hero and feature sections
+assets/logo-*.png     brand wordmarks (dark for light backgrounds, light for dark backgrounds)
+og-image.png          social share image
 ```
 
-`build.py` bakes the copy into plain static HTML (no client-side rendering), so search engines and AI answer engines can read every line.
+Open `index.html` in a browser; no build step.
+
+## Page structure
+
+1. **Hero** – headline with floating product chips around it, the "video" (a coded demo that walks a real customer screen through scan → rate → AI draft → claim while live notifications land on a real Claim Center screen), CTA, trust line.
+2. **Marketplace marquee + stats**
+3. **How it works** – scroll-driven 3D box: flaps open, the QR insert rises, a phone scans it, result chips appear.
+4. **Feature groups** (one section per CSV group, each with real screens and animated hotspots):
+   01 Core flow · 02 Smart Funnel (customer) · 03 Dashboard & analytics · 04 Claims & customers · 05 Pages · 06 Team · 07 Growth & partners · 08 Compliance (+ free tools)
+5. **Testimonials, pricing, FAQ, final CTA, footer**
+
+On desktop a feature group shows the real screen in a browser frame with a moving cursor and hotspot callouts. On phones the same screenshot is zoomed and the "camera" pans to each hotspot, with the callout as a caption. Groups auto-advance; clicking a feature stops auto-play.
 
 ## Before launch
 
-In `content.json`:
+- `assets/app.js` → `CONFIG`: set `SIGNUP_URL`, `LOGIN_URL`, `DEMO_URL`.
+- Real hero video (optional): set `data-video="media/hero.mp4"` on `#stage` in `index.html`; the coded demo is skipped automatically.
+- Replace screens: drop new files into `assets/shots/` with the same names (desktop screens 1600×1000, phone screens 540×1169). Hotspot positions live in each `<figure data-spots>` as `[x%, y%, "label", warn?]`.
+- Analytics: every CTA pushes `{event:"cta_click", id}` to `window.dataLayer`; feature tab clicks push `feature_tab`.
 
-- `config.WHATSAPP_NUMBER`: real number (format `91XXXXXXXXXX`)
-- `config.FORM_ENDPOINT` / `CALC_LEAD_ENDPOINT`: where the early-access form and calculator leads POST (JSON)
-- `config.GA4_ID`: analytics ID (loads only after cookie consent)
-- `trust.founder_name`: replace `[FOUNDER NAME]`
-- `config.SHOW_SAMPLE_REVIEWS`: keep `false` until you have real, permissioned seller testimonials
+## Notes
 
-## Media
-
-Until real files exist, every video slot plays a coded, looping animation of the product (phone scenes, print-to-box, dashboard). The moment you fill a slot's file paths under `media` in `content.json` and rebuild, the real video or image replaces the animation. The scene copy (names, product, messages) lives under `scenes`.
-
-| Key | Use | Spec |
-| --- | --- | --- |
-| `hero` | Hero loop | Mobile 4:5 + desktop 16:9, 8–10s, ≤1MB, WebM + MP4, poster each |
-| `how1`, `how2`, `how3` | How it works (phone frame) | 9:16, 6–8s, ≤600KB |
-| `feat_education`, `feat_dashboard` | Feature cards | AVIF + WebP |
-| `founder` | Founder photo | 1:1 AVIF + WebP |
-
-Feature cards reuse `how2` and `how3`, so the page stays at 5 video files. Add a `.vtt` captions path for each video.
-
-## Tracking events
-
-Pushed to `window.dataLayer`: `hero_cta_click`, `whatsapp_click`, `sticky_bar_click`, `form_submit`, `marketplace_chip_select`, `video_play`, `calculator_used`, `calculator_lead_submit`, `faq_open`, `sample_reviews_viewed`.
-
-## Performance notes
-
-- Only GSAP + ScrollTrigger (deferred, from cdnjs). For production, self-host both files and the Poppins font (400 and 500 only) on your domain.
-- Videos lazy-load at 30% visibility and pause off-screen. With reduced motion, nothing autoplays and the pinned section becomes a normal stacked list.
+- Fonts: Plus Jakarta Sans (text) and Sora (display) from Google Fonts. Self-host both for production.
+- Reduced motion: all animations stop, the box story becomes a static stacked list and hotspots show at once.
+- Total image weight ≈ 1.5 MB, all lazy-loaded except the first hero screen.
