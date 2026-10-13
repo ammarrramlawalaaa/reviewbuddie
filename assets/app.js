@@ -21,11 +21,35 @@
   window.dataLayer = window.dataLayer || [];
   function track(ev, data) { window.dataLayer.push(Object.assign({ event: ev }, data || {})); }
 
+  // run `fn` (returns a cancel function) while `el` is on screen
+  function whileVisible(el, fn, threshold) {
+    var stop = null;
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { if (!stop) stop = fn() || function () {}; }
+      else if (stop) { stop(); stop = null; }
+    }, { threshold: threshold || 0.4 }).observe(el);
+  }
+  // timeline helper: [[delay, fn], ...], optionally looped; returns cancel
+  function timeline(steps, loopAfter) {
+    var timers = [], alive = true;
+    (function run() {
+      steps.forEach(function (s) { timers.push(setTimeout(function () { if (alive) s[1](); }, s[0])); });
+      if (loopAfter) timers.push(setTimeout(function () { if (alive) run(); }, loopAfter));
+    })();
+    return function () { alive = false; timers.forEach(clearTimeout); };
+  }
+
   /* ---------- links + tracking ---------- */
   var LINKS = { signup: CONFIG.SIGNUP_URL, login: CONFIG.LOGIN_URL, demo: CONFIG.DEMO_URL };
   $$("[data-link]").forEach(function (a) { a.href = LINKS[a.getAttribute("data-link")] || "#"; });
   $$("[data-track]").forEach(function (el) {
     el.addEventListener("click", function () { track("cta_click", { id: el.getAttribute("data-track") }); });
+  });
+  $$("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var done = function () { b.textContent = "Copied ✓"; b.classList.add("ok"); setTimeout(function () { b.textContent = "Copy"; b.classList.remove("ok"); }, 1600); };
+      if (navigator.clipboard) navigator.clipboard.writeText(b.getAttribute("data-copy")).then(done, done); else done();
+    });
   });
 
   /* ---------- nav ---------- */
@@ -138,132 +162,7 @@
     cap.innerHTML = "<span>" + HERO[0].cap + "</span>";
   }
 
-  /* ---------- feature groups: real screens + hotspots ---------- */
-  var STEP = 1500, LEAD = 700, TAIL = 2200, ZOOM = 2.3;
-
-  function buildPanel(fig) {
-    var kind = fig.getAttribute("data-kind"), src = fig.getAttribute("data-src"), alt = fig.getAttribute("data-alt") || "";
-    var spots = JSON.parse(fig.getAttribute("data-spots") || "[]");
-    var layer;
-    if (kind === "desk") {
-      fig.innerHTML = '<div class="win"><div class="win__top"><i></i><i></i><i></i><span>app.reviewbuddie.com/' + (fig.getAttribute("data-url") || "") +
-        '</span></div><div class="win__view"><div class="cv"><img alt="" width="1600" height="1000" loading="lazy" decoding="async"></div><span class="cursor" aria-hidden="true"></span><div class="win__cap" aria-hidden="true"></div></div></div>';
-      layer = $(".cv", fig);
-    } else {
-      fig.innerHTML = '<div class="phone"><div class="phone__screen"><img alt="" width="540" height="1169" loading="lazy" decoding="async"></div><div class="spots"></div></div>';
-      layer = $(".spots", fig);
-    }
-    var img = $("img", fig);
-    img.src = src; img.alt = alt;
-    fig._spots = spots.map(function (s) {
-      var el = document.createElement("div");
-      el.className = "spot" + (s[0] > 58 ? " l" : "") + (s[1] < 14 ? " b" : "") + (s[3] ? " warn" : "");
-      el.style.left = s[0] + "%"; el.style.top = s[1] + "%";
-      el.innerHTML = '<span class="spot__ring"></span><span class="spot__chip">' + s[2] + "</span>";
-      el.setAttribute("aria-hidden", "true");
-      layer.appendChild(el);
-      return { el: el, x: s[0], y: s[1], text: s[2], warn: !!s[3] };
-    });
-    fig._kind = kind;
-    fig._dur = LEAD + fig._spots.length * STEP + TAIL;
-  }
-
-  // desk screens: fit on desktop; on phones, zoom in and pan the "camera" to each hotspot
-  function frame(fig, k) {
-    if (fig._kind !== "desk") { fitPhone($(".phone", fig), fig, 0.9, 0.86); return; }
-    var view = $(".win__view", fig), cv = $(".cv", fig);
-    var vw = view.clientWidth, vh = view.clientHeight;
-    if (!vw) return;
-    var big = desktop.matches || k == null || reduce;
-    var w = big ? vw : vw * ZOOM, h = w * 0.625, left = 0, top = 0;
-    if (big) { top = desktop.matches ? 0 : (vh - h) / 2; }
-    else {
-      var s = fig._spots[k];
-      left = clamp(vw / 2 - (s.x / 100) * w, vw - w, 0);
-      top = clamp(vh / 2 - (s.y / 100) * h, Math.min(0, vh - h), 0);
-    }
-    cv.style.width = w + "px"; cv.style.left = left + "px"; cv.style.top = top + "px";
-    fig._cv = { w: w, h: h, left: left, top: top };
-  }
-
-  function moveCursor(fig, k) {
-    var c = $(".cursor", fig);
-    if (!c || !desktop.matches || !fig._cv) return;
-    var s = fig._spots[k];
-    c.style.left = fig._cv.left + (s.x / 100) * fig._cv.w + "px";
-    c.style.top = fig._cv.top + (s.y / 100) * fig._cv.h + "px";
-    setTimeout(function () { c.classList.remove("click"); void c.offsetWidth; c.classList.add("click"); }, 820);
-  }
-
-  function Group(fx) {
-    var tabs = $$(".fx__tab", fx), panels = $$(".fx__panel", fx);
-    var cur = 0, auto = !reduce, visible = false, timers = [];
-    panels.forEach(buildPanel);
-    if (panels.some(function (p) { return p.getAttribute("data-kind") === "phone"; })) $(".fx__stage", fx).classList.add("fx__stage--phone");
-    tabs.forEach(function (t, k) {
-      var id = fx.closest("section").id + "-" + k;
-      t.id = id + "-tab"; panels[k].id = id;
-      t.setAttribute("aria-controls", id); panels[k].setAttribute("aria-labelledby", id + "-tab");
-      t.tabIndex = k === 0 ? 0 : -1;
-      t.addEventListener("click", function () { auto = false; select(k); track("feature_tab", { tab: id }); });
-      t.addEventListener("keydown", function (e) {
-        var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
-        if (!d) return;
-        e.preventDefault(); auto = false;
-        select((cur + d + tabs.length) % tabs.length); tabs[cur].focus();
-      });
-    });
-
-    function clear() { timers.forEach(clearTimeout); timers = []; }
-    function play() {
-      clear();
-      var fig = panels[cur];
-      fig._spots.forEach(function (s) { s.el.classList.remove("on"); });
-      var wc = $(".win__cap", fig);
-      if (wc) wc.classList.remove("on");
-      frame(fig, null);
-      var c = $(".cursor", fig);
-      if (c) { c.style.left = "50%"; c.style.top = "110%"; }
-      if (reduce) { fig._spots.forEach(function (s) { s.el.classList.add("on"); }); return; }
-      fig._spots.forEach(function (s, k) {
-        timers.push(setTimeout(function () {
-          if (fig._kind === "desk" && !desktop.matches) frame(fig, k);
-          moveCursor(fig, k);
-          timers.push(setTimeout(function () {
-            s.el.classList.add("on");
-            if (wc) { wc.textContent = s.text; wc.classList.toggle("warn", s.warn); wc.classList.add("on"); }
-          }, fig._kind === "desk" ? 850 : 200));
-        }, LEAD + k * STEP));
-      });
-      timers.push(setTimeout(function () {
-        if (!visible) return;
-        if (auto) select((cur + 1) % tabs.length); else play();
-      }, fig._dur));
-    }
-    function select(k) {
-      cur = k;
-      tabs.forEach(function (t, n) {
-        var on = n === k, bar = $(".fx__bar", t);
-        t.setAttribute("aria-selected", on);
-        t.tabIndex = on ? 0 : -1;
-        panels[n].hidden = !on;
-        panels[n].classList.toggle("is-on", on);
-        bar.classList.remove("run");
-        if (on && auto && visible) { t.style.setProperty("--tdur", panels[n]._dur + "ms"); void bar.offsetWidth; bar.classList.add("run"); }
-      });
-      if (visible) play();
-    }
-    new IntersectionObserver(function (es) {
-      visible = es[0].isIntersecting;
-      if (visible) select(cur); else clear();
-    }, { threshold: 0.35 }).observe(fx);
-    var refit = function () { frame(panels[cur], null); };
-    if (window.ResizeObserver) new ResizeObserver(refit).observe($(".fx__stage", fx));
-    select(0);
-  }
-  $$(".fx").forEach(function (fx) { new Group(fx); });
-
-  /* ---------- scroll effects ---------- */
+  /* ---------- scroll: nav, the box, hero scale ---------- */
   var boxSec = $("#how");
   var cube = $(".cube"), insert = $(".insert"), bxPhone = $(".bx-phone"), bxScreen = $(".bx-phone .phone__screen");
   var bSteps = $$(".box-steps li"), chips = $$(".bx-chip"), bprog = $(".box-progress");
@@ -345,6 +244,167 @@
     });
   }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
   $$(".reveal").forEach(function (el) { rio.observe(el); });
+
+  /* ---------- 02 film strip: lift one phone at a time, dots on mobile ---------- */
+  var film = $("[data-film]");
+  if (film) {
+    var frames = $$(".film__f", film), dots = $$(".film__dots i");
+    if (!reduce) whileVisible(film, function () {
+      var k = 0;
+      frames[0].classList.add("lift");
+      var t = setInterval(function () {
+        k = (k + 1) % frames.length;
+        frames.forEach(function (f, n) { f.classList.toggle("lift", n === k); });
+      }, 2200);
+      return function () { clearInterval(t); frames.forEach(function (f) { f.classList.remove("lift"); }); };
+    }, 0.3);
+    film.addEventListener("scroll", function () {
+      var n = Math.round(film.scrollLeft / (frames[0].offsetWidth + 14));
+      dots.forEach(function (d, i) { d.classList.toggle("on", i === clamp(n, 0, dots.length - 1)); });
+    }, { passive: true });
+  }
+
+  /* ---------- 03 dashboard widgets ---------- */
+  var kpi = $("[data-kpi]");
+  if (kpi) whileVisible(kpi, function () {
+    var bell = $(".bell", kpi);
+    bell.classList.remove("ping");
+    var t = setTimeout(function () { bell.classList.add("ping"); }, 1500);
+    return function () { clearTimeout(t); };
+  });
+  var check = $("[data-check]");
+  if (check) whileVisible(check, function () {
+    var items = $$("li", check);
+    items.forEach(function (li) { li.classList.remove("done"); });
+    return timeline(items.map(function (li, k) { return [600 + k * 700, function () { li.classList.add("done"); }]; }), 600 + items.length * 700 + 2600);
+  });
+
+  /* ---------- 04 coded scenes ---------- */
+  $$("[data-scene]").forEach(function (sc) {
+    var kind = sc.getAttribute("data-scene");
+    if (kind === "claims") whileVisible(sc, function () {
+      var cards = $$(".cc__card", sc), btn = $(".cc__btn", sc);
+      var reset = function () { cards.forEach(function (c) { c.classList.remove("sel", "fly"); }); btn.classList.remove("show", "press"); };
+      reset();
+      return timeline([
+        [600, function () { cards[0].classList.add("sel"); }],
+        [1000, function () { cards[1].classList.add("sel"); }],
+        [1400, function () { cards[2].classList.add("sel"); btn.classList.add("show"); }],
+        [2400, function () { btn.classList.add("press"); }],
+        [2700, function () { cards[0].classList.add("fly"); }],
+        [2850, function () { cards[1].classList.add("fly"); }],
+        [3000, function () { cards[2].classList.add("fly"); btn.classList.remove("show"); }],
+        [5600, reset]
+      ], 6200);
+    });
+    if (kind === "customers") whileVisible(sc, function () {
+      var rows = $$(".cu__row", sc), bar = $(".cu__bar", sc), btn = $(".cu__btn", sc);
+      var reset = function () { rows.forEach(function (r) { r.classList.remove("named"); }); bar.classList.remove("show"); btn.classList.remove("pulse"); };
+      reset();
+      return timeline([
+        [700, function () { rows[0].classList.add("named"); }],
+        [1300, function () { rows[1].classList.add("named"); }],
+        [1900, function () { rows[2].classList.add("named"); }],
+        [2600, function () { bar.classList.add("show"); }],
+        [3600, function () { btn.classList.add("pulse"); }],
+        [5800, reset]
+      ], 6400);
+    });
+    if (kind === "support") whileVisible(sc, function () {
+      var tk = $(".tk", sc);
+      var reset = function () { tk.classList.remove("s1", "s2", "s3"); };
+      reset();
+      return timeline([
+        [500, function () { tk.classList.add("s1"); }],
+        [1800, function () { tk.classList.add("s2"); }],
+        [3400, function () { tk.classList.add("s3"); }],
+        [6000, reset]
+      ], 6600);
+    });
+  });
+
+  /* ---------- 05 Brand Hub builder + Ad page demo ---------- */
+  var hub = $("[data-hub]");
+  if (hub) {
+    $$("input[data-sec]", hub).forEach(function (cb) {
+      var sec = $('.hub [data-sec="' + cb.getAttribute("data-sec") + '"]', hub);
+      var sync = function () { sec.classList.toggle("off", !cb.checked); };
+      cb.addEventListener("change", function () { sync(); track("hub_toggle", { section: cb.getAttribute("data-sec"), on: cb.checked }); });
+      sync();
+    });
+  }
+  var ad = $("[data-ad]");
+  if (ad) {
+    var unlock = $("[data-unlock]", ad), code = $(".ad__code", ad), timer = $("[data-timer]", ad), viewing = $("[data-viewing]", ad);
+    var coupon = $(".ad__offer--coupon", ad), cash = $(".ad__offer--cash", ad);
+    unlock.addEventListener("click", function () {
+      code.hidden = false; unlock.textContent = "Coupon unlocked ✓"; unlock.classList.add("done");
+      track("ad_demo_unlock");
+    });
+    $$(".seg button", ad).forEach(function (b) {
+      b.addEventListener("click", function () {
+        $$(".seg button", ad).forEach(function (x) { x.classList.toggle("on", x === b); });
+        var isCoupon = b.getAttribute("data-offer") === "coupon";
+        coupon.hidden = !isCoupon; cash.hidden = isCoupon;
+      });
+    });
+    var secs = 14 * 60 + 59, views = 37;
+    whileVisible(ad, function () {
+      var t = setInterval(function () {
+        secs = secs > 0 ? secs - 1 : 14 * 60 + 59;
+        timer.textContent = ("0" + Math.floor(secs / 60)).slice(-2) + ":" + ("0" + (secs % 60)).slice(-2);
+        if (secs % 7 === 0) { views = clamp(views + (Math.random() > 0.5 ? 1 : -1), 28, 46); viewing.textContent = views + " viewing now"; }
+      }, 1000);
+      return function () { clearInterval(t); };
+    }, 0.2);
+  }
+
+  /* ---------- 06 board ---------- */
+  var board = $("[data-board]");
+  if (board) whileVisible(board, function () {
+    var st = $$(".st", board), bell = $(".bell", board), sop = $$(".sop li[data-step]", board), count = $(".board__head span", board);
+    var set = function (el, s, label) { el.setAttribute("data-st", s); el.textContent = label; };
+    var reset = function () {
+      set(st[0], "working", "Working on it"); set(st[1], "not", "Not started"); set(st[2], "stuck", "Stuck"); set(st[3], "working", "Working on it");
+      bell.classList.remove("ping"); $("em", bell).textContent = "0";
+      sop.forEach(function (li) { li.classList.remove("done"); });
+      count.textContent = "To-Do · 4 tasks";
+    };
+    reset();
+    return timeline([
+      [900, function () { set(st[1], "working", "Working on it"); }],
+      [1800, function () { set(st[3], "done", "Done"); sop[0].classList.add("done"); count.textContent = "To-Do · 3 tasks"; }],
+      [2900, function () { set(st[2], "overdue", "Overdue"); $("em", bell).textContent = "1"; bell.classList.add("ping"); }],
+      [4200, function () { set(st[0], "done", "Done"); count.textContent = "To-Do · 2 tasks"; }],
+      [5400, function () { set(st[2], "done", "Done"); sop[1].classList.add("done"); count.textContent = "To-Do · 1 task"; }],
+      [8200, reset]
+    ], 8800);
+  });
+
+  /* ---------- 07 partner calculator ---------- */
+  var partner = $("[data-partner]");
+  if (partner) {
+    var pin = $("[data-in]", partner), pout = $("[data-out]", partner), plan = 79;
+    var month = $("[data-month]", partner), year = $("[data-year]", partner), rate = $("[data-rate]", partner);
+    var money = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+    function calc() {
+      var n = +pin.value, r = n > 100 ? 0.30 : n > 10 ? 0.25 : 0.20;
+      pout.textContent = n;
+      pin.style.setProperty("--fill", ((n - pin.min) / (pin.max - pin.min)) * 100 + "%");
+      month.textContent = money(n * plan * r);
+      year.textContent = money(n * plan * r * 12);
+      rate.textContent = Math.round(r * 100) + "%";
+    }
+    pin.addEventListener("input", calc);
+    $$("[data-plan]", partner).forEach(function (b) {
+      b.addEventListener("click", function () {
+        plan = +b.getAttribute("data-plan");
+        $$("[data-plan]", partner).forEach(function (x) { x.classList.toggle("on", x === b); });
+        calc();
+      });
+    });
+    calc();
+  }
 
   /* ---------- testimonials: slow auto-scroll on desktop ---------- */
   var rail = $(".quotes__rail");
