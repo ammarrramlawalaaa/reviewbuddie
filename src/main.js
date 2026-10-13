@@ -46,6 +46,90 @@
     $$('[data-reveal]').forEach(function (el) { el.classList.add('in'); });
   }
 
+  /* ---------- headline word reveal ---------- */
+  var splits = $$('[data-split]');
+  if ('IntersectionObserver' in window && !RM) {
+    var sio2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio2.unobserve(e.target); } });
+    }, { threshold: 0.2 });
+    splits.forEach(function (el) { sio2.observe(el); });
+  } else splits.forEach(function (el) { el.classList.add('in'); });
+  requestAnimationFrame(function () { var h1 = $('#h1'); if (h1) h1.classList.add('in'); });
+
+  /* ---------- scroll progress bar ---------- */
+  var bar = $('.progress-top'), barRaf = 0;
+  addEventListener('scroll', function () {
+    if (barRaf) return;
+    barRaf = requestAnimationFrame(function () {
+      barRaf = 0;
+      var max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.setProperty('--sp', max > 0 ? (scrollY / max).toFixed(4) : 0);
+    });
+  }, { passive: true });
+
+  /* ---------- run looping animations only while on screen ---------- */
+  var animEls = $$('[data-anim]');
+  if ('IntersectionObserver' in window) {
+    var aio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('anim-on'); e.target.classList.remove('paused'); }
+        else e.target.classList.add('paused');
+      });
+    }, { threshold: 0.15 });
+    animEls.forEach(function (el) { el.classList.add('paused'); aio.observe(el); });
+  } else animEls.forEach(function (el) { el.classList.add('anim-on'); });
+
+  /* ---------- phone scene players (stand in for product videos) ---------- */
+  $$('[data-player]').forEach(function (pl) {
+    var scenes = $$('.scr', pl), idx = -1, timer = null, visible = false;
+    var cap = pl.dataset.cap ? document.getElementById(pl.dataset.cap) : null;
+    var stage = pl.closest('.stage'), fls = stage && pl.dataset.floats ? $$('.fl', stage) : [];
+    var caps = cap ? $$('.sr-only li', stage).map(function (li) { return li.textContent; }) : [];
+    function show(i) {
+      if (scenes.length === 1) {
+        scenes[0].classList.remove('on'); void scenes[0].offsetWidth;
+      }
+      scenes.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+      idx = i;
+      if (cap) {
+        cap.classList.remove('swap'); void cap.offsetWidth; cap.classList.add('swap');
+        $('b', cap).textContent = i + 1; $('span', cap).textContent = caps[i];
+      }
+      if (fls.length) {
+        if (i === 0) fls.forEach(function (f) { f.classList.remove('show'); });
+        var k = i === 2 ? 0 : i === 3 ? 1 : i === 4 ? 2 : -1;
+        if (k >= 0) {
+          if (matchMedia('(max-width:719px)').matches) fls.forEach(function (f) { f.classList.remove('show'); });
+          fls[k].classList.add('show');
+        }
+      }
+    }
+    function next() {
+      clearTimeout(timer);
+      if (!visible || document.hidden) return;
+      show((idx + 1) % scenes.length);
+      timer = setTimeout(next, +scenes[idx].dataset.d || 4500);
+    }
+    if (RM) { show(scenes.length > 2 ? 1 : 0); return; }
+    show(0); timer = setTimeout(next, +scenes[0].dataset.d || 4500);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        var was = visible; visible = es[0].isIntersecting;
+        if (visible && !was) { clearTimeout(timer); timer = setTimeout(next, +scenes[idx].dataset.d || 4500); }
+      }, { threshold: 0.25 }).observe(pl);
+    } else visible = true;
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && visible) { clearTimeout(timer); timer = setTimeout(next, 1200); } });
+  });
+
+  /* ---------- spotlight that follows the pointer on dark cards ---------- */
+  $$('.card').forEach(function (c) {
+    c.addEventListener('pointermove', function (ev) {
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+    });
+  });
+
   /* ---------- number animation ---------- */
   function animateNum(el, to, dur) {
     var from = +el.dataset.cur || 0;
@@ -240,7 +324,7 @@
   });
 
   /* ---------- calculator ---------- */
-  var cO = $('#c-orders'), cR = $('#c-reviews'), out = $('#c-silent'), ratio = $('#c-ratio'), barI = $('#c-bar'), used = false;
+  var cO = $('#c-orders'), cR = $('#c-reviews'), out = $('#c-silent'), ratio = $('#c-ratio'), dots = $$('#people i'), used = false;
   function clampInputs() {
     var o = Math.max(0, Math.min(1000000, Math.round(+cO.value || 0)));
     var r = Math.max(0, Math.min(o, Math.round(+cR.value || 0)));
@@ -250,7 +334,8 @@
     var v = clampInputs(), silent = v.o - v.r, pct = v.o ? Math.round(silent / v.o * 100) : 0;
     animateNum(out, silent, 600);
     ratio.textContent = pct;
-    barI.style.width = (v.o ? Math.max(2, v.r / v.o * 100) : 0) + '%';
+    var on = v.o ? Math.max(v.r ? 1 : 0, Math.round(v.r / v.o * 100)) : 0;
+    dots.forEach(function (d, i) { d.classList.toggle('on', i < on); });
     if (fromUser && !used) { used = true; track('calculator_used'); }
   }
   [cO, cR].forEach(function (inp) {
@@ -331,12 +416,20 @@
     // flow diagram draws itself as it scrolls through the viewport (not pinned)
     var flow = $('#flow'), line = $('.flow-line b', flow), nodes = $$('li', flow);
     var vertical = !matchMedia('(min-width:1024px)').matches;
+    nodes.forEach(function (n) { n.classList.remove('lit'); });
     gsap.set(line, vertical ? { scaleY: 0 } : { scaleX: 0 });
-    gsap.set(nodes, { autoAlpha: 0.25, y: 8 });
-    var ftl = gsap.timeline({ scrollTrigger: { trigger: flow, start: 'top 75%', end: 'bottom 60%', scrub: 0.5 } });
+    gsap.set(nodes, { autoAlpha: 0.3, y: 10 });
+    var ftl = gsap.timeline({
+      scrollTrigger: { trigger: flow, start: 'top 78%', end: 'bottom 55%', scrub: 0.5 },
+      onUpdate: function () {
+        var pr = ftl.progress();
+        nodes.forEach(function (n, i) { n.classList.toggle('lit', pr >= i / (nodes.length - 1) * 0.92); });
+      }
+    });
     ftl.to(line, vertical ? { scaleY: 1, ease: 'none', duration: nodes.length } : { scaleX: 1, ease: 'none', duration: nodes.length }, 0);
     nodes.forEach(function (n, i) { ftl.to(n, { autoAlpha: 1, y: 0, duration: 0.6 }, i * 0.95); });
   }
+  $$('#flow li').forEach(function (n) { n.classList.add('lit'); });
   if (window.gsap) initGsap();
   else window.addEventListener('load', initGsap);
 })();

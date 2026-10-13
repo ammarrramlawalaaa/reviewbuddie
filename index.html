@@ -6,7 +6,7 @@
 <title>ReviewBuddie – More honest reviews for Indian marketplace sellers</title>
 <meta name="description" content="ReviewBuddie turns a QR code in your box into warranty registration, product guides and a compliant review request. Built for Amazon &amp; Flipkart sellers in India.">
 <link rel="canonical" href="https://reviewbuddie.com/">
-<meta name="theme-color" content="#F6F8FA">
+<meta name="theme-color" content="#070D1C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ReviewBuddie">
@@ -22,36 +22,42 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap">
 <script>document.documentElement.className+=' js'</script>
-<style>/* Layout concept: mobile-first single column (390px design width), one headline + one visual + one button per section,
-   light and dark sections alternating like pages turning. Desktop widens to two columns where a visual sits beside text. */
+<style>/* Layout concept: mobile-first single column (390px design width). Each section = one headline + one living visual + one button.
+   Dark "night" sections with aurora light alternate with clean light sections; every video slot is a coded, looping product scene. */
 :root{
-  /* [PRIMARY] – buttons, links, active states (AA with white text: 4.9:1) */
+  /* [PRIMARY] buttons, links, active states (white text passes AA) */
   --primary:#0077B8;
   --primary-press:#00629A;
-  /* [ACCENT] – highlights on dark sections, progress lines */
+  /* [ACCENT] glow + highlights */
   --accent:#38BDF8;
+  --violet:#8B7CFF;
+  --mint:#2DD4BF;
+  --coral:#FF8A65;
   /* [DARK SECTION BG] */
-  --dark:#0B1424;
-  --dark-2:#14203A;
+  --dark:#070D1C;
+  --dark-2:#101A30;
+  --dark-3:#18243F;
   /* [LIGHT BG] */
-  --light:#F6F8FA;
-  --tint:#EAF3FA;
+  --light:#F5F7FA;
+  --tint:#EAF3FB;
   --surface:#FFFFFF;
-  /* [TEXT] – never pure black */
-  --text:#18222F;
+  /* [TEXT] never pure black */
+  --text:#17212E;
   --muted:#556375;
   --line:#DFE5EC;
   --on-dark:#EEF3F8;
-  --on-dark-muted:#A7B4C4;
-  --line-dark:rgba(255,255,255,.12);
-  --ok:#14804A;
-  --ok-bg:#E5F4EC;
+  --on-dark-muted:#A3B1C2;
+  --line-dark:rgba(255,255,255,.1);
+  --ok:#16A34A;
+  --ok-bg:#E3F6EA;
   --warn:#B4541A;
+  --star:#F5A524;
 
   --font:"Poppins",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
-  --r-lg:24px;--r-md:16px;--r-sm:12px;
+  --r-xl:32px;--r-lg:24px;--r-md:16px;--r-sm:12px;
   --gutter:20px;
   --ease:cubic-bezier(.2,.7,.2,1);
+  --spring:cubic-bezier(.2,1.5,.4,1);
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -60,293 +66,574 @@ body{margin:0;font-family:var(--font);font-size:16px;line-height:1.6;color:var(-
 img,video{display:block;max-width:100%;height:auto}
 a{color:var(--primary)}
 button,input,select{font:inherit;color:inherit}
-h1,h2,h3,p,ul,figure,blockquote{margin:0}
-ul{padding:0;list-style:none}
-h1,h2,h3{font-weight:500;letter-spacing:-.02em;text-wrap:balance}
-h1{font-size:36px;line-height:1.12}
-h2{font-size:32px;line-height:1.18}
+h1,h2,h3,h4,p,ul,ol,figure,blockquote{margin:0}
+ul,ol{padding:0;list-style:none}
+h1,h2,h3{font-weight:500;letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:38px;line-height:1.1}
+h2{font-size:32px;line-height:1.15}
 h3{font-size:19px;line-height:1.3}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:absolute;left:-9999px;top:8px;z-index:200;background:var(--surface);padding:10px 14px;border-radius:10px}
 .skip:focus{left:12px}
 
-.wrap{width:100%;max-width:1160px;margin-inline:auto;padding-inline:var(--gutter)}
-.section{padding-block:72px}
+.progress-top{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;transform-origin:left;transform:scaleX(var(--sp,0));background:linear-gradient(90deg,var(--accent),var(--violet),var(--mint))}
+
+.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:var(--gutter)}
+.section{position:relative;padding-block:80px;overflow:clip}
 .section--light{background:var(--light);color:var(--text)}
 .section--white{background:var(--surface);color:var(--text)}
 .section--tint{background:var(--tint);color:var(--text)}
 .section--dark{background:var(--dark);color:var(--on-dark)}
 .section--dark .muted,.section--dark .sub{color:var(--on-dark-muted)}
-.head{display:grid;gap:14px;margin-bottom:36px;max-width:680px}
-.head--center{margin-inline:auto;text-align:center;justify-items:center}
-.eyebrow{font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+.head{position:relative;display:grid;gap:14px;margin-bottom:40px;max-width:720px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px color-mix(in srgb,currentColor 18%,transparent)}
 .section--dark .eyebrow{color:var(--accent)}
 .sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:60ch}
 .muted{color:var(--muted)}
-.cta-row{display:grid;gap:14px;margin-top:36px}
-.cta-row--center{justify-items:center;text-align:center}
+.grad{background:linear-gradient(100deg,var(--accent),var(--violet) 45%,var(--mint) 70%,var(--accent));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradmove 8s linear infinite}
+.section--light .grad,.section--white .grad,.section--tint .grad{background-image:linear-gradient(100deg,var(--primary),#5B4BDB 45%,#0E9F8E 70%,var(--primary))}
+@keyframes gradmove{to{background-position:-250% 0}}
+
+/* aurora backdrop */
+.aurora{position:absolute;inset:-20% -10%;z-index:0;pointer-events:none;filter:blur(60px) saturate(1.2);opacity:.75}
+.aurora i{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:60%;height:55%;left:-5%;top:5%;background:radial-gradient(circle,#0096DB,transparent 65%)}
+.aurora i:nth-child(2){width:55%;height:60%;right:-10%;top:-5%;background:radial-gradient(circle,#7C5CFC,transparent 65%);animation-duration:22s;animation-delay:-6s}
+.aurora i:nth-child(3){width:50%;height:50%;left:30%;bottom:-10%;background:radial-gradient(circle,#2DD4BF,transparent 65%);animation-duration:26s;animation-delay:-12s;opacity:.7}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(8%,6%) scale(1.15)}100%{transform:translate(-6%,10%) scale(.95)}}
+.gridlines{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 70%)}
+.section>.wrap{position:relative;z-index:1}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;font-weight:500;font-size:16px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .15s var(--ease),filter .15s,background-color .2s,border-color .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.btn:active{transform:scale(.97);filter:brightness(.95)}
-.btn--primary{background:var(--primary);color:#fff}
-.btn--primary:hover{background:var(--primary-press)}
+.btn{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;font-weight:500;font-size:16px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .15s var(--ease),filter .15s,background-color .2s,border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn:active{transform:scale(.96);filter:brightness(.94)}
+.btn--primary{background:var(--primary);color:#fff;box-shadow:0 10px 26px -10px rgba(0,119,184,.75)}
+.btn--primary:hover{background:var(--primary-press);box-shadow:0 14px 32px -10px rgba(0,119,184,.9)}
+.btn--primary::after{content:"";position:absolute;z-index:-1;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:sheen 4.5s ease-in-out infinite}
+@keyframes sheen{0%,70%{left:-60%}100%{left:130%}}
+.section--dark .btn--primary,.hero .btn--primary{box-shadow:0 0 0 1px rgba(56,189,248,.35),0 12px 34px -8px rgba(56,189,248,.55)}
 .btn--outline{border-color:currentColor;background:transparent;color:var(--text)}
-.section--dark .btn--outline{color:var(--on-dark)}
 .btn--block{width:100%}
 .btn .arr{width:18px;height:18px;transition:transform .2s var(--ease)}
 .btn:hover .arr{transform:translateX(4px)}
 .link-wa{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:500;text-decoration:none;color:var(--text)}
-.section--dark .link-wa{color:var(--on-dark)}
-.link-wa svg{width:20px;height:20px;color:#1DA851}
+.section--dark .link-wa,.hero .link-wa,.menu .link-wa,.pick-card .link-wa{color:var(--on-dark)}
+.link-wa svg{width:20px;height:20px;color:#25D366}
 .link-wa:hover span{text-decoration:underline;text-underline-offset:3px}
 .reassure{font-size:13.5px;color:var(--muted);line-height:1.5}
-.section--dark .reassure{color:var(--on-dark-muted)}
+.section--dark .reassure,.hero .reassure{color:var(--on-dark-muted)}
+.cta-row{display:grid;gap:12px;margin-top:40px}
+.cta-row--center{justify-items:center;text-align:center}
 
 /* header */
-.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:color-mix(in srgb,var(--light) 88%,transparent);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
-.hdr.scrolled{border-color:var(--line)}
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:rgba(7,13,28,.72);backdrop-filter:saturate(1.5) blur(14px);-webkit-backdrop-filter:saturate(1.5) blur(14px);border-bottom:1px solid var(--line-dark);color:var(--on-dark)}
 .hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
-.logo{display:flex;align-items:center;gap:9px;font-weight:500;font-size:20px;letter-spacing:-.03em;color:var(--text);text-decoration:none;min-height:44px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:500;font-size:20px;letter-spacing:-.03em;color:inherit;text-decoration:none;min-height:44px}
 .logo svg{width:26px;height:26px}
 .nav-d{display:none}
-.burger{width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;border-radius:12px;cursor:pointer}
+.burger{width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;border-radius:12px;cursor:pointer;color:inherit}
 .burger svg{width:24px;height:24px}
-.menu{position:fixed;inset:0;z-index:90;background:var(--light);padding:calc(env(safe-area-inset-top,0px) + 12px) var(--gutter) 24px;display:flex;flex-direction:column;gap:8px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s .25s}
-.menu.open{opacity:1;transform:none;visibility:visible;transition-delay:0s}
-.menu-top{display:flex;justify-content:space-between;align-items:center;height:52px;margin-bottom:16px}
-.menu a.m-link{display:flex;align-items:center;min-height:56px;font-size:24px;color:var(--text);text-decoration:none;border-bottom:1px solid var(--line)}
+.menu{position:fixed;inset:0;z-index:90;background:var(--dark);color:var(--on-dark);padding:calc(env(safe-area-inset-top,0px) + 6px) var(--gutter) calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;clip-path:circle(0% at calc(100% - 42px) 32px);visibility:hidden;transition:clip-path .55s var(--ease),visibility 0s .55s}
+.menu.open{clip-path:circle(150% at calc(100% - 42px) 32px);visibility:visible;transition-delay:0s}
+.menu-top{display:flex;justify-content:space-between;align-items:center;height:58px;margin-bottom:16px}
+.menu a.m-link{display:flex;align-items:center;min-height:60px;font-size:28px;color:var(--on-dark);text-decoration:none;border-bottom:1px solid var(--line-dark);opacity:0;transform:translateY(16px);transition:opacity .4s,transform .4s var(--ease)}
+.menu.open a.m-link{opacity:1;transform:none}
+.menu.open a.m-link:nth-child(2){transition-delay:.06s}.menu.open a.m-link:nth-child(3){transition-delay:.12s}.menu.open a.m-link:nth-child(4){transition-delay:.18s}
 .menu .btn{margin-top:auto}
 
-/* hero */
-.hero{padding-block:18px 0;background:var(--light);overflow:hidden}
-.hero-grid{display:grid;gap:20px}
-.hero-copy{display:grid;gap:12px}
-.hero .eyebrow{color:var(--muted);text-transform:none;letter-spacing:0;font-size:13px;line-height:1.4;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.hero .eyebrow i{font-style:normal;width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px var(--ok-bg)}
-.hero .sub{font-size:17px;line-height:1.5}
-.hero .cta-row{margin-top:6px;gap:4px}
-.hero-actions{display:grid;gap:0;justify-items:center}
+/* ================= HERO ================= */
+.hero{position:relative;background:var(--dark);color:var(--on-dark);padding-block:22px 40px;overflow:clip;isolation:isolate}
+.hero-grid{position:relative;z-index:1;display:grid;gap:26px}
+.hero-copy{display:grid;gap:14px}
+.chip-ey{display:inline-flex;align-items:center;gap:8px;justify-self:start;font-size:12.5px;line-height:1.35;color:var(--on-dark);padding:6px 12px 6px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--line-dark)}
+.chip-ey i{flex:none;width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.hero h1{color:#fff}
+.hero .sub{font-size:17px;line-height:1.5;color:var(--on-dark-muted)}
+.hero .cta-row{margin-top:4px;gap:4px}
+.hero-actions{display:grid;justify-items:center}
 .hero .reassure{text-align:center}
-.hero-media{margin-inline:calc(var(--gutter) * -0.4)}
 
-/* media + placeholders */
-.media{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--dark-2);aspect-ratio:var(--ratio,16/9)}
-.media video,.media picture,.media img{width:100%;height:100%;object-fit:cover}
-.ph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:22px;text-align:left;
-  background:linear-gradient(160deg,#E3EEF8,#F4F7FA 60%);color:var(--text);border:2px dashed #A9C3DA;border-radius:inherit}
-.section--dark .ph{background:linear-gradient(160deg,#1A2944,#111C30);color:var(--on-dark);border-color:#35507A}
-.ph-tag{align-self:flex-start;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;background:var(--primary);color:#fff;padding:4px 10px;border-radius:999px}
-.ph strong{font-weight:500;font-size:17px}
-.ph p{font-size:13.5px;line-height:1.5;opacity:.85}
-.ph .spec{font-size:12px;opacity:.7}
-.ph svg{width:30px;height:30px;opacity:.6}
-.phone{position:relative;width:min(240px,64vw);aspect-ratio:9/19;border-radius:38px;background:#0A101C;padding:9px;box-shadow:0 30px 60px -25px rgba(11,20,36,.55),inset 0 0 0 1px rgba(255,255,255,.08);margin-inline:auto}
-.phone::before{content:"";position:absolute;top:16px;left:50%;width:70px;height:20px;border-radius:12px;background:#0A101C;transform:translateX(-50%);z-index:3}
-.phone .media{height:100%;aspect-ratio:auto;border-radius:30px}
-.phone .ph{padding:40px 16px 16px;border-radius:30px}
-.phone .ph strong{font-size:15px}
-.phone .ph p{font-size:12.5px}
-.browser{border-radius:var(--r-md);background:var(--surface);box-shadow:0 24px 50px -24px rgba(11,20,36,.5);overflow:hidden}
-.browser-bar{display:flex;gap:6px;padding:10px 12px;background:#EEF2F6}
-.browser-bar i{width:9px;height:9px;border-radius:50%;background:#C9D3DD}
-.browser .media{border-radius:0}
+/* word reveal */
+.js .split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.js .split .w>span{display:inline-block;transform:translateY(110%);transition:transform .9s var(--ease);transition-delay:calc(var(--wi) * 45ms)}
+.js .split.in .w>span{transform:none}
+
+/* hero stage */
+.stage{position:relative;height:560px;display:grid;place-items:center;margin-inline:calc(var(--gutter) * -1)}
+.orbit{position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.12);animation:spin 50s linear infinite}
+.orbit.o1{width:340px;height:340px}.orbit.o2{width:520px;height:520px;animation-duration:80s;animation-direction:reverse}
+.orbit::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 16px 4px rgba(56,189,248,.8)}
+.orbit.o2::after{background:var(--violet);box-shadow:0 0 16px 4px rgba(139,124,255,.8)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stage .phone{z-index:3}
+.cap{position:absolute;left:50%;bottom:0;z-index:5;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:rgba(16,26,48,.9);border:1px solid var(--line-dark);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);white-space:nowrap;font-size:13.5px;max-width:calc(100% - 24px)}
+.cap b{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--violet));color:#071022;font-weight:500;font-size:13px}
+.cap span{overflow:hidden;text-overflow:ellipsis}
+.cap.swap span,.cap.swap b{animation:capin .45s var(--ease)}
+@keyframes capin{from{opacity:0;transform:translateY(8px)}}
+.fl{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(255,255,255,.96);color:var(--text);box-shadow:0 20px 40px -18px rgba(0,0,0,.6);font-size:12.5px;font-weight:500;opacity:0;transform:translateY(14px) scale(.92);transition:opacity .5s var(--ease),transform .6s var(--spring)}
+.fl.show{opacity:1;transform:none}
+.fl i{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;flex:none}
+.fl i svg{width:17px;height:17px}
+.fl1{top:24px;left:8px}.fl1 i{background:var(--ok-bg);color:var(--ok)}
+.fl2{top:44%;right:8px}.fl2 i{background:#EDE9FF;color:#5B4BDB}
+.fl3{bottom:70px;left:8px}
+@media (max-width:719px){.fl{font-size:11.5px;padding:8px 12px 8px 8px;max-width:210px}.fl i{width:26px;height:26px}.fl2{top:auto;bottom:118px;right:8px}}.fl3 i{background:#FFF1E8;color:#C2410C}
+
+.parcel{position:absolute;z-index:2;left:0;bottom:110px;width:130px;height:110px;transform:rotate(-8deg)}
+.parcel .body{position:absolute;inset:30px 0 0;border-radius:6px 6px 10px 10px;background:linear-gradient(160deg,#C79A63,#A87943);box-shadow:inset 0 -10px 0 rgba(0,0,0,.08),0 24px 40px -16px rgba(0,0,0,.7)}
+.parcel .body::after{content:"";position:absolute;left:44%;top:0;bottom:0;width:12%;background:rgba(255,255,255,.18)}
+.parcel .flap{position:absolute;top:30px;width:50%;height:30px;background:#B88752;border-radius:4px}
+.parcel .flap.l{left:0;transform-origin:left top;animation:flapL 6s var(--ease) infinite}
+.parcel .flap.r{right:0;transform-origin:right top;animation:flapR 6s var(--ease) infinite}
+@keyframes flapL{0%,8%{transform:rotate(0)}22%,85%{transform:rotate(-140deg)}100%{transform:rotate(0)}}
+@keyframes flapR{0%,8%{transform:rotate(0)}22%,85%{transform:rotate(140deg)}100%{transform:rotate(0)}}
+.parcel .card-in{position:absolute;left:22px;top:20px;width:86px;padding:6px;border-radius:8px;background:#F4F1EA;box-shadow:0 10px 20px -8px rgba(0,0,0,.5);opacity:0;animation:cardUp 6s var(--spring) infinite;font-size:7px;font-weight:500;color:var(--text);text-align:center;line-height:1.2}
+.parcel .card-in svg{width:56px;height:56px;margin:3px auto}
+@keyframes cardUp{0%,20%{transform:translateY(40px);opacity:0}32%,80%{transform:translateY(-62px) rotate(6deg);opacity:1}92%,100%{transform:translateY(40px);opacity:0}}
+
+/* ================= PHONE + SCENES ================= */
+.phone{position:relative;width:min(260px,66vw);aspect-ratio:9/19;border-radius:42px;background:#05080F;padding:9px;box-shadow:0 40px 80px -30px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.1) inset,0 0 90px -20px rgba(56,189,248,.45);container-type:inline-size;margin-inline:auto;flex:none}
+.section--light .phone,.section--white .phone,.section--tint .phone{box-shadow:0 40px 70px -30px rgba(11,20,36,.55),0 0 0 1px rgba(255,255,255,.1) inset}
+.phone::before{content:"";position:absolute;top:15px;left:50%;width:28%;height:20px;border-radius:12px;background:#05080F;transform:translateX(-50%);z-index:9}
+.screen{position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;background:#F4F6F9;color:var(--text);font-size:5.4cqw;line-height:1.35}
+.media{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:var(--ratio,16/9)}
+.media video{width:100%;height:100%;object-fit:cover}
+.scr{position:absolute;inset:0;padding:16% 7% 7%;display:flex;flex-direction:column;gap:.7em;opacity:0;visibility:hidden;transform:translateX(8%);transition:opacity .45s var(--ease),transform .45s var(--ease),visibility 0s .45s}
+.scr.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.bar-top{display:flex;align-items:center;gap:.5em;font-size:.85em;font-weight:500}
+.bl{display:grid;place-items:center;width:1.7em;height:1.7em;border-radius:.5em;background:var(--text);color:#fff;font-size:.8em;flex:none}
+.scr h4{font-size:1.2em;font-weight:500;letter-spacing:-.02em;line-height:1.2}
+.ui-btn{display:grid;place-items:center;height:2.6em;border-radius:.8em;background:var(--primary);color:#fff;font-weight:500;font-size:.88em;margin-top:auto;flex:none}
+.scr.on .ui-btn.press{animation:press .35s ease both;animation-delay:var(--pd,2.6s)}
+@keyframes press{50%{transform:scale(.93);filter:brightness(.8)}}
+.typed{display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;vertical-align:bottom}
+.scr.on .typed{animation:type .9s steps(16,end) both;animation-delay:var(--td,.5s)}
+@keyframes type{to{max-width:16em}}
+@keyframes fin{from{opacity:0;transform:translateY(.6em)}to{opacity:1;transform:none}}
+
+/* scan */
+.s-scan{background:radial-gradient(circle at 50% 40%,#3a3226,#15120e 70%);color:#fff}
+.view{position:relative;margin:6% auto 0;width:80%;aspect-ratio:1;display:grid;place-items:center}
+.ins{width:72%;aspect-ratio:1;background:#F4F1EA;border-radius:.6em;padding:8%;transform:rotate(-6deg) scale(.92);box-shadow:0 1em 2em rgba(0,0,0,.5)}
+.ins svg{width:100%;height:100%}
+.br{position:absolute;width:20%;height:20%;border:.22em solid #fff;border-radius:.4em}
+.br.tl{top:0;left:0;border-right:0;border-bottom:0}.br.tr{top:0;right:0;border-left:0;border-bottom:0}
+.br.bl2{bottom:0;left:0;border-right:0;border-top:0}.br.brr{bottom:0;right:0;border-left:0;border-top:0}
+.scr.on .br{animation:brk 2.6s ease-in-out both}
+@keyframes brk{0%{transform:scale(1.3);opacity:0}30%{transform:scale(1);opacity:1;border-color:#fff}85%,100%{border-color:#4ADE80;transform:scale(.96)}}
+.sl{position:absolute;left:6%;right:6%;height:.2em;border-radius:1em;background:#38BDF8;box-shadow:0 0 1em .3em rgba(56,189,248,.8);top:8%;opacity:0}
+.scr.on .sl{animation:scanl 1.2s ease-in-out .3s 2 both}
+@keyframes scanl{0%{top:8%;opacity:1}50%{top:90%;opacity:1}100%{top:8%;opacity:1}}
+.hint{text-align:center;font-size:.8em;opacity:.75}
+.toast{margin-top:auto;display:flex;align-items:center;gap:.6em;background:#fff;color:var(--text);border-radius:1em;padding:.7em .8em;font-size:.82em;font-weight:500;opacity:0}
+.toast svg{width:1.4em;height:1.4em;color:var(--ok);flex:none}
+.scr.on .toast{animation:fin .5s var(--spring) 2.8s both}
+
+/* warranty */
+.prodrow{display:flex;align-items:center;gap:.7em}
+.prodimg{flex:none;width:2.8em;height:2.8em;border-radius:.7em;background:linear-gradient(135deg,#E3F2FC,#C4E2F5);display:grid;place-items:center;color:var(--primary)}
+.prodimg svg{width:1.6em;height:1.6em}
+.prodrow b{display:block;font-size:.88em;font-weight:500}.prodrow small{font-size:.72em;color:var(--muted)}
+.fld{display:grid;gap:.2em}
+.fld label{font-size:.68em;color:var(--muted)}
+.fld .in{height:2.3em;border-radius:.6em;background:#fff;border:.1em solid #DCE3EA;padding:0 .7em;display:flex;align-items:center;font-size:.85em}
+.scr.on .fld .in{animation:focusin .3s ease both;animation-delay:calc(var(--td) - .15s)}
+@keyframes focusin{to{border-color:var(--primary);box-shadow:0 0 0 .2em rgba(0,119,184,.15)}}
+.done-ov{position:absolute;inset:0;z-index:6;background:rgba(244,246,249,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6em;text-align:center;padding:10%;opacity:0;visibility:hidden}
+.scr.on .done-ov{animation:ovin .4s ease 3s both}
+@keyframes ovin{to{opacity:1;visibility:visible}}
+.ck{width:4em;height:4em;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;transform:scale(.3)}
+.scr.on .ck{animation:popck .6s var(--spring) 3.1s both}
+@keyframes popck{from{transform:scale(.3)}to{transform:none}}
+.ck svg{width:2em;height:2em;stroke-dasharray:30;stroke-dashoffset:30}
+.scr.on .ck svg{animation:draw .5s ease 3.4s both}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done-ov b{font-weight:500;font-size:1.05em}
+.done-ov small{font-size:.75em;color:var(--muted)}
+.confetti{position:absolute;inset:0;pointer-events:none}
+.confetti i{position:absolute;left:50%;top:42%;width:.45em;height:.7em;border-radius:.1em;opacity:0}
+.scr.on .confetti i{animation:conf 1.1s ease-out 3.2s both}
+.confetti i:nth-child(1){background:var(--accent);--x:-6em;--y:-5em;--r:200deg}
+.confetti i:nth-child(2){background:var(--violet);--x:5em;--y:-6em;--r:-160deg}
+.confetti i:nth-child(3){background:var(--mint);--x:-4em;--y:4em;--r:120deg}
+.confetti i:nth-child(4){background:var(--star);--x:6em;--y:3em;--r:-220deg}
+.confetti i:nth-child(5){background:var(--coral);--x:1em;--y:-7em;--r:300deg}
+.confetti i:nth-child(6){background:var(--accent);--x:-7em;--y:0em;--r:90deg}
+@keyframes conf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+
+/* guide */
+.player{position:relative;border-radius:1em;overflow:hidden;aspect-ratio:16/11;background:linear-gradient(160deg,#16243F,#0B1426);display:grid;place-items:center;flex:none}
+.router{width:55%;color:#9FB6D3;margin-top:12%}
+.router .led{fill:#3B4A63}
+.scr.on .router .led{animation:led 1s steps(2) 1.4s infinite}
+.router .led:nth-of-type(2){animation-delay:1.7s!important}.router .led:nth-of-type(3){animation-delay:2s!important}
+@keyframes led{50%{fill:#4ADE80}}
+.wave{position:absolute;top:10%;left:50%;width:30%;transform:translateX(-50%);color:#38BDF8}
+.wave path{opacity:0}
+.scr.on .wave path{animation:wv 1.8s ease-out 1.5s infinite}
+.scr.on .wave path:nth-child(2){animation-delay:1.8s}.scr.on .wave path:nth-child(3){animation-delay:2.1s}
+@keyframes wv{30%{opacity:1}100%{opacity:0}}
+.playbtn{position:absolute;width:3em;height:3em;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;color:var(--text)}
+.playbtn svg{width:1.3em;height:1.3em;margin-left:.15em}
+.scr.on .playbtn{animation:playgo .6s ease .9s both}
+@keyframes playgo{0%{transform:scale(1)}40%{transform:scale(.8)}100%{transform:scale(1.5);opacity:0}}
+.pbar{position:absolute;left:6%;right:6%;bottom:8%;height:.3em;border-radius:1em;background:rgba(255,255,255,.2);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--accent)}
+.scr.on .pbar i{animation:pfill 3.6s linear 1.2s both}
+@keyframes pfill{to{width:72%}}
+.ptime{position:absolute;right:6%;bottom:13%;font-size:.65em;color:#fff;opacity:.8}
+.chap{display:flex;align-items:center;gap:.6em;font-size:.8em;padding:.55em .7em;border-radius:.7em;background:#fff;border:.1em solid transparent}
+.chap em{font-style:normal;display:grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:#EEF2F6;font-size:.85em;flex:none}
+.scr.on .chap{animation:chapon .4s ease both;animation-delay:var(--cd)}
+@keyframes chapon{to{border-color:var(--primary);background:#EEF7FD}}
+
+/* request (chat) */
+.s-request{background:#ECE5DD}
+.chat-head{display:flex;align-items:center;gap:.6em;background:#0B6E5F;color:#fff;margin:-23% -7% 0;padding:23% 7% .7em;font-size:.85em;font-weight:500}
+.chat-head .bl{background:#fff;color:var(--text)}
+.chat-head small{display:block;font-weight:400;opacity:.8;font-size:.8em}
+.daypill{align-self:center;font-size:.68em;background:#fff;border-radius:.6em;padding:.25em .7em;color:var(--muted);margin-top:.3em}
+.typing{align-self:flex-start;background:#fff;border-radius:0 1em 1em 1em;padding:.7em .9em;display:flex;gap:.25em}
+.typing i{width:.4em;height:.4em;border-radius:50%;background:#9AA6B2;animation:dots 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dots{50%{transform:translateY(-.3em);opacity:.5}}
+.scr.on .typing{animation:gone .2s linear 1.3s both}
+@keyframes gone{to{opacity:0;height:0;padding:0;margin:-.35em 0}}
+.bubble{align-self:flex-start;background:#fff;border-radius:0 1em 1em 1em;padding:.7em .8em;font-size:.8em;line-height:1.45;max-width:94%;box-shadow:0 .1em .2em rgba(0,0,0,.08);opacity:0;transform-origin:top left}
+.scr.on .bubble{animation:bub .45s var(--spring) 1.45s both}
+@keyframes bub{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+.bubble small{display:block;text-align:right;font-size:.75em;color:var(--muted);margin-top:.3em}
+.qbtns{display:grid;gap:.4em;max-width:94%}
+.qbtns span{display:grid;place-items:center;height:2.3em;border-radius:.8em;background:#fff;color:#0B6E5F;font-weight:500;font-size:.8em;opacity:0}
+.scr.on .qbtns span:nth-child(1){animation:fin .4s ease 2.2s both,hl .3s ease 3.6s both}
+.scr.on .qbtns span:nth-child(2){animation:fin .4s ease 2.35s both}
+@keyframes hl{from{opacity:1}to{opacity:1;background:#0B6E5F;color:#fff;transform:scale(.97)}}
+
+/* rate */
+.stars{display:flex;gap:.35em;justify-content:center;margin-block:.4em}
+.stars svg{width:2.2em;height:2.2em;color:#D3DAE2}
+.scr.on .stars svg.f{animation:starf .35s var(--spring) both;animation-delay:var(--sd)}
+@keyframes starf{0%{transform:scale(.5);color:#D3DAE2}100%{transform:none;color:var(--star)}}
+.rchips{display:flex;flex-wrap:wrap;gap:.4em}
+.rchips span{font-size:.75em;padding:.45em .8em;border-radius:999px;background:#fff;border:.1em solid #DCE3EA}
+.scr.on .rchips span.l{animation:chipl .3s ease both;animation-delay:var(--cd)}
+@keyframes chipl{to{background:#EEF7FD;border-color:var(--primary);color:var(--primary)}}
+.rlabel{text-align:center;font-size:.75em;color:var(--muted)}
+
+/* draft */
+.draft{position:relative;background:#fff;border-radius:1em;padding:.8em;font-size:.8em;line-height:1.5;box-shadow:0 .2em .8em rgba(16,24,40,.08)}
+.mini-stars{display:flex;gap:.15em;margin-bottom:.3em}
+.mini-stars svg{width:1em;height:1em;color:var(--star)}
+.mini-stars svg.e{color:#D3DAE2}
+.ai{display:inline-flex;align-items:center;gap:.3em;font-size:.82em;font-weight:500;color:#5B4BDB;background:#EFEDFF;border-radius:999px;padding:.2em .6em;margin-bottom:.4em}
+.ai svg{width:1em;height:1em}
+.dtext{display:block;clip-path:inset(0 100% 100% 0)}
+.scr.on .dtext{animation:reveal 2.6s linear .5s both}
+@keyframes reveal{0%{clip-path:inset(0 100% 80% 0)}20%{clip-path:inset(0 0 80% 0)}20.1%{clip-path:inset(0 100% 60% 0)}40%{clip-path:inset(0 0 60% 0)}40.1%{clip-path:inset(0 100% 40% 0)}60%{clip-path:inset(0 0 40% 0)}60.1%{clip-path:inset(0 100% 20% 0)}80%{clip-path:inset(0 0 20% 0)}80.1%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 0 0 0)}}
+.dnote{font-size:.68em;color:var(--muted)}
+.otoast{position:absolute;left:7%;right:7%;bottom:17%;z-index:6;display:flex;align-items:center;gap:.5em;justify-content:center;background:#131A22;color:#fff;border-radius:.8em;padding:.75em;font-size:.78em;opacity:0}
+.scr.on .otoast{animation:fin .4s var(--spring) 3.8s both}
+
+/* print → box */
+.printscene{position:relative;width:min(300px,80vw);height:400px;margin-inline:auto;font-size:calc(min(300px,80vw) * .05)}
+.ps-win{position:absolute;inset:0 0 auto;background:#fff;border-radius:1em;padding:.9em;box-shadow:0 30px 60px -30px rgba(11,20,36,.5);display:grid;gap:.6em;font-size:.82em;z-index:3}
+.ps-win .wb{display:flex;gap:.3em}.ps-win .wb i{width:.5em;height:.5em;border-radius:50%;background:#D4DCE4}
+.ps-row{display:flex;align-items:center;gap:.7em}
+.ps-row b{display:block;font-weight:500}.ps-row small{font-size:.8em;color:var(--muted)}
+.ps-qr{width:3.4em;height:3.4em;border-radius:.4em;background:#F4F1EA;padding:.3em;flex:none}
+.ps-qr svg{width:100%;height:100%}
+.ps-win .ui-btn{margin:0}
+.anim-on .ps-win .ui-btn{animation:press .35s ease .8s both}
+.slot{position:absolute;left:10%;right:10%;top:9.6em;height:.7em;border-radius:1em;background:#1E293B;z-index:4}
+.paper{position:absolute;left:28%;width:44%;top:10em;z-index:2;background:#F4F1EA;border-radius:.5em;padding:.5em;text-align:center;font-size:.55em;font-weight:500;line-height:1.25;box-shadow:0 1em 2em -1em rgba(0,0,0,.5);transform:translateY(-100%);opacity:0}
+.paper svg{width:72%;aspect-ratio:1;margin:.3em auto;display:block}
+.anim-on .paper{animation:printout 5.5s var(--ease) 1s infinite both}
+@keyframes printout{0%{transform:translateY(-100%);opacity:1}22%{transform:translateY(0);opacity:1}42%{transform:translateY(0) rotate(0) scale(1)}68%{transform:translateY(12em) rotate(-8deg) scale(.6);opacity:1}76%,100%{transform:translateY(14em) rotate(-8deg) scale(.5);opacity:0}}
+.box{position:absolute;left:50%;bottom:0;width:60%;height:7.2em;transform:translateX(-50%);z-index:5}
+.box .bd{position:absolute;inset:1.6em 0 0;border-radius:4px 4px 10px 10px;background:linear-gradient(160deg,#C79A63,#A87943);box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.box .bd::after{content:"";position:absolute;top:0;bottom:0;left:44%;width:12%;background:rgba(255,255,255,.18)}
+.box .fp{position:absolute;top:1.6em;width:50%;height:1.6em;background:#B88752;border-radius:3px}
+.box .fp.l{left:0;transform-origin:left top;transform:rotate(-150deg)}
+.box .fp.r{right:0;transform-origin:right top;transform:rotate(150deg)}
+.anim-on .box .fp.l{animation:closeL 5.5s var(--ease) 1s infinite both}
+.anim-on .box .fp.r{animation:closeR 5.5s var(--ease) 1s infinite both}
+@keyframes closeL{0%,72%{transform:rotate(-150deg)}84%,96%{transform:rotate(0)}100%{transform:rotate(-150deg)}}
+@keyframes closeR{0%,72%{transform:rotate(150deg)}84%,96%{transform:rotate(0)}100%{transform:rotate(150deg)}}
+.box-tag{position:absolute;right:-8%;top:-.4em;z-index:6;background:var(--ok);color:#fff;border-radius:999px;padding:.35em .8em;font-size:.62em;font-weight:500;white-space:nowrap;opacity:0}
+.anim-on .box-tag{animation:tagin 5.5s var(--spring) 1s infinite both}
+@keyframes tagin{0%,82%{opacity:0;transform:scale(.6)}86%,97%{opacity:1;transform:none}100%{opacity:0}}
+
+/* dashboard */
+.dash{width:100%;max-width:520px;background:#fff;border-radius:var(--r-md);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);overflow:hidden;color:var(--text);font-size:13px}
+.dash-bar{display:flex;gap:.4em;align-items:center;padding:.7em .9em;background:#EEF2F6;font-size:.85em;color:var(--muted)}
+.dash-bar i{width:.6em;height:.6em;border-radius:50%;background:#C9D3DD}
+.dash-bar span{margin-left:auto;font-size:.85em;background:#FDE7D7;color:#8A3B0E;border-radius:999px;padding:.1em .6em}
+.dash-b{padding:1em;display:grid;gap:.9em}
+.kp{display:grid;grid-template-columns:repeat(2,1fr);gap:.5em}
+.kp div{background:#F5F7FA;border-radius:.7em;padding:.6em .7em}
+.kp small{display:block;font-size:.75em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kp b{font-size:1.45em;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.chart{display:flex;align-items:flex-end;gap:.35em;height:5.5em;padding-bottom:.2em;border-bottom:1px solid #EEF1F4}
+.chart i{flex:1;border-radius:.3em .3em 0 0;background:linear-gradient(180deg,#38BDF8,#0077B8);height:var(--h);transform:scaleY(0);transform-origin:bottom}
+.anim-on .chart i{animation:grow .9s var(--ease) both;animation-delay:calc(var(--i) * 60ms)}
+@keyframes grow{to{transform:none}}
+.feed{display:grid;gap:.4em}
+.feed div{display:flex;align-items:center;gap:.6em;font-size:.85em;background:#F5F7FA;border-radius:.6em;padding:.5em .7em;opacity:0}
+.feed div i{width:.6em;height:.6em;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 .25em var(--ok-bg)}
+.anim-on .feed div{animation:fin .5s var(--ease) both;animation-delay:calc(1s + var(--i) * .5s)}
 
 /* marquee */
-.strip{background:var(--light);padding-block:28px 8px;border-bottom:1px solid var(--line)}
-.strip p{font-size:13px;text-align:center;color:var(--muted);margin-bottom:14px}
-.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-.marquee ul{display:flex;width:max-content;gap:12px;padding-block:6px 20px;animation:marquee 32s linear infinite}
-.marquee li{padding:10px 20px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:500;font-size:16px;white-space:nowrap}
+.strip{position:relative;background:var(--dark);color:var(--on-dark);padding-block:4px 44px;overflow:hidden}
+.strip p{font-size:13px;text-align:center;color:var(--on-dark-muted);margin-bottom:16px}
+.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee ul{display:flex;width:max-content;gap:12px;padding-block:6px;animation:marquee 34s linear infinite}
+.marquee.rev ul{animation-direction:reverse;animation-duration:44s}
+.marquee li{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line-dark);font-weight:500;font-size:18px;white-space:nowrap}
+.marquee li::before{content:"";width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--violet))}
+.marquee.rev li{font-size:14px;color:var(--on-dark-muted);background:transparent;padding:8px 16px}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
-/* problem */
-.counter{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:24px 18px;margin-bottom:12px}
-.counter div{text-align:center}
-.counter b{display:block;font-weight:500;font-size:56px;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
-.counter span{font-size:13px;color:var(--on-dark-muted)}
-.counter .rev b{color:#FF9B7A}
-.counter svg{width:28px;height:28px;color:var(--on-dark-muted)}
-.counter-note{font-size:12.5px;color:var(--on-dark-muted);text-align:center;margin-bottom:40px}
+/* ================= PROBLEM ================= */
+.prob-grid{display:grid;gap:40px}
+.parcels{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;padding:18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(11,20,36,.4)}
+.parcels i{aspect-ratio:1;border-radius:4px;background:#C9A06C;opacity:0;transform:scale(.3)}
+.parcels.anim-on i{animation:pin .4s var(--spring) calc(var(--i) * 12ms) both,dim .6s ease 2.2s both}
+.parcels.anim-on i.rv{animation:pin .4s var(--spring) calc(var(--i) * 12ms) both,glow .6s ease 2.4s both}
+@keyframes pin{to{opacity:1;transform:none}}
+@keyframes dim{from{opacity:1;transform:none}to{opacity:.25;background:#9AA6B4;transform:none}}
+@keyframes glow{from{opacity:1;transform:none}to{opacity:1;transform:scale(1.2);background:var(--primary);box-shadow:0 0 0 3px rgba(0,119,184,.2),0 0 18px rgba(0,119,184,.6);border-radius:50%}}
+.pcount{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.pcount div{border-radius:var(--r-md);padding:16px;background:var(--surface);border:1px solid var(--line)}
+.pcount b{display:block;font-size:52px;font-weight:500;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pcount .rv b{color:var(--primary)}
+.pcount span{font-size:13.5px;color:var(--muted)}
+.pnote{font-size:12.5px;color:var(--muted);margin-top:10px}
 .reasons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
-.reason{background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-md);padding:18px 16px;display:grid;gap:8px;align-content:start}
-.reason svg{width:26px;height:26px;color:var(--accent)}
+.reason{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 16px;display:grid;gap:8px;align-content:start;transition:transform .3s var(--ease),box-shadow .3s}
+.reason:hover{transform:translateY(-4px);box-shadow:0 20px 30px -20px rgba(11,20,36,.35)}
+.reason .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--tint);color:var(--primary)}
+.reason .ic svg{width:22px;height:22px}
+.reason:nth-child(1) .ic svg{animation:tick 4s steps(12) infinite}
+@keyframes tick{to{transform:rotate(360deg)}}
+.reason:nth-child(2) .ic svg{animation:bounce 2.2s ease-in-out infinite}
+.reason:nth-child(3) .ic svg{animation:wiggle 2.4s ease-in-out infinite}
+@keyframes wiggle{0%,60%,100%{transform:none}70%{transform:rotate(-12deg)}80%{transform:rotate(10deg)}90%{transform:rotate(-6deg)}}
+.reason:nth-child(4) .ic svg{animation:bounce 1.8s ease-in-out infinite}
+@keyframes bounce{50%{transform:translateY(-4px)}}
 .reason h3{font-size:16px}
-.reason p{font-size:13.5px;line-height:1.5;color:var(--on-dark-muted)}
-.ba{display:grid;gap:12px;margin-top:28px}
+.reason p{font-size:13.5px;line-height:1.5;color:var(--muted)}
+.ba{display:grid;gap:12px;margin-top:16px}
 .ba-card{border-radius:var(--r-lg);padding:22px}
-.ba-card h3{font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.ba-card li{display:flex;gap:10px;font-size:15px;line-height:1.5;padding-block:6px}
+.ba-card h3{font-size:17px;margin-bottom:12px;display:flex;align-items:center;gap:10px;position:relative}
+.ba-card li{display:flex;gap:10px;font-size:15px;line-height:1.5;padding-block:5px;position:relative}
 .ba-card li svg{flex:none;width:20px;height:20px;margin-top:2px}
-.ba-before{background:transparent;border:1px dashed #44587A;color:var(--on-dark-muted)}
-.ba-before li svg{color:#FF9B7A}
-.ba-after{background:var(--surface);color:var(--text)}
-.ba-after li svg{color:var(--ok)}
+.ba-before{border:1.5px dashed #C3CDD8;color:var(--muted)}
+.ba-before li svg{color:#D9534F}
+.ba-after{background:var(--dark);color:var(--on-dark);position:relative;overflow:hidden}
+.ba-after::before{content:"";position:absolute;width:260px;height:260px;right:-80px;top:-100px;border-radius:50%;background:radial-gradient(rgba(56,189,248,.45),transparent 65%)}
+.ba-after li svg{color:#4ADE80}
 .tag{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
-.ba-before .tag{background:rgba(255,155,122,.14);color:#FF9B7A}
-.ba-after .tag{background:var(--ok-bg);color:var(--ok)}
+.ba-before .tag{background:#FCE8E6;color:#B42318}
+.ba-after .tag{background:rgba(74,222,128,.15);color:#4ADE80}
 
-/* chips (marketplace picker) */
-.chips{position:relative;display:flex;gap:4px;padding:5px;border-radius:999px;background:var(--surface);border:1px solid var(--line);overflow-x:auto;scrollbar-width:none;margin-bottom:22px}
+/* ================= PICK ================= */
+.chips{position:relative;display:flex;gap:4px;padding:5px;border-radius:999px;background:var(--dark-2);border:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none;margin-bottom:22px}
 .chips::-webkit-scrollbar{display:none}
-.chip{position:relative;z-index:1;flex:1 0 auto;min-height:44px;padding:0 16px;border:0;background:transparent;border-radius:999px;font-weight:500;font-size:15px;color:var(--muted);cursor:pointer;transition:color .25s}
-.chip[aria-selected="true"]{color:#fff}
-.chip-ind{position:absolute;z-index:0;top:5px;bottom:5px;left:0;width:0;border-radius:999px;background:var(--text);transition:transform .35s var(--ease),width .35s var(--ease)}
+.chip{position:relative;z-index:1;flex:1 0 auto;min-height:44px;padding:0 16px;border:0;background:transparent;border-radius:999px;font-weight:500;font-size:15px;color:var(--on-dark-muted);cursor:pointer;transition:color .25s}
+.chip[aria-selected="true"]{color:#071022}
+.chip-ind{position:absolute;z-index:0;top:5px;bottom:5px;left:0;width:0;border-radius:999px;background:linear-gradient(135deg,var(--accent),#A5E3FF);box-shadow:0 0 24px rgba(56,189,248,.55);transition:transform .45s var(--spring),width .45s var(--ease)}
 .pick-panels{display:grid}
-.pick-card{grid-area:1/1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;display:grid;gap:14px;align-content:start;transition:opacity .35s var(--ease),transform .35s var(--ease)}
-.pick-card[aria-hidden="true"]{opacity:0;transform:translateY(8px);pointer-events:none;visibility:hidden}
+.pick-card{grid-area:1/1;position:relative;overflow:hidden;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:24px;display:grid;gap:14px;align-content:start;transition:opacity .4s var(--ease),transform .5s var(--ease),filter .4s}
+.pick-card[aria-hidden="true"]{opacity:0;transform:translateY(14px) scale(.98);filter:blur(4px);pointer-events:none;visibility:hidden}
+.pick-card .mk{font-size:64px;font-weight:500;letter-spacing:-.05em;line-height:1;opacity:.08;position:absolute;right:-4px;top:4px;pointer-events:none}
+.pick-card p{color:var(--on-dark-muted);position:relative}
 .pick-card li{display:flex;gap:10px;font-size:15px;line-height:1.5}
-.pick-card li svg{flex:none;width:20px;height:20px;color:var(--primary);margin-top:2px}
+.pick-card[aria-hidden="false"] li{animation:fin .45s var(--ease) both}
+.pick-card[aria-hidden="false"] li:nth-child(2){animation-delay:.08s}.pick-card[aria-hidden="false"] li:nth-child(3){animation-delay:.16s}
+.pick-card li svg{flex:none;width:20px;height:20px;color:var(--accent);margin-top:2px}
 .pick-card ul{display:grid;gap:10px}
 
-/* how it works */
-.steps{display:grid;gap:56px}
-.step{display:grid;gap:24px}
+/* ================= HOW ================= */
+.steps{display:grid;gap:64px}
+.step{display:grid;gap:26px}
 .step-text{display:grid;gap:10px;max-width:520px}
-.step-n{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;font-weight:500}
+.step-n{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#5B4BDB);color:#fff;font-weight:500;box-shadow:0 8px 20px -8px rgba(0,119,184,.8)}
 .step-text p{color:var(--muted)}
+.step-visual{display:grid;place-items:center}
 .progress{display:none}
-/* pinned mode (enabled by JS when GSAP is available and motion is allowed) */
-.how{overflow-x:clip}
-.how.pinmode .steps{position:relative;display:block;overflow:clip;overflow-clip-margin:24px;height:calc(100svh - 64px);min-height:600px;max-height:860px}
-.how.pinmode .step{position:absolute;inset:0;grid-template-rows:auto 1fr;align-content:start;gap:20px;padding-top:20px}
-.how.pinmode .step-text{will-change:opacity,transform}
-.how.pinmode .step-visual{position:relative;display:grid;place-items:start center;will-change:transform,opacity}
-.how.pinmode .phone{width:min(220px,52vw,calc((100svh - 330px) * 9 / 19))}
-.how.pinmode .progress{display:flex;gap:6px;position:absolute;left:0;right:0;bottom:12px;justify-content:center;z-index:5}
-.progress i{width:28px;height:4px;border-radius:4px;background:#C9D6E3;overflow:hidden;position:relative}
+.how.pinmode .steps{position:relative;display:block;height:calc(100svh - 64px);min-height:600px;max-height:880px;overflow:clip;overflow-clip-margin:30px}
+.how.pinmode .step{position:absolute;inset:0;grid-template-rows:auto 1fr;align-content:start;gap:18px;padding-top:16px}
+.how.pinmode .step-visual{place-items:start center}
+.how.pinmode .phone{width:min(230px,54vw,calc((100svh - 330px) * 9 / 19))}
+.how.pinmode .printscene{zoom:min(1,calc((100svh - 320px) / 400px))}
+.how.pinmode .progress{display:flex;gap:6px;position:absolute;left:0;right:0;bottom:10px;justify-content:center;z-index:5}
+.progress i{width:30px;height:4px;border-radius:4px;background:#C9D6E3;overflow:hidden;position:relative}
 .progress i b{position:absolute;inset:0;background:var(--primary);transform:scaleX(0);transform-origin:left}
 
-.flow{margin-top:72px;background:var(--surface);border-radius:var(--r-lg);padding:28px 22px;border:1px solid var(--line)}
-.flow h3{margin-bottom:24px}
+.flow{position:relative;overflow:hidden;margin-top:80px;background:var(--dark);color:var(--on-dark);border-radius:var(--r-xl);padding:30px 22px}
+.flow::before{content:"";position:absolute;width:320px;height:320px;left:-100px;bottom:-140px;border-radius:50%;background:radial-gradient(rgba(139,124,255,.35),transparent 65%)}
+.flow h3{position:relative;margin-bottom:26px}
 .flow-track{position:relative}
-.flow ol{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:22px}
-.flow-line{position:absolute;left:21px;top:22px;bottom:22px;width:2px;background:var(--line);overflow:hidden}
-.flow-line b{position:absolute;inset:0;background:var(--primary);transform-origin:top;transform:scaleY(1)}
-.flow li{position:relative;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center}
-.flow .node{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:#fff;position:relative;z-index:1;box-shadow:0 0 0 6px var(--surface)}
-.flow .node svg{width:20px;height:20px}
+.flow ol{position:relative;display:grid;gap:24px}
+.flow-line{position:absolute;left:23px;top:24px;bottom:24px;width:2px;background:rgba(255,255,255,.12)}
+.flow-line b{position:absolute;inset:0;background:linear-gradient(180deg,var(--accent),var(--violet));transform-origin:top}
+.flow-line .dot{position:absolute;left:50%;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;box-shadow:0 0 14px 4px rgba(56,189,248,.9);animation:travelY 4s ease-in-out infinite}
+@keyframes travelY{0%{top:0;opacity:0}10%,90%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes travelX{0%{left:0;opacity:0}10%,90%{opacity:1}100%{left:100%;opacity:0}}
+.flow li{position:relative;display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center}
+.flow .node{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--dark-3);border:1.5px solid rgba(56,189,248,.5);color:var(--accent);position:relative;z-index:1;transition:all .4s var(--spring)}
+.flow li.lit .node{background:linear-gradient(135deg,var(--accent),var(--violet));color:#071022;border-color:transparent;box-shadow:0 0 24px rgba(56,189,248,.5);transform:scale(1.08)}
+.flow .node svg{width:21px;height:21px}
 .flow li b{display:block;font-weight:500}
-.flow li span{font-size:14px;color:var(--muted)}
+.flow li span{font-size:14px;color:var(--on-dark-muted)}
 
-/* swipe cards */
-.swipe{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);scroll-padding-inline:var(--gutter);scrollbar-width:none;overscroll-behavior-x:contain}
+/* ================= FEATURES ================= */
+.swipe{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-block:6px 10px;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);scroll-padding-inline:var(--gutter);scrollbar-width:none;overscroll-behavior-x:contain}
 .swipe::-webkit-scrollbar{display:none}
-.card{flex:0 0 84%;scroll-snap-align:start;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:20px;display:grid;gap:14px;align-content:start}
-.card .visual{display:grid;place-items:center;min-height:0}
-.card .phone{width:min(190px,48vw)}
-.card .browser{width:100%}
+.card{position:relative;overflow:hidden;flex:0 0 86%;scroll-snap-align:start;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:16px;display:grid;gap:12px;align-content:start;--mx:50%;--my:0%}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(56,189,248,.16),transparent 45%);pointer-events:none}
+.card .visual{position:relative;display:grid;place-items:center;height:400px;border-radius:var(--r-md);background:radial-gradient(circle at 50% 30%,rgba(56,189,248,.2),transparent 60%),var(--dark-3);overflow:hidden;padding:14px}
+.card .phone{width:auto;height:372px;aspect-ratio:9/19}
+.card h3,.card p{padding-inline:4px}
 .card p{font-size:15px;color:var(--on-dark-muted)}
 .swipe-ui{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:12px}
-.dots{display:flex;gap:8px}
-.dots button{width:44px;height:44px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;padding:0}
+.dots{display:flex}
+.dots button{width:36px;height:44px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;padding:0}
 .dots button::after{content:"";width:8px;height:8px;border-radius:8px;background:#3A4C6B;transition:width .3s var(--ease),background .3s}
-.dots button[aria-current="true"]::after{width:24px;background:var(--accent)}
-.swipe-hint{font-size:13px;color:var(--on-dark-muted)}
+.dots button[aria-current="true"]::after{width:26px;background:var(--accent)}
+.swipe-hint{font-size:13px;color:var(--on-dark-muted);display:flex;align-items:center;gap:6px}
+.swipe-hint svg{width:16px;height:16px;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(5px)}}
 .arrows{display:none;gap:8px}
-.arrows button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-dark);background:transparent;color:var(--on-dark);display:grid;place-items:center;cursor:pointer}
+.arrows button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-dark);background:transparent;color:var(--on-dark);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.arrows button:hover{background:rgba(255,255,255,.08)}
 .arrows svg{width:20px;height:20px}
 
-/* trust */
+/* ================= TRUST ================= */
 .trust{display:grid;gap:14px}
 .founder{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;display:grid;gap:18px}
+.mono{position:relative;width:96px;height:96px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--violet),var(--mint),var(--accent));padding:3px;animation:spin 8s linear infinite}
+.mono span{width:100%;height:100%;border-radius:50%;background:var(--tint);display:grid;place-items:center;text-align:center;font-size:10.5px;color:var(--muted);line-height:1.2;padding:8px;animation:spin 8s linear infinite reverse}
 .founder .media{--ratio:1/1;width:96px;border-radius:50%}
-.founder .ph{padding:8px;border-radius:50%;text-align:center;align-items:center;gap:2px}
-.founder .ph strong{font-size:11px}.founder .ph .ph-tag,.founder .ph p,.founder .ph .spec{display:none}
 .founder blockquote{font-size:22px;line-height:1.35;font-weight:500;letter-spacing:-.01em}
 .founder p{color:var(--muted);font-size:15px}
 .founder figcaption b{display:block;font-weight:500}
 .founder figcaption span{font-size:14px;color:var(--muted)}
 .ph-note{font-size:12px;color:var(--warn)}
-.promise{background:var(--dark);color:var(--on-dark);border-radius:var(--r-lg);padding:24px;display:grid;gap:14px}
-.promise svg.big{width:36px;height:36px;color:var(--accent)}
+.promise{position:relative;overflow:hidden;background:var(--dark);color:var(--on-dark);border-radius:var(--r-lg);padding:24px;display:grid;gap:14px}
+.shield{position:relative;width:64px;height:64px;display:grid;place-items:center}
+.shield svg{width:34px;height:34px;color:var(--accent);position:relative;z-index:1}
+.shield i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(56,189,248,.5);animation:ring 2.4s ease-out infinite}
+.shield i:nth-child(2){animation-delay:.8s}.shield i:nth-child(3){animation-delay:1.6s}
+@keyframes ring{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.5);opacity:0}}
 .promise li{display:flex;gap:10px;font-size:15px;line-height:1.5;color:var(--on-dark-muted)}
-.promise li svg{flex:none;width:20px;height:20px;color:var(--accent);margin-top:2px}
+.promise li svg{flex:none;width:20px;height:20px;color:#4ADE80;margin-top:2px}
 .promise ul{display:grid;gap:8px}
 .founding{background:var(--tint);border:1px solid #C8DDEE;border-radius:var(--r-lg);padding:24px;display:grid;gap:14px}
-.seats{display:flex;align-items:baseline;gap:8px}
-.seats b{font-size:44px;font-weight:500;letter-spacing:-.04em;line-height:1;color:var(--primary)}
+.seats{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.seats i{aspect-ratio:1;border-radius:50%;border:1.5px solid var(--primary);opacity:0;transform:scale(.3)}
+.seats.anim-on i{animation:pin .35s var(--spring) calc(var(--i) * 25ms) both,seatp 3s ease-in-out calc(1.5s + var(--i) * 60ms) infinite}
+@keyframes seatp{0%,90%,100%{background:transparent}45%{background:rgba(0,119,184,.3)}}
+.seat-l{font-size:13px;color:var(--muted)}
 .founding p{color:var(--muted);font-size:15px}
 
 /* samples */
 .sample-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .badge-sample{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:#FDE7D7;color:#8A3B0E}
-.scard{flex:0 0 84%;scroll-snap-align:start;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:22px;display:grid;gap:16px;align-content:space-between;position:relative}
+.scard{flex:0 0 86%;scroll-snap-align:start;background:var(--dark-2);border:1px solid var(--line-dark);border-radius:var(--r-lg);padding:22px;display:grid;gap:16px;align-content:space-between;position:relative}
 .scard .badge-sample{position:absolute;top:16px;right:16px}
-.scard blockquote{font-size:17px;line-height:1.5}
+.scard blockquote{font-size:17px;line-height:1.5;padding-top:24px}
 .scard figcaption{display:flex;gap:12px;align-items:center}
-.scard .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:#fff;font-weight:500}
+.scard .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),#5B4BDB);color:#fff;font-weight:500}
 .scard figcaption b{display:block;font-weight:500}
 .scard figcaption span{font-size:13px;color:var(--on-dark-muted)}
 
-/* calculator */
-.calc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;display:grid}
-.calc-in{padding:24px;display:grid;gap:18px}
+/* ================= CALC ================= */
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;display:grid;box-shadow:0 40px 80px -50px rgba(11,20,36,.5)}
+.calc-in{padding:24px;display:grid;gap:18px;align-content:start}
 .field{display:grid;gap:8px}
 .field label{font-weight:500;font-size:15px}
 .num{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:var(--r-sm);overflow:hidden;background:var(--light)}
-.num:focus-within{border-color:var(--primary)}
-.num button{width:52px;height:52px;border:0;background:transparent;font-size:22px;cursor:pointer;flex:none}
+.num:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,119,184,.12)}
+.num button{width:52px;height:52px;border:0;background:transparent;font-size:22px;cursor:pointer;flex:none;transition:background .15s}
+.num button:active{background:var(--tint)}
 .num input{flex:1;min-width:0;height:52px;border:0;background:transparent;text-align:center;font-size:20px;font-weight:500;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
 .num input:focus{outline:none}
 .num input::-webkit-outer-spin-button,.num input::-webkit-inner-spin-button{-webkit-appearance:none}
-.calc-out{background:var(--dark);color:var(--on-dark);padding:24px;display:grid;gap:10px}
-.calc-out .big{font-size:64px;font-weight:500;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.people{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}
+.people i{aspect-ratio:1;border-radius:50%;background:#C9D2DC;transition:background .4s,transform .4s var(--spring)}
+.people i.on{background:var(--primary);transform:scale(1.2)}
+.people-l{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.people-l span{display:flex;gap:6px;align-items:center}
+.people-l i{width:9px;height:9px;border-radius:50%;background:#C9D2DC}.people-l .b i{background:var(--primary)}
+.calc-out{position:relative;overflow:hidden;background:var(--dark);color:var(--on-dark);padding:24px;display:grid;gap:10px;align-content:start}
+.calc-out::before{content:"";position:absolute;width:300px;height:300px;right:-100px;top:-120px;border-radius:50%;background:radial-gradient(rgba(255,138,101,.35),transparent 65%)}
+.calc-out>*{position:relative}
+.calc-out .big{font-size:76px;font-weight:500;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums;background:linear-gradient(120deg,#fff,#FFC2AE);-webkit-background-clip:text;background-clip:text;color:transparent}
 .calc-out p{color:var(--on-dark-muted);font-size:15px}
 .calc-out .ratio b{color:var(--on-dark);font-weight:500}
-.bar{height:10px;border-radius:10px;background:#FF9B7A;overflow:hidden;margin-block:6px}
-.bar i{display:block;height:100%;background:var(--accent);width:4%;transition:width .5s var(--ease)}
-.bar-legend{display:flex;justify-content:space-between;font-size:12.5px;color:var(--on-dark-muted)}
 .lead{display:grid;gap:10px;margin-top:10px;padding-top:18px;border-top:1px solid var(--line-dark)}
 .lead label{font-size:14px;color:var(--on-dark)}
-.lead input{height:52px;border-radius:999px;border:1.5px solid var(--line-dark);background:transparent;color:var(--on-dark);padding:0 20px}
+.lead input{height:52px;border-radius:999px;border:1.5px solid var(--line-dark);background:rgba(255,255,255,.04);color:var(--on-dark);padding:0 20px}
 .lead input::placeholder{color:var(--on-dark-muted)}
 .lead input:focus{outline:none;border-color:var(--accent)}
 .lead-done{color:#8EE3B5;font-size:14px}
 
-/* faq */
-.faq{display:grid;gap:10px;max-width:760px}
-.faq details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+/* ================= FAQ ================= */
+.faq{display:grid;gap:10px;max-width:780px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);transition:border-color .25s,box-shadow .25s}
+.faq details[open]{border-color:#B9D7EC;box-shadow:0 16px 30px -24px rgba(0,119,184,.6)}
 .faq summary{list-style:none;cursor:pointer;min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;font-weight:500;font-size:16.5px}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary svg{flex:none;width:22px;height:22px;transition:transform .3s var(--ease);color:var(--muted)}
-.faq details[open] summary svg{transform:rotate(45deg)}
+.faq summary .pl{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--tint);color:var(--primary);transition:transform .35s var(--spring),background .25s,color .25s}
+.faq summary svg{width:18px;height:18px}
+.faq details[open] summary .pl{transform:rotate(135deg);background:var(--primary);color:#fff}
 .faq .ans{padding:0 18px 18px;color:var(--muted);font-size:15.5px}
-.faq details[open] .ans{animation:fadeup .35s var(--ease)}
-@keyframes fadeup{from{opacity:0;transform:translateY(-4px)}}
+.faq details[open] .ans{animation:fin .4s var(--ease)}
 
-/* final */
-.final{text-align:center}
-.final h2{font-size:34px;max-width:720px;margin-inline:auto}
-.hinglish{font-size:17px;color:var(--accent);margin-top:14px}
+/* ================= FINAL ================= */
+.final{text-align:center;padding-block:110px}
+.final h2{font-size:36px;max-width:760px;margin-inline:auto;color:#fff}
+.hinglish{font-size:18px;margin-top:16px}
+.floaties{position:absolute;inset:0;z-index:0;pointer-events:none}
+.floaties span{position:absolute;display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid var(--line-dark);color:var(--accent);animation:floaty 7s ease-in-out infinite}
+.floaties svg{width:24px;height:24px}
+.floaties span:nth-child(1){left:6%;top:10%}.floaties span:nth-child(2){right:8%;top:16%;animation-delay:-2s;color:var(--violet)}
+.floaties span:nth-child(3){left:8%;bottom:10%;animation-delay:-4s;color:var(--mint)}.floaties span:nth-child(4){right:6%;bottom:8%;animation-delay:-1s;color:#4ADE80}
+@keyframes floaty{50%{transform:translateY(-14px) rotate(6deg)}}
 
 /* footer */
 .foot{background:var(--light);padding-block:48px 140px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.foot .logo{color:var(--text)}
 .foot-grid{display:grid;gap:28px}
 .foot ul{display:grid;gap:4px}
 .foot a{color:var(--text);text-decoration:none;display:inline-flex;min-height:44px;align-items:center}
 .foot a:hover{color:var(--primary)}
 .foot .legal{margin-top:24px;font-size:12.5px}
 
-/* persistent elements */
-.sticky{position:fixed;left:0;right:0;bottom:var(--cookie-h,0px);z-index:70;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .35s var(--ease)}
+/* persistent */
+.sticky{position:fixed;left:0;right:0;bottom:var(--cookie-h,0px);z-index:70;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));background:rgba(7,13,28,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line-dark);display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .4s var(--ease)}
 .sticky.show{transform:none}
 .sticky .btn{flex:1;min-height:50px}
-.sticky small{font-size:12px;color:var(--muted);line-height:1.3;max-width:96px}
-.wa-fab{position:fixed;right:16px;bottom:calc(16px + var(--cookie-h,0px) + var(--sticky-h,0px) + env(safe-area-inset-bottom,0px));z-index:75;width:56px;height:56px;border-radius:50%;background:#1DA851;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.4);transition:bottom .35s var(--ease),transform .15s}
-.wa-fab:active{transform:scale(.94)}
+.sticky small{font-size:12px;color:var(--on-dark-muted);line-height:1.3;max-width:96px}
+.wa-fab{position:fixed;right:16px;bottom:calc(16px + var(--cookie-h,0px) + var(--sticky-h,0px) + env(safe-area-inset-bottom,0px));z-index:75;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.4);transition:bottom .4s var(--ease),transform .15s}
+.wa-fab::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:ring 2.6s ease-out infinite}
+.wa-fab:active{transform:scale(.92)}
 .wa-fab svg{width:28px;height:28px}
-.cookie{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--dark);color:var(--on-dark);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;font-size:13px;line-height:1.4}
+.cookie{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--surface);color:var(--text);border-top:1px solid var(--line);padding:8px var(--gutter) calc(8px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;font-size:12.5px;line-height:1.35}
 .cookie p{flex:1}
-.cookie button{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line-dark);background:transparent;color:var(--on-dark);cursor:pointer;font-size:13.5px}
-.cookie button.ok{background:var(--on-dark);color:var(--dark);border-color:var(--on-dark)}
+.cookie button{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:13px}
+.cookie button.ok{background:var(--text);color:#fff;border-color:var(--text)}
 
 /* modal */
-dialog.modal{width:min(480px,100%);max-height:100%;margin:auto auto 0;border:0;padding:0;border-radius:24px 24px 0 0;background:var(--surface);color:var(--text)}
-dialog.modal::backdrop{background:rgba(11,20,36,.55);backdrop-filter:blur(2px)}
-dialog.modal[open]{animation:sheet .35s var(--ease)}
-@keyframes sheet{from{transform:translateY(40px);opacity:0}}
+dialog.modal{width:min(480px,100%);max-height:100%;margin:auto auto 0;border:0;padding:0;border-radius:28px 28px 0 0;background:var(--surface);color:var(--text)}
+dialog.modal::backdrop{background:rgba(7,13,28,.6);backdrop-filter:blur(4px)}
+dialog.modal[open]{animation:sheet .45s var(--spring)}
+@keyframes sheet{from{transform:translateY(60px);opacity:0}}
 .modal-in{padding:22px var(--gutter) calc(22px + env(safe-area-inset-bottom,0px));display:grid;gap:16px}
 .modal-top{display:flex;justify-content:space-between;align-items:start;gap:12px}
 .modal-top h2{font-size:26px}
@@ -354,34 +641,36 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 .x svg{width:20px;height:20px}
 .form{display:grid;gap:14px}
 .form input,.form select{height:52px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--light);padding:0 14px;width:100%}
-.form input:focus,.form select:focus{outline:none;border-color:var(--primary)}
+.form input:focus,.form select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,119,184,.12)}
 .form .hint{font-size:12.5px;color:var(--muted)}
 .form .err{font-size:12.5px;color:#B42318;display:none}
 .form .invalid .err{display:block}
 .form .invalid input,.form .invalid select{border-color:#B42318}
+.form .invalid{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .wa-input{display:flex;align-items:stretch}
 .wa-input span{display:grid;place-items:center;padding:0 12px;border:1.5px solid var(--line);border-right:0;border-radius:var(--r-sm) 0 0 var(--r-sm);background:var(--tint);font-weight:500}
 .wa-input input{border-radius:0 var(--r-sm) var(--r-sm) 0}
 .consent{font-size:12.5px;color:var(--muted)}
 .done{display:grid;gap:10px;text-align:center;justify-items:center;padding-block:20px}
-.done .tick{width:64px;height:64px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center}
-.done .tick svg{width:32px;height:32px}
+.done .tick{width:72px;height:72px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;animation:popck .6s var(--spring) both}
+.done .tick svg{width:36px;height:36px}
 
-/* reveal (only hidden once JS confirms it can reveal) */
-.js [data-reveal]>*{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--i,0) * 70ms)}
+/* section reveal */
+.js [data-reveal]>*{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--i,0) * 75ms)}
 .js [data-reveal].in>*{opacity:1;transform:none}
+.paused,.paused *{animation-play-state:paused!important}
 
-/* tablet + desktop */
 @media (min-width:720px){
   :root{--gutter:32px}
-  h1{font-size:52px}h2{font-size:40px}
-  .section{padding-block:104px}
+  h1{font-size:52px}h2{font-size:42px}
+  .section{padding-block:110px}
+  .stage{height:620px;margin:0}
   .reasons{grid-template-columns:repeat(4,1fr)}
   .ba{grid-template-columns:1fr 1fr}
   .card,.scard{flex-basis:46%}
-  .trust{grid-template-columns:1.3fr 1fr}
-  .founder{grid-row:span 2;grid-template-columns:auto 1fr;align-items:start}
-  .founder .media{width:120px}
+  .trust{grid-template-columns:1fr 1fr}
+  .founder{grid-column:1/-1;grid-template-columns:auto 1fr;align-items:start;gap:28px}
   .calc{grid-template-columns:1fr 1fr}
   .calc-in,.calc-out{padding:36px}
   .foot-grid{grid-template-columns:1.2fr 2fr}
@@ -389,38 +678,46 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
   .cta-row{justify-items:start}
   .cta-row--center{justify-items:center}
   .cta-row .btn--block{width:auto}
-  .final h2{font-size:48px}
-  dialog.modal{margin:auto;border-radius:24px}
+  .final h2{font-size:52px}
+  dialog.modal{margin:auto;border-radius:28px}
   .arrows{display:flex}
+  .fl1{left:4%}.fl2{right:2%}.fl3{left:6%}
+  .parcel{left:4%}
 }
 @media (min-width:1024px){
   .nav-d{display:flex;align-items:center;gap:28px}
-  .nav-d a{color:var(--text);text-decoration:none;font-size:15px;min-height:44px;display:inline-flex;align-items:center}
-  .nav-d a:hover{color:var(--primary)}
-  .nav-d .btn{min-height:44px;padding:0 20px;color:#fff;font-size:15px}
+  .nav-d a{color:var(--on-dark);text-decoration:none;font-size:15px;min-height:44px;display:inline-flex;align-items:center;opacity:.85}
+  .nav-d a:hover{opacity:1}
+  .nav-d .btn{min-height:44px;padding:0 20px;color:#fff;font-size:15px;opacity:1}
   .burger{display:none}
-  h1{font-size:54px}
-  .hero{padding-block:72px 96px}
-  .hero-grid{grid-template-columns:1.05fr 1fr;align-items:center;gap:56px}
-  .hero .reassure{text-align:left}
+  h1{font-size:58px}
+  .hero{padding-block:56px 72px}
+  .hero-grid{grid-template-columns:1.05fr 1fr;align-items:center;gap:40px}
   .hero-actions{justify-items:start;grid-auto-flow:column;align-items:center;gap:22px}
-  .hero-media{margin:0}
+  .hero .reassure{text-align:left}
+  .stage{height:660px}
+  .stage .phone{width:290px}
+  .prob-grid{grid-template-columns:1fr 1fr;align-items:center;gap:64px}
   .step{grid-template-columns:1fr 1fr;align-items:center;gap:56px}
   .how.pinmode .step{grid-template-rows:none;grid-template-columns:1fr 1fr;align-items:center;padding-top:0}
-  .how.pinmode .phone{width:min(260px,calc((100svh - 160px) * 9 / 19))}
+  .how.pinmode .phone{width:min(270px,calc((100svh - 150px) * 9 / 19))}
   .how.pinmode .step-visual{place-items:center}
+  .how.pinmode .printscene{zoom:1}
+  .flow{padding:44px}
   .flow ol{grid-template-columns:repeat(5,1fr);gap:16px}
-  .flow-line{left:10%;right:10%;top:21px;bottom:auto;width:auto;height:2px}
-  .flow-line b{transform-origin:left;transform:scaleX(1)}
+  .flow-line{left:10%;right:10%;top:23px;bottom:auto;width:auto;height:2px}
+  .flow-line b{transform-origin:left;background:linear-gradient(90deg,var(--accent),var(--violet))}
+  .flow-line .dot{top:50%;left:0;animation-name:travelX}
   .flow li{grid-template-columns:1fr;justify-items:center;text-align:center;gap:12px}
-  .card,.scard{flex-basis:calc((100% - 42px) / 4)}
+  .card{flex-basis:calc((100% - 28px) / 3)}
   .scard{flex-basis:calc((100% - 28px) / 3)}
-  .sticky,.wa-fab{--sticky-h:0px}
   .sticky{display:none}
 }
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
   .js [data-reveal]>*{opacity:1;transform:none}
+  .js .split .w>span{transform:none}
+  .aurora i,.orbit,.marquee ul,.mono,.mono span{animation:none!important}
 }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://reviewbuddie.com/#org", "name": "ReviewBuddie", "url": "https://reviewbuddie.com/", "logo": "https://reviewbuddie.com/favicon.svg", "parentOrganization": {"@type": "Organization", "name": "Havels Group"}}, {"@type": "SoftwareApplication", "name": "ReviewBuddie", "url": "https://reviewbuddie.com/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "description": "ReviewBuddie turns a QR code in your box into warranty registration, product guides and a compliant review request. Built for Amazon & Flipkart sellers in India.", "publisher": {"@id": "https://reviewbuddie.com/#org"}, "areaServed": {"@type": "Country", "name": "India"}, "featureList": ["Warranty registration", "Product education", "Review requests", "Seller dashboard"]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is this allowed by Amazon?", "acceptedAnswer": {"@type": "Answer", "text": "ReviewBuddie is built around Amazon's customer review rules. Every customer gets the same neutral request, nobody is offered anything in return, and we never filter who gets asked. Marketplace policies change, so we keep our flows up to date, and we suggest you also check the latest guidelines in Seller Central."}}, {"@type": "Question", "name": "Do you give customers incentives for reviews?", "acceptedAnswer": {"@type": "Answer", "text": "No, never. No discounts, gifts, cashback or free products in exchange for a review. Warranty registration and product guides are part of the product experience, and customers get them whether or not they ever leave a review."}}, {"@type": "Question", "name": "Do customers need an app?", "acceptedAnswer": {"@type": "Answer", "text": "No. They scan the QR code with their phone camera and everything opens in the browser. No app download, no login."}}, {"@type": "Question", "name": "Which marketplaces do you support?", "acceptedAnswer": {"@type": "Answer", "text": "Amazon, Flipkart, Myntra, Nykaa and FirstCry. The review request takes customers straight to your product's review page on the marketplace they bought from."}}, {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "ReviewBuddie is free for founding sellers during early access. We'll share pricing well before launch, and you'll never be charged without agreeing to it first."}}, {"@type": "Question", "name": "How long does setup take?", "acceptedAnswer": {"@type": "Answer", "text": "Add your product, upload your guides, print the QR insert and put it in your boxes. Founding sellers get personal setup help from our team on WhatsApp."}}, {"@type": "Question", "name": "Is customer data safe?", "acceptedAnswer": {"@type": "Answer", "text": "Customer details collected through warranty registration belong to you. We don't sell or share them with anyone, and customers can ask for their data to be deleted at any time."}}, {"@type": "Question", "name": "Can I see a demo?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Message us on WhatsApp and we'll walk you through it on a short call."}}]}]}</script>
@@ -430,6 +727,7 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
+<div class="progress-top" aria-hidden="true"></div>
 <header class="hdr">
   <div class="wrap">
     <a href="/" class="logo" aria-label="ReviewBuddie home"><svg viewBox="0 0 298 306" aria-hidden="true"><g fill="#0096DB"><path d="M0 0h145v83H0z"/><path d="M145 0h48a101.5 101.5 0 0 1 0 203h-48z"/><path d="M0 120h76v75H0z"/><path d="M76 195h77v77H76z"/><path d="M190 203h36a72 72 0 0 1 72 72v31H190z"/></g></svg>reviewbuddie</a>
@@ -446,42 +744,42 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 </div>
 <main id="main">
 
-<section class="hero" aria-labelledby="h1">
+<section class="hero" aria-labelledby="h1" data-anim>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="gridlines" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow"><i aria-hidden="true"></i>For Amazon, Flipkart, Myntra, Nykaa &amp; FirstCry sellers</p>
-      <h1 id="h1">Most of your customers never leave a review. Fix the reason, not the rating.</h1>
+      <p class="chip-ey"><i aria-hidden="true"></i>For Amazon, Flipkart, Myntra, Nykaa &amp; FirstCry sellers</p>
+      <h1 id="h1" class="split" data-split><span class="w"><span class="" style="--wi:0">Most</span></span> <span class="w"><span class="" style="--wi:1">of</span></span> <span class="w"><span class="" style="--wi:2">your</span></span> <span class="w"><span class="" style="--wi:3">customers</span></span> <span class="w"><span class="" style="--wi:4">never</span></span> <span class="w"><span class="" style="--wi:5">leave</span></span> <span class="w"><span class="" style="--wi:6">a</span></span> <span class="w"><span class="" style="--wi:7">review.</span></span> <span class="w"><span class="grad" style="--wi:8">Fix</span></span> <span class="w"><span class="grad" style="--wi:9">the</span></span> <span class="w"><span class="grad" style="--wi:10">reason,</span></span> <span class="w"><span class="grad" style="--wi:11">not</span></span> <span class="w"><span class="grad" style="--wi:12">the</span></span> <span class="w"><span class="grad" style="--wi:13">rating.</span></span></h1>
       <p class="sub">ReviewBuddie turns a QR code on your box into warranty registration, product guides and a simple review request, so happy customers actually speak up.</p>
       <div class="cta-row" id="hero-cta">
         <div class="hero-actions"><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="hero"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a></div>
         <p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p>
       </div>
     </div>
-    <div class="hero-media"><style>.hero-media .media{aspect-ratio:4 / 5}@media(min-width:1024px){.hero-media .media{aspect-ratio:16 / 9}}</style><div class="media"><div class="ph" role="img" aria-label="Video placeholder: Parcel opens → QR scan → warranty registered → how-to video → gentle review request → customer writes with AI help. On-screen captions, no sound."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Hero video</strong><p>Parcel opens → QR scan → warranty registered → how-to video → gentle review request → customer writes with AI help. On-screen captions, no sound.</p><span class="spec">Mobile cut 4:5 · Desktop cut 16:9 · 8–10s loop · ≤1MB · WebM + MP4</span></div></div></div>
+    <div class="hero-media"><div class="stage" data-anim><span class="orbit o1" aria-hidden="true"></span><span class="orbit o2" aria-hidden="true"></span><div class="parcel" aria-hidden="true"><span class="body"></span><span class="flap l"></span><span class="flap r"></span><div class="card-in"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="#17212E" d="M0 0h7v7H0zm1 1v5h5V1zm1 1h3v3H2zM22 0h7v7h-7zm1 1v5h5V1zm1 1h3v3h-3zM0 22h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zM9 0h2v2H9zm3 0h1v3h-1zm3 1h2v1h-2zm3 0h2v2h-2zM9 3h1v2H9zm2 1h3v1h-3zm4 0h1v3h-1zm2 1h3v2h-3zM9 7h2v1H9zm3-1h2v2h-2zm-3 3h3v1H9zM0 9h2v1H0zm3 0h3v2H3zm4 0h1v3H7zm6 0h3v1h-3zm4 1h1v2h-1zm2-1h3v1h-3zm4 0h1v2h-1zm2 0h2v3h-2zM0 11h1v3H0zm9 0h3v2H9zm5 1h2v1h-2zm6 0h2v2h-2zM2 13h3v1H2zm5 0h1v2H7zm5 1h1v3h-1zm3 0h3v1h-3zm4 1h1v3h-1zm3 0h2v1h-2zm4 0h2v2h-2zM0 16h2v2H0zm3 0h3v1H3zm6 0h2v3H9zm5 1h2v2h-2zm4 1h1v1h-1zm3 0h3v1h-3zM2 19h1v1H2zm4 0h3v1H6zm7 0h1v3h-1zm9 1h2v2h-2zm3 0h2v1h-2zM9 21h2v1H9zm6-1h3v2h-3zm4 2h2v3h-2zm4 1h3v1h-3zM9 24h3v2H9zm5 0h2v1h-2zm9 2h2v3h-2zm4-1h2v2h-2zM12 27h3v2h-3zm4-1h2v3h-2zm3 2h3v1h-3z"/></svg>Scan me</div></div><div role="img" aria-label="Parcel opens → QR scan → warranty registered → how-to video → gentle review request → customer writes with AI help. On-screen captions, no sound."><div class="phone" data-player data-cap="hero-cap" data-floats="1"><div class="screen"><div class="scr s-scan" data-d="4000"><p class="hint">Point your camera at the QR code</p><div class="view"><div class="ins"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="#17212E" d="M0 0h7v7H0zm1 1v5h5V1zm1 1h3v3H2zM22 0h7v7h-7zm1 1v5h5V1zm1 1h3v3h-3zM0 22h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zM9 0h2v2H9zm3 0h1v3h-1zm3 1h2v1h-2zm3 0h2v2h-2zM9 3h1v2H9zm2 1h3v1h-3zm4 0h1v3h-1zm2 1h3v2h-3zM9 7h2v1H9zm3-1h2v2h-2zm-3 3h3v1H9zM0 9h2v1H0zm3 0h3v2H3zm4 0h1v3H7zm6 0h3v1h-3zm4 1h1v2h-1zm2-1h3v1h-3zm4 0h1v2h-1zm2 0h2v3h-2zM0 11h1v3H0zm9 0h3v2H9zm5 1h2v1h-2zm6 0h2v2h-2zM2 13h3v1H2zm5 0h1v2H7zm5 1h1v3h-1zm3 0h3v1h-3zm4 1h1v3h-1zm3 0h2v1h-2zm4 0h2v2h-2zM0 16h2v2H0zm3 0h3v1H3zm6 0h2v3H9zm5 1h2v2h-2zm4 1h1v1h-1zm3 0h3v1h-3zM2 19h1v1H2zm4 0h3v1H6zm7 0h1v3h-1zm9 1h2v2h-2zm3 0h2v1h-2zM9 21h2v1H9zm6-1h3v2h-3zm4 2h2v3h-2zm4 1h3v1h-3zM9 24h3v2H9zm5 0h2v1h-2zm9 2h2v3h-2zm4-1h2v2h-2zM12 27h3v2h-3zm4-1h2v3h-2zm3 2h3v1h-3z"/></svg></div><i class="br tl"></i><i class="br tr"></i><i class="br bl2"></i><i class="br brr"></i><i class="sl"></i></div><div class="toast"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Brontix · WiFi Router X200</div></div><div class="scr" data-d="4900"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Register your warranty</h4><div class="prodrow"><span class="prodimg"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>WiFi Router X200</b><small>Bought on Amazon</small></span></div><div class="fld"><label>Name</label><div class="in"><span class="typed" style="--td:.4s">Priya Sharma</span></div></div><div class="fld"><label>WhatsApp</label><div class="in"><span class="typed" style="--td:1.2s">+91 98765 43210</span></div></div><div class="fld"><label>Order ID</label><div class="in"><span class="typed" style="--td:2s">402-8815563-2290</span></div></div><span class="ui-btn press" style="--pd:2.7s">Register warranty</span><div class="done-ov"><div class="confetti"><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ck"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>12-month warranty active</b><small>WiFi Router X200</small></div></div><div class="scr" data-d="5200"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Setup guide</h4><div class="player"><svg class="wave" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18a8 8 0 0 1 12 0"/><path d="M9 13a15 15 0 0 1 22 0"/><path d="M4 8a22 22 0 0 1 32 0"/></svg><svg class="router" viewBox="0 0 120 70" aria-hidden="true"><rect x="8" y="34" width="104" height="28" rx="8" fill="currentColor" opacity=".35"/><rect x="8" y="34" width="104" height="28" rx="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 34V10M90 34V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle class="led" cx="28" cy="48" r="3.5"/><circle class="led" cx="40" cy="48" r="3.5"/><circle class="led" cx="52" cy="48" r="3.5"/></svg><span class="playbtn"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="ptime">2:14</span><span class="pbar"><i></i></span></div><div class="chap" style="--cd:1.4s"><em>1</em>Unbox and check parts</div><div class="chap" style="--cd:2.5999999999999996s"><em>2</em>Plug in and power on</div><div class="chap" style="--cd:3.8s"><em>3</em>Connect the app</div></div><div class="scr s-request" data-d="4700"><div class="chat-head"><span class="bl">B</span><span>Brontix<small>Business account</small></span></div><span class="daypill">3 days later</span><div class="typing"><i></i><i></i><i></i></div><div class="bubble">Hi Priya! How is your WiFi Router X200 working out? If you have a minute, sharing your experience on Amazon helps other buyers decide.<small>10:42</small></div><div class="qbtns"><span>Share my experience</span><span>I need help</span></div></div><div class="scr" data-d="4300"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>How would you rate it?</h4><div class="prodrow"><span class="prodimg"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>WiFi Router X200</b><small>Your own rating</small></span></div><div class="stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:0.6s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:0.8999999999999999s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:1.2s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:1.5s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style="--sd:1.7999999999999998s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg></div><p class="rlabel">What stood out?</p><div class="rchips"><span class="l" style="--cd:2.0s">Easy setup</span><span class="l" style="--cd:2.4s">Good range</span><span class="l" style="--cd:2.8s">Bit pricey</span><span class="" style="--cd:3.2s">Clear guide</span></div><span class="ui-btn press" style="--pd:3.5s">Continue</span></div><div class="scr" data-d="5600"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Your review, in your words</h4><div class="draft"><span class="ai"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.6 5.7 1.9-5.7 1.9L12 17l-1.8-5.6-5.7-1.9 5.7-1.9z"/></svg>AI helper</span><div class="mini-stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="e" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg></div><span class="dtext">Setup was easy and the range covers my whole flat. A bit pricey, but the setup video helped a lot.</span></div><p class="dnote">Made from your rating and points. Edit anything.</p><span class="ui-btn press" style="--pd:3.5s">Copy &amp; post on Amazon</span><div class="otoast">Opening Amazon review page…</div></div></div></div></div><div class="fl fl1" aria-hidden="true"><i><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i>Warranty registered · Priya, Pune</div><div class="fl fl2" aria-hidden="true"><i><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></i>Setup guide watched · 2:14</div><div class="fl fl3" aria-hidden="true"><i><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></i>Review requested · Day 3</div><div class="cap" id="hero-cap" aria-hidden="true"><b>1</b><span>The customer scans the QR in the box</span></div><ol class="sr-only"><li>The customer scans the QR in the box</li><li>They register their warranty</li><li>They watch your setup guide</li><li>Days later, one gentle review request</li><li>They pick their own rating and points</li><li>AI tidies up their words. They post it.</li></ol></div></div>
   </div>
 </section>
 
-<div class="strip">
+<div class="strip" data-anim>
   <p>Built for sellers on Amazon, Flipkart, Myntra, Nykaa, FirstCry</p>
   <div class="marquee" aria-hidden="true"><ul><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li><li>Amazon</li><li>Flipkart</li><li>Myntra</li><li>Nykaa</li><li>FirstCry</li></ul></div>
+  <div class="marquee rev" aria-hidden="true"><ul><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li><li>Parcel delivered</li><li>QR scanned</li><li>Warranty registered</li><li>Guide watched</li><li>Review requested</li></ul></div>
 </div>
 
-<section class="section section--dark" aria-labelledby="problem-h">
+<section class="section section--light" aria-labelledby="problem-h">
   <div class="wrap">
-    <div data-reveal>
-      <div class="counter" role="img" aria-label="Orders delivered: 84. Reviews received: 3.">
-        <div><b data-count="84" data-dur="1400">84</b><span>Orders delivered</span></div>
-        <svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        <div class="rev"><b data-count="3" data-dur="1400">3</b><span>Reviews received</span></div>
+    <div class="prob-grid">
+      <div data-reveal>
+        <div class="parcels" data-anim role="img" aria-label="84 parcel squares, only 3 of them light up"><i class="" style="--i:0"></i><i class="" style="--i:1"></i><i class="" style="--i:2"></i><i class="" style="--i:3"></i><i class="" style="--i:4"></i><i class="" style="--i:5"></i><i class="" style="--i:6"></i><i class="" style="--i:7"></i><i class="" style="--i:8"></i><i class="" style="--i:9"></i><i class="" style="--i:10"></i><i class="" style="--i:11"></i><i class="" style="--i:12"></i><i class="" style="--i:13"></i><i class="" style="--i:14"></i><i class="" style="--i:15"></i><i class="" style="--i:16"></i><i class="rv" style="--i:17"></i><i class="" style="--i:18"></i><i class="" style="--i:19"></i><i class="" style="--i:20"></i><i class="" style="--i:21"></i><i class="" style="--i:22"></i><i class="" style="--i:23"></i><i class="" style="--i:24"></i><i class="" style="--i:25"></i><i class="" style="--i:26"></i><i class="" style="--i:27"></i><i class="" style="--i:28"></i><i class="" style="--i:29"></i><i class="" style="--i:30"></i><i class="" style="--i:31"></i><i class="" style="--i:32"></i><i class="" style="--i:33"></i><i class="" style="--i:34"></i><i class="" style="--i:35"></i><i class="" style="--i:36"></i><i class="" style="--i:37"></i><i class="" style="--i:38"></i><i class="" style="--i:39"></i><i class="" style="--i:40"></i><i class="" style="--i:41"></i><i class="" style="--i:42"></i><i class="" style="--i:43"></i><i class="" style="--i:44"></i><i class="" style="--i:45"></i><i class="rv" style="--i:46"></i><i class="" style="--i:47"></i><i class="" style="--i:48"></i><i class="" style="--i:49"></i><i class="" style="--i:50"></i><i class="" style="--i:51"></i><i class="" style="--i:52"></i><i class="" style="--i:53"></i><i class="" style="--i:54"></i><i class="" style="--i:55"></i><i class="" style="--i:56"></i><i class="" style="--i:57"></i><i class="" style="--i:58"></i><i class="" style="--i:59"></i><i class="" style="--i:60"></i><i class="" style="--i:61"></i><i class="" style="--i:62"></i><i class="" style="--i:63"></i><i class="" style="--i:64"></i><i class="" style="--i:65"></i><i class="" style="--i:66"></i><i class="" style="--i:67"></i><i class="" style="--i:68"></i><i class="" style="--i:69"></i><i class="" style="--i:70"></i><i class="rv" style="--i:71"></i><i class="" style="--i:72"></i><i class="" style="--i:73"></i><i class="" style="--i:74"></i><i class="" style="--i:75"></i><i class="" style="--i:76"></i><i class="" style="--i:77"></i><i class="" style="--i:78"></i><i class="" style="--i:79"></i><i class="" style="--i:80"></i><i class="" style="--i:81"></i><i class="" style="--i:82"></i><i class="" style="--i:83"></i></div>
+        <div class="pcount">
+          <div><b data-count="84" data-dur="1800">84</b><span>Orders delivered</span></div>
+          <div class="rv"><b data-count="3" data-dur="1800">3</b><span>Reviews received</span></div>
+        </div>
+        <p class="pnote">An example month. Check yours in your seller dashboard.</p>
       </div>
-      <p class="counter-note">An example month. Check yours in your seller dashboard.</p>
+      <div class="head"><p class="eyebrow">Sound familiar?</p><h2 id="problem-h" class="split" data-split><span class="w"><span class="" style="--wi:0">Your</span></span> <span class="w"><span class="" style="--wi:1">customers</span></span> <span class="w"><span class="" style="--wi:2">aren&#x27;t</span></span> <span class="w"><span class="" style="--wi:3">unhappy.</span></span> <span class="w"><span class="" style="--wi:4">They&#x27;re</span></span> <span class="w"><span class="" style="--wi:5">just</span></span> <span class="w"><span class="" style="--wi:6">silent.</span></span></h2><p class="sub">Most buyers who like your product never say so. Nothing makes it easy for them.</p></div>
     </div>
-    <div class="head" data-reveal>
-      <p class="eyebrow">Sound familiar?</p>
-      <h2 id="problem-h">Your customers aren&#x27;t unhappy. They&#x27;re just silent.</h2>
-      <p class="sub">Most buyers who like your product never say so. Nothing makes it easy for them.</p>
-    </div>
-    <div class="reasons" data-reveal><div class="reason"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><h3>They forget</h3><p>By the time they&#x27;ve used the product, the order page is long gone.</p></div><div class="reason"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18h5v-4h5v-4h6"/><path d="M17 7l3 3-3 3"/></svg><h3>It feels like effort</h3><p>Open the app, find the order, scroll to the review box. Most stop halfway.</p></div><div class="reason"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg><h3>Writing is hard</h3><p>They liked it, but don&#x27;t know what to say or how to say it.</p></div><div class="reason"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><h3>They don&#x27;t know where to go</h3><p>Nobody showed them where their words would actually help other buyers.</p></div></div>
+    <div class="reasons" data-reveal><div class="reason"><span class="ic"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span><h3>They forget</h3><p>By the time they&#x27;ve used the product, the order page is long gone.</p></div><div class="reason"><span class="ic"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18h5v-4h5v-4h6"/><path d="M17 7l3 3-3 3"/></svg></span><h3>It feels like effort</h3><p>Open the app, find the order, scroll to the review box. Most stop halfway.</p></div><div class="reason"><span class="ic"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg></span><h3>Writing is hard</h3><p>They liked it, but don&#x27;t know what to say or how to say it.</p></div><div class="reason"><span class="ic"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg></span><h3>They don&#x27;t know where to go</h3><p>Nobody showed them where their words would actually help other buyers.</p></div></div>
     <div class="ba" data-reveal>
       <div class="ba-card ba-before"><h3><span class="tag">Before</span>Waiting for reviews</h3><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg><span>Hoping the marketplace email gets opened</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg><span>Customer can&#x27;t find the right page</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg><span>Small product questions turn into returns</span></li></ul></div>
       <div class="ba-card ba-after"><h3><span class="tag">After</span>ReviewBuddie asks for you</h3><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A QR in the box meets them at unboxing</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Warranty and guides first, review request later</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>One tap to the right review page</span></li></ul></div>
@@ -490,16 +788,13 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
   </div>
 </section>
 
-<section class="section section--light" aria-labelledby="pick-h">
+<section class="section section--dark" aria-labelledby="pick-h" data-anim>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap">
-    <div class="head" data-reveal>
-      <p class="eyebrow">Is it for me?</p>
-      <h2 id="pick-h">Which marketplace do you sell on?</h2>
-      <p class="sub">Tap yours to see where ReviewBuddie fits in.</p>
-    </div>
+    <div class="head"><p class="eyebrow">Is it for me?</p><h2 id="pick-h" class="split" data-split><span class="w"><span class="" style="--wi:0">Which</span></span> <span class="w"><span class="" style="--wi:1">marketplace</span></span> <span class="w"><span class="" style="--wi:2">do</span></span> <span class="w"><span class="" style="--wi:3">you</span></span> <span class="w"><span class="" style="--wi:4">sell</span></span> <span class="w"><span class="" style="--wi:5">on?</span></span></h2><p class="sub">Tap yours to see where ReviewBuddie fits in.</p></div>
     <div data-reveal>
       <div class="chips" id="chips" role="tablist" aria-label="Marketplaces"><span class="chip-ind" aria-hidden="true"></span><button class="chip" role="tab" id="chip-amazon" data-id="amazon" aria-controls="pp-amazon" aria-selected="false" tabindex="-1">Amazon</button><button class="chip" role="tab" id="chip-flipkart" data-id="flipkart" aria-controls="pp-flipkart" aria-selected="false" tabindex="-1">Flipkart</button><button class="chip" role="tab" id="chip-myntra" data-id="myntra" aria-controls="pp-myntra" aria-selected="false" tabindex="-1">Myntra</button><button class="chip" role="tab" id="chip-nykaa" data-id="nykaa" aria-controls="pp-nykaa" aria-selected="false" tabindex="-1">Nykaa</button><button class="chip" role="tab" id="chip-firstcry" data-id="firstcry" aria-controls="pp-firstcry" aria-selected="false" tabindex="-1">FirstCry</button></div>
-      <div class="pick-panels"><div class="pick-card" role="tabpanel" id="pp-amazon" aria-labelledby="chip-amazon" aria-hidden="true"><h3>Selling on Amazon India</h3><p class="muted">Your customer&#x27;s inbox is full of order emails. A QR insert reaches them in the one moment they&#x27;re paying full attention: opening the box.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Warranty registration right at unboxing</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Setup and care guides before a question becomes a complaint</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A neutral review request linking straight to your product&#x27;s review page</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Amazon">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-flipkart" aria-labelledby="chip-flipkart" aria-hidden="true"><h3>Selling on Flipkart</h3><p class="muted">Most Flipkart buyers shop on their phone and rarely open an order again once it arrives. The QR brings them back to your product while it&#x27;s still in their hands.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Works in the phone camera, no app to install</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Your guides and videos in the first minute of use</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A simple request to rate and review on Flipkart</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Flipkart">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-myntra" aria-labelledby="chip-myntra" aria-hidden="true"><h3>Selling on Myntra</h3><p class="muted">Fit, fabric and care decide whether a fashion order stays or goes back. Show size and care guides first, then ask how it went.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Care and styling guides on the customer&#x27;s phone</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Fewer &quot;how do I wash this?&quot; doubts</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A review request once they&#x27;ve actually worn it</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Myntra">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-nykaa" aria-labelledby="chip-nykaa" aria-hidden="true"><h3>Selling on Nykaa</h3><p class="muted">Beauty buyers want to know how to use a product properly before they judge it. Give them the how-to first, then a simple review request.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>How-to-use videos right after scanning</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Ingredient and routine guides in one place</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A request timed for after they&#x27;ve tried it</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Nykaa">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-firstcry" aria-labelledby="chip-firstcry" aria-hidden="true"><h3>Selling on FirstCry</h3><p class="muted">Parents are busy, and baby products come with questions. Warranty registration and short how-to videos help first. A gentle review request follows once they&#x27;ve used it.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Quick warranty registration for gear and gadgets</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Assembly and safety videos for tired parents</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A respectful, one-time review request</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="FirstCry">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div>
+      <div class="pick-panels"><div class="pick-card" role="tabpanel" id="pp-amazon" aria-labelledby="chip-amazon" aria-hidden="true"><span class="mk" aria-hidden="true">Amazon</span><h3>Selling on Amazon India</h3><p>Your customer&#x27;s inbox is full of order emails. A QR insert reaches them in the one moment they&#x27;re paying full attention: opening the box.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Warranty registration right at unboxing</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Setup and care guides before a question becomes a complaint</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A neutral review request linking straight to your product&#x27;s review page</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Amazon">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-flipkart" aria-labelledby="chip-flipkart" aria-hidden="true"><span class="mk" aria-hidden="true">Flipkart</span><h3>Selling on Flipkart</h3><p>Most Flipkart buyers shop on their phone and rarely open an order again once it arrives. The QR brings them back to your product while it&#x27;s still in their hands.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Works in the phone camera, no app to install</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Your guides and videos in the first minute of use</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A simple request to rate and review on Flipkart</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Flipkart">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-myntra" aria-labelledby="chip-myntra" aria-hidden="true"><span class="mk" aria-hidden="true">Myntra</span><h3>Selling on Myntra</h3><p>Fit, fabric and care decide whether a fashion order stays or goes back. Show size and care guides first, then ask how it went.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Care and styling guides on the customer&#x27;s phone</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Fewer &quot;how do I wash this?&quot; doubts</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A review request once they&#x27;ve actually worn it</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Myntra">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-nykaa" aria-labelledby="chip-nykaa" aria-hidden="true"><span class="mk" aria-hidden="true">Nykaa</span><h3>Selling on Nykaa</h3><p>Beauty buyers want to know how to use a product properly before they judge it. Give them the how-to first, then a simple review request.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>How-to-use videos right after scanning</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Ingredient and routine guides in one place</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A request timed for after they&#x27;ve tried it</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="Nykaa">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="pick-card" role="tabpanel" id="pp-firstcry" aria-labelledby="chip-firstcry" aria-hidden="true"><span class="mk" aria-hidden="true">FirstCry</span><h3>Selling on FirstCry</h3><p>Parents are busy, and baby products come with questions. Warranty registration and short how-to videos help first. A gentle review request follows once they&#x27;ve used it.</p><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Quick warranty registration for gear and gadgets</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Assembly and safety videos for tired parents</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A respectful, one-time review request</span></li></ul><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click" data-market="FirstCry">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div>
     </div>
     <div class="cta-row" data-reveal><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="pick"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a><p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p></div>
   </div>
@@ -507,30 +802,23 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 
 <section class="section section--tint how" id="how" aria-labelledby="how-h">
   <div class="wrap">
-    <div class="head" data-reveal>
-      <p class="eyebrow">How it works</p>
-      <h2 id="how-h">How do I get more reviews on Amazon India without breaking the rules?</h2>
-      <p class="sub">Remove the hurdles. Ask at the right time. Let customers speak in their own words.</p>
-    </div>
-    <ol class="steps" style="list-style:none;margin:0;padding:0"><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">1</span><h3><span class="sr-only">Step 1: </span>Add the QR insert to your box</h3><p>Add your product in ReviewBuddie and print the QR insert. It goes in the box with every order. Nothing changes in how you pack or ship.</p></div><div class="step-visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Video placeholder: Seller prints the QR insert and drops it into a product box. Caption: &quot;Print once. Pack as usual.&quot;"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Step 1 video</strong><p>Seller prints the QR insert and drops it into a product box. Caption: &quot;Print once. Pack as usual.&quot;</p><span class="spec">9:16 phone screen · 6–8s loop · ≤600KB</span></div></div></div></div></li><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">2</span><h3><span class="sr-only">Step 2: </span>Customer registers warranty and watches your guide</h3><p>They scan with their phone camera. No app, no login. They register their warranty and see your setup video or care guide.</p></div><div class="step-visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Video placeholder: Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Step 2 video</strong><p>Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;</p><span class="spec">9:16 phone screen · 6–8s loop · ≤600KB</span></div></div></div></div></li><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">3</span><h3><span class="sr-only">Step 3: </span>A timely, compliant review request</h3><p>Once they&#x27;ve had time to use the product, they get one neutral request to share their experience. If writing feels hard, AI helps them put their own rating and points into words. They edit it and post it themselves.</p></div><div class="step-visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Video placeholder: Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Step 3 video</strong><p>Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;.</p><span class="spec">9:16 phone screen · 6–8s loop · ≤600KB</span></div></div></div></div></li><li class="progress" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></li></ol>
-    <div class="flow" id="flow">
+    <div class="head"><p class="eyebrow">How it works</p><h2 id="how-h" class="split" data-split><span class="w"><span class="" style="--wi:0">How</span></span> <span class="w"><span class="" style="--wi:1">do</span></span> <span class="w"><span class="" style="--wi:2">I</span></span> <span class="w"><span class="" style="--wi:3">get</span></span> <span class="w"><span class="" style="--wi:4">more</span></span> <span class="w"><span class="" style="--wi:5">reviews</span></span> <span class="w"><span class="" style="--wi:6">on</span></span> <span class="w"><span class="" style="--wi:7">Amazon</span></span> <span class="w"><span class="" style="--wi:8">India</span></span> <span class="w"><span class="" style="--wi:9">without</span></span> <span class="w"><span class="" style="--wi:10">breaking</span></span> <span class="w"><span class="" style="--wi:11">the</span></span> <span class="w"><span class="" style="--wi:12">rules?</span></span></h2><p class="sub">Remove the hurdles. Ask at the right time. Let customers speak in their own words.</p></div>
+    <ol class="steps"><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">1</span><h3><span class="sr-only">Step 1: </span>Add the QR insert to your box</h3><p>Add your product in ReviewBuddie and print the QR insert. It goes in the box with every order. Nothing changes in how you pack or ship.</p></div><div class="step-visual"><div class="printscene" data-anim role="img" aria-label="Seller prints the QR insert and drops it into a product box. Caption: &quot;Print once. Pack as usual.&quot;"><div class="ps-win"><div class="wb"><i></i><i></i><i></i></div><div class="ps-row"><span class="ps-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="#17212E" d="M0 0h7v7H0zm1 1v5h5V1zm1 1h3v3H2zM22 0h7v7h-7zm1 1v5h5V1zm1 1h3v3h-3zM0 22h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zM9 0h2v2H9zm3 0h1v3h-1zm3 1h2v1h-2zm3 0h2v2h-2zM9 3h1v2H9zm2 1h3v1h-3zm4 0h1v3h-1zm2 1h3v2h-3zM9 7h2v1H9zm3-1h2v2h-2zm-3 3h3v1H9zM0 9h2v1H0zm3 0h3v2H3zm4 0h1v3H7zm6 0h3v1h-3zm4 1h1v2h-1zm2-1h3v1h-3zm4 0h1v2h-1zm2 0h2v3h-2zM0 11h1v3H0zm9 0h3v2H9zm5 1h2v1h-2zm6 0h2v2h-2zM2 13h3v1H2zm5 0h1v2H7zm5 1h1v3h-1zm3 0h3v1h-3zm4 1h1v3h-1zm3 0h2v1h-2zm4 0h2v2h-2zM0 16h2v2H0zm3 0h3v1H3zm6 0h2v3H9zm5 1h2v2h-2zm4 1h1v1h-1zm3 0h3v1h-3zM2 19h1v1H2zm4 0h3v1H6zm7 0h1v3h-1zm9 1h2v2h-2zm3 0h2v1h-2zM9 21h2v1H9zm6-1h3v2h-3zm4 2h2v3h-2zm4 1h3v1h-3zM9 24h3v2H9zm5 0h2v1h-2zm9 2h2v3h-2zm4-1h2v2h-2zM12 27h3v2h-3zm4-1h2v3h-2zm3 2h3v1h-3z"/></svg></span><span><b>QR insert · WiFi Router X200</b><small>9 × 9 cm · print-ready PDF</small></span></div><span class="ui-btn">Print insert</span></div><span class="slot"></span><div class="paper"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="#17212E" d="M0 0h7v7H0zm1 1v5h5V1zm1 1h3v3H2zM22 0h7v7h-7zm1 1v5h5V1zm1 1h3v3h-3zM0 22h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zM9 0h2v2H9zm3 0h1v3h-1zm3 1h2v1h-2zm3 0h2v2h-2zM9 3h1v2H9zm2 1h3v1h-3zm4 0h1v3h-1zm2 1h3v2h-3zM9 7h2v1H9zm3-1h2v2h-2zm-3 3h3v1H9zM0 9h2v1H0zm3 0h3v2H3zm4 0h1v3H7zm6 0h3v1h-3zm4 1h1v2h-1zm2-1h3v1h-3zm4 0h1v2h-1zm2 0h2v3h-2zM0 11h1v3H0zm9 0h3v2H9zm5 1h2v1h-2zm6 0h2v2h-2zM2 13h3v1H2zm5 0h1v2H7zm5 1h1v3h-1zm3 0h3v1h-3zm4 1h1v3h-1zm3 0h2v1h-2zm4 0h2v2h-2zM0 16h2v2H0zm3 0h3v1H3zm6 0h2v3H9zm5 1h2v2h-2zm4 1h1v1h-1zm3 0h3v1h-3zM2 19h1v1H2zm4 0h3v1H6zm7 0h1v3h-1zm9 1h2v2h-2zm3 0h2v1h-2zM9 21h2v1H9zm6-1h3v2h-3zm4 2h2v3h-2zm4 1h3v1h-3zM9 24h3v2H9zm5 0h2v1h-2zm9 2h2v3h-2zm4-1h2v2h-2zM12 27h3v2h-3zm4-1h2v3h-2zm3 2h3v1h-3z"/></svg>Scan to register your warranty</div><div class="box"><span class="bd"></span><span class="fp l"></span><span class="fp r"></span><span class="box-tag">✓ Packed as usual</span></div></div></div></li><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">2</span><h3><span class="sr-only">Step 2: </span>Customer registers warranty and watches your guide</h3><p>They scan with their phone camera. No app, no login. They register their warranty and see your setup video or care guide.</p></div><div class="step-visual"><div role="img" aria-label="Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;"><div class="phone" data-player><div class="screen"><div class="scr s-scan" data-d="4000"><p class="hint">Point your camera at the QR code</p><div class="view"><div class="ins"><svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><path fill="#17212E" d="M0 0h7v7H0zm1 1v5h5V1zm1 1h3v3H2zM22 0h7v7h-7zm1 1v5h5V1zm1 1h3v3h-3zM0 22h7v7H0zm1 1v5h5v-5zm1 1h3v3H2zM9 0h2v2H9zm3 0h1v3h-1zm3 1h2v1h-2zm3 0h2v2h-2zM9 3h1v2H9zm2 1h3v1h-3zm4 0h1v3h-1zm2 1h3v2h-3zM9 7h2v1H9zm3-1h2v2h-2zm-3 3h3v1H9zM0 9h2v1H0zm3 0h3v2H3zm4 0h1v3H7zm6 0h3v1h-3zm4 1h1v2h-1zm2-1h3v1h-3zm4 0h1v2h-1zm2 0h2v3h-2zM0 11h1v3H0zm9 0h3v2H9zm5 1h2v1h-2zm6 0h2v2h-2zM2 13h3v1H2zm5 0h1v2H7zm5 1h1v3h-1zm3 0h3v1h-3zm4 1h1v3h-1zm3 0h2v1h-2zm4 0h2v2h-2zM0 16h2v2H0zm3 0h3v1H3zm6 0h2v3H9zm5 1h2v2h-2zm4 1h1v1h-1zm3 0h3v1h-3zM2 19h1v1H2zm4 0h3v1H6zm7 0h1v3h-1zm9 1h2v2h-2zm3 0h2v1h-2zM9 21h2v1H9zm6-1h3v2h-3zm4 2h2v3h-2zm4 1h3v1h-3zM9 24h3v2H9zm5 0h2v1h-2zm9 2h2v3h-2zm4-1h2v2h-2zM12 27h3v2h-3zm4-1h2v3h-2zm3 2h3v1h-3z"/></svg></div><i class="br tl"></i><i class="br tr"></i><i class="br bl2"></i><i class="br brr"></i><i class="sl"></i></div><div class="toast"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Brontix · WiFi Router X200</div></div><div class="scr" data-d="4900"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Register your warranty</h4><div class="prodrow"><span class="prodimg"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>WiFi Router X200</b><small>Bought on Amazon</small></span></div><div class="fld"><label>Name</label><div class="in"><span class="typed" style="--td:.4s">Priya Sharma</span></div></div><div class="fld"><label>WhatsApp</label><div class="in"><span class="typed" style="--td:1.2s">+91 98765 43210</span></div></div><div class="fld"><label>Order ID</label><div class="in"><span class="typed" style="--td:2s">402-8815563-2290</span></div></div><span class="ui-btn press" style="--pd:2.7s">Register warranty</span><div class="done-ov"><div class="confetti"><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ck"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>12-month warranty active</b><small>WiFi Router X200</small></div></div><div class="scr" data-d="5200"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Setup guide</h4><div class="player"><svg class="wave" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18a8 8 0 0 1 12 0"/><path d="M9 13a15 15 0 0 1 22 0"/><path d="M4 8a22 22 0 0 1 32 0"/></svg><svg class="router" viewBox="0 0 120 70" aria-hidden="true"><rect x="8" y="34" width="104" height="28" rx="8" fill="currentColor" opacity=".35"/><rect x="8" y="34" width="104" height="28" rx="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 34V10M90 34V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle class="led" cx="28" cy="48" r="3.5"/><circle class="led" cx="40" cy="48" r="3.5"/><circle class="led" cx="52" cy="48" r="3.5"/></svg><span class="playbtn"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="ptime">2:14</span><span class="pbar"><i></i></span></div><div class="chap" style="--cd:1.4s"><em>1</em>Unbox and check parts</div><div class="chap" style="--cd:2.5999999999999996s"><em>2</em>Plug in and power on</div><div class="chap" style="--cd:3.8s"><em>3</em>Connect the app</div></div></div></div></div></div></li><li class="step"><div class="step-text"><span class="step-n" aria-hidden="true">3</span><h3><span class="sr-only">Step 3: </span>A timely, compliant review request</h3><p>Once they&#x27;ve had time to use the product, they get one neutral request to share their experience. If writing feels hard, AI helps them put their own rating and points into words. They edit it and post it themselves.</p></div><div class="step-visual"><div role="img" aria-label="Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;."><div class="phone" data-player><div class="screen"><div class="scr s-request" data-d="4700"><div class="chat-head"><span class="bl">B</span><span>Brontix<small>Business account</small></span></div><span class="daypill">3 days later</span><div class="typing"><i></i><i></i><i></i></div><div class="bubble">Hi Priya! How is your WiFi Router X200 working out? If you have a minute, sharing your experience on Amazon helps other buyers decide.<small>10:42</small></div><div class="qbtns"><span>Share my experience</span><span>I need help</span></div></div><div class="scr" data-d="4300"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>How would you rate it?</h4><div class="prodrow"><span class="prodimg"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>WiFi Router X200</b><small>Your own rating</small></span></div><div class="stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:0.6s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:0.8999999999999999s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:1.2s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="f" style="--sd:1.5s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style="--sd:1.7999999999999998s"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg></div><p class="rlabel">What stood out?</p><div class="rchips"><span class="l" style="--cd:2.0s">Easy setup</span><span class="l" style="--cd:2.4s">Good range</span><span class="l" style="--cd:2.8s">Bit pricey</span><span class="" style="--cd:3.2s">Clear guide</span></div><span class="ui-btn press" style="--pd:3.5s">Continue</span></div><div class="scr" data-d="5600"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Your review, in your words</h4><div class="draft"><span class="ai"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.6 5.7 1.9-5.7 1.9L12 17l-1.8-5.6-5.7-1.9 5.7-1.9z"/></svg>AI helper</span><div class="mini-stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="e" style=""><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg></div><span class="dtext">Setup was easy and the range covers my whole flat. A bit pricey, but the setup video helped a lot.</span></div><p class="dnote">Made from your rating and points. Edit anything.</p><span class="ui-btn press" style="--pd:3.5s">Copy &amp; post on Amazon</span><div class="otoast">Opening Amazon review page…</div></div></div></div></div></div></li><li class="progress" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></li></ol>
+    <div class="flow" id="flow" data-anim>
       <h3>What your customer goes through</h3>
-      <div class="flow-track"><span class="flow-line" aria-hidden="true"><b></b></span><ol><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>Parcel delivered</b><span>QR insert inside the box</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M17 20.5h3.5V17"/></svg></span><span><b>QR scanned</b><span>Phone camera, no app</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><b>Warranty registered</b><span>Name, WhatsApp, order ID</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><span><b>Guide watched</b><span>Your setup or care video</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><span><b>Review requested</b><span>One neutral, timely request</span></span></li></ol></div>
+      <div class="flow-track"><span class="flow-line" aria-hidden="true"><b></b><i class="dot"></i></span><ol><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>Parcel delivered</b><span>QR insert inside the box</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M17 20.5h3.5V17"/></svg></span><span><b>QR scanned</b><span>Phone camera, no app</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><b>Warranty registered</b><span>Name, WhatsApp, order ID</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><span><b>Guide watched</b><span>Your setup or care video</span></span></li><li><span class="node"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><span><b>Review requested</b><span>One neutral, timely request</span></span></li></ol></div>
     </div>
     <div class="cta-row" data-reveal><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="how"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a><p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p></div>
   </div>
 </section>
 
-<section class="section section--dark" id="features" aria-labelledby="feat-h">
+<section class="section section--dark" id="features" aria-labelledby="feat-h" data-anim>
+  <div class="gridlines" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="head" data-reveal>
-      <p class="eyebrow">Features</p>
-      <h2 id="feat-h">What happens after the parcel arrives</h2>
-      <p class="sub">Four tools that work together, all from one QR code.</p>
-    </div>
+    <div class="head"><p class="eyebrow">Features</p><h2 id="feat-h" class="split" data-split><span class="w"><span class="" style="--wi:0">What</span></span> <span class="w"><span class="" style="--wi:1">happens</span></span> <span class="w"><span class="" style="--wi:2">after</span></span> <span class="w"><span class="" style="--wi:3">the</span></span> <span class="w"><span class="" style="--wi:4">parcel</span></span> <span class="w"><span class="" style="--wi:5">arrives</span></span></h2><p class="sub">Four tools that work together, all from one QR code.</p></div>
     <div data-swipe>
-      <div class="swipe" tabindex="0" aria-label="Features, swipe sideways"><article class="card"><div class="visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Video placeholder: Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Step 2 video</strong><p>Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;</p><span class="spec">9:16 phone screen · 6–8s loop · ≤600KB</span></div></div></div></div><h3>Warranty registration</h3><p>A short form on the customer&#x27;s phone: name, WhatsApp number and order ID. Every registration shows up in your dashboard.</p></article><article class="card"><div class="visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Image placeholder: Customer&#x27;s product guide screen: setup video thumbnail, &quot;User manual (PDF)&quot;, &quot;Care tips&quot; list."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><span class="ph-tag">Image placeholder</span><strong>UI screenshot</strong><p>Customer&#x27;s product guide screen: setup video thumbnail, &quot;User manual (PDF)&quot;, &quot;Care tips&quot; list.</p><span class="spec">9:16 phone screen · AVIF + WebP · 720×1280</span></div></div></div></div><h3>Product education</h3><p>Add setup videos, user manuals and care guides. Customers see them right after scanning, when questions come up.</p></article><article class="card"><div class="visual"><div class="phone"><div class="media" style="--ratio:9 / 16"><div class="ph" role="img" aria-label="Video placeholder: Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg><span class="ph-tag">Video placeholder</span><strong>Step 3 video</strong><p>Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;.</p><span class="spec">9:16 phone screen · 6–8s loop · ≤600KB</span></div></div></div></div><h3>Review requests</h3><p>One neutral request at the right time, linking straight to your product&#x27;s review page on the marketplace they bought from. Every customer gets the same request.</p></article><article class="card"><div class="visual"><div class="browser"><div class="browser-bar"><i></i><i></i><i></i></div><div class="media" style="--ratio:4 / 3"><div class="ph" role="img" aria-label="Image placeholder: Seller dashboard: scans, warranty registrations, guide views and review requests per product, filter by marketplace."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><span class="ph-tag">Image placeholder</span><strong>UI screenshot</strong><p>Seller dashboard: scans, warranty registrations, guide views and review requests per product, filter by marketplace.</p><span class="spec">4:3 browser frame · AVIF + WebP · 1200×900</span></div></div></div></div><h3>Seller dashboard</h3><p>See scans, warranty registrations, guide views and review requests by product and by marketplace.</p></article></div>
-      <div class="swipe-ui"><div class="dots"></div><span class="swipe-hint">Swipe to see all four</span><div class="arrows"><button type="button" data-prev aria-label="Previous"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-next aria-label="Next"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+      <div class="swipe" tabindex="0" aria-label="Features, swipe sideways"><article class="card"><div class="visual"><div role="img" aria-label="Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: &quot;Warranty registered.&quot;"><div class="phone" data-player><div class="screen"><div class="scr" data-d="4900"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Register your warranty</h4><div class="prodrow"><span class="prodimg"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l9-4.5 9 4.5v9l-9 4.5-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg></span><span><b>WiFi Router X200</b><small>Bought on Amazon</small></span></div><div class="fld"><label>Name</label><div class="in"><span class="typed" style="--td:.4s">Priya Sharma</span></div></div><div class="fld"><label>WhatsApp</label><div class="in"><span class="typed" style="--td:1.2s">+91 98765 43210</span></div></div><div class="fld"><label>Order ID</label><div class="in"><span class="typed" style="--td:2s">402-8815563-2290</span></div></div><span class="ui-btn press" style="--pd:2.7s">Register warranty</span><div class="done-ov"><div class="confetti"><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="ck"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>12-month warranty active</b><small>WiFi Router X200</small></div></div></div></div></div></div><h3>Warranty registration</h3><p>A short form on the customer&#x27;s phone: name, WhatsApp number and order ID. Every registration shows up in your dashboard.</p></article><article class="card"><div class="visual"><div role="img" aria-label="Customer&#x27;s product guide screen: setup video thumbnail, &quot;User manual (PDF)&quot;, &quot;Care tips&quot; list."><div class="phone" data-player><div class="screen"><div class="scr" data-d="5200"><div class="bar-top"><span class="bl">B</span>Brontix</div><h4>Setup guide</h4><div class="player"><svg class="wave" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M14 18a8 8 0 0 1 12 0"/><path d="M9 13a15 15 0 0 1 22 0"/><path d="M4 8a22 22 0 0 1 32 0"/></svg><svg class="router" viewBox="0 0 120 70" aria-hidden="true"><rect x="8" y="34" width="104" height="28" rx="8" fill="currentColor" opacity=".35"/><rect x="8" y="34" width="104" height="28" rx="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 34V10M90 34V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle class="led" cx="28" cy="48" r="3.5"/><circle class="led" cx="40" cy="48" r="3.5"/><circle class="led" cx="52" cy="48" r="3.5"/></svg><span class="playbtn"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span><span class="ptime">2:14</span><span class="pbar"><i></i></span></div><div class="chap" style="--cd:1.4s"><em>1</em>Unbox and check parts</div><div class="chap" style="--cd:2.5999999999999996s"><em>2</em>Plug in and power on</div><div class="chap" style="--cd:3.8s"><em>3</em>Connect the app</div></div></div></div></div></div><h3>Product education</h3><p>Add setup videos, user manuals and care guides. Customers see them right after scanning, when questions come up.</p></article><article class="card"><div class="visual"><div role="img" aria-label="Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps &quot;Post on Amazon&quot;."><div class="phone" data-player><div class="screen"><div class="scr s-request" data-d="4700"><div class="chat-head"><span class="bl">B</span><span>Brontix<small>Business account</small></span></div><span class="daypill">3 days later</span><div class="typing"><i></i><i></i><i></i></div><div class="bubble">Hi Priya! How is your WiFi Router X200 working out? If you have a minute, sharing your experience on Amazon helps other buyers decide.<small>10:42</small></div><div class="qbtns"><span>Share my experience</span><span>I need help</span></div></div></div></div></div></div><h3>Review requests</h3><p>One neutral request at the right time, linking straight to your product&#x27;s review page on the marketplace they bought from. Every customer gets the same request.</p></article><article class="card"><div class="visual"><div class="dash" data-anim role="img" aria-label="ReviewBuddie seller dashboard with scans, registrations and review requests per product"><div class="dash-bar"><i></i><i></i><i></i>&nbsp;app.reviewbuddie.com<span>Demo data</span></div><div class="dash-b"><div class="kp"><div><small>Scans</small><b data-count="128">128</b></div><div><small>Warranties</small><b data-count="96">96</b></div><div><small>Guide views</small><b data-count="143">143</b></div><div><small>Requests sent</small><b data-count="88">88</b></div></div><div class="chart"><i style="--h:30%;--i:0"></i><i style="--h:42%;--i:1"></i><i style="--h:38%;--i:2"></i><i style="--h:55%;--i:3"></i><i style="--h:48%;--i:4"></i><i style="--h:62%;--i:5"></i><i style="--h:58%;--i:6"></i><i style="--h:70%;--i:7"></i><i style="--h:66%;--i:8"></i><i style="--h:78%;--i:9"></i><i style="--h:74%;--i:10"></i><i style="--h:88%;--i:11"></i></div><div class="feed"><div style="--i:0"><i></i>Priya · Pune registered a warranty</div><div style="--i:1"><i></i>Rahul · Delhi watched the setup guide</div><div style="--i:2"><i></i>Anjali · Jaipur got a review request</div></div></div></div></div><h3>Seller dashboard</h3><p>See scans, warranty registrations, guide views and review requests by product and by marketplace.</p></article></div>
+      <div class="swipe-ui"><div class="dots"></div><span class="swipe-hint">Swipe to see all four<svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span><div class="arrows"><button type="button" data-prev aria-label="Previous"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-next aria-label="Next"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
     </div>
     <div class="cta-row" data-reveal><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="features"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a><p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p></div>
   </div>
@@ -538,13 +826,10 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 
 <section class="section section--light" aria-labelledby="trust-h">
   <div class="wrap">
-    <div class="head" data-reveal>
-      <p class="eyebrow">Who&#x27;s behind this?</p>
-      <h2 id="trust-h">Built by sellers who ship every day</h2>
-    </div>
+    <div class="head"><p class="eyebrow">Who&#x27;s behind this?</p><h2 id="trust-h" class="split" data-split><span class="w"><span class="" style="--wi:0">Built</span></span> <span class="w"><span class="" style="--wi:1">by</span></span> <span class="w"><span class="" style="--wi:2">sellers</span></span> <span class="w"><span class="" style="--wi:3">who</span></span> <span class="w"><span class="" style="--wi:4">ship</span></span> <span class="w"><span class="" style="--wi:5">every</span></span> <span class="w"><span class="" style="--wi:6">day</span></span></h2></div>
     <div class="trust" data-reveal>
       <figure class="founder">
-        <div class="media" style="--ratio:16 / 9"><div class="ph" role="img" aria-label="Image placeholder: [FOUNDER NAME] at the Havels Group warehouse or desk, with real product boxes in view."><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><span class="ph-tag">Image placeholder</span><strong>Founder photo</strong><p>[FOUNDER NAME] at the Havels Group warehouse or desk, with real product boxes in view.</p><span class="spec">1:1 · AVIF + WebP · 480×480 · natural light, real workspace</span></div></div>
+        <div class="mono" aria-hidden="true"><span>Founder photo here</span></div>
         <div style="display:grid;gap:14px">
           <blockquote>“We sell on Amazon India ourselves. We built the tool we needed.”</blockquote>
           <p>At Havels Group we pack and ship our own brands every day. We watched happy customers stay silent and small doubts turn into returns. ReviewBuddie is how we fixed that for ourselves. Now we&#x27;re opening it to other sellers.</p>
@@ -552,9 +837,10 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
           <p class="ph-note">Placeholder: add the founder name and photo before launch.</p>
         </div>
       </figure>
-      <div class="promise"><svg class="big" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><h3>We request reviews. We never buy, filter or reward them.</h3><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Every customer gets the same neutral request</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>No discounts, gifts or cashback for reviews, ever</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Customers choose their own rating and write their own words</span></li></ul></div>
+      <div class="promise"><span class="shield" aria-hidden="true"><i></i><i></i><i></i><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><h3>We request reviews. We never buy, filter or reward them.</h3><ul><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Every customer gets the same neutral request</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>No discounts, gifts or cashback for reviews, ever</span></li><li><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Customers choose their own rating and write their own words</span></li></ul></div>
       <div class="founding">
-        <div class="seats"><b>50</b><span class="muted">founding spots</span></div>
+        <div class="seats" data-anim aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19"></i><i style="--i:20"></i><i style="--i:21"></i><i style="--i:22"></i><i style="--i:23"></i><i style="--i:24"></i><i style="--i:25"></i><i style="--i:26"></i><i style="--i:27"></i><i style="--i:28"></i><i style="--i:29"></i><i style="--i:30"></i><i style="--i:31"></i><i style="--i:32"></i><i style="--i:33"></i><i style="--i:34"></i><i style="--i:35"></i><i style="--i:36"></i><i style="--i:37"></i><i style="--i:38"></i><i style="--i:39"></i><i style="--i:40"></i><i style="--i:41"></i><i style="--i:42"></i><i style="--i:43"></i><i style="--i:44"></i><i style="--i:45"></i><i style="--i:46"></i><i style="--i:47"></i><i style="--i:48"></i><i style="--i:49"></i></div>
+        <span class="seat-l">50 founding spots</span>
         <h3>Founding Sellers: 50 spots</h3><p>The first 50 sellers get early pricing and personal setup help on WhatsApp. In return, we ask for honest feedback on what works and what doesn&#x27;t.</p>
         <a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Apply as a founding seller<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
@@ -565,11 +851,7 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 
 <section class="section section--white" id="calculator" aria-labelledby="calc-h">
   <div class="wrap">
-    <div class="head" data-reveal>
-      <p class="eyebrow">Free calculator</p>
-      <h2 id="calc-h">How many reviews are you missing?</h2>
-      <p class="sub">Two numbers from your seller dashboard. No signup needed.</p>
-    </div>
+    <div class="head"><p class="eyebrow">Free calculator</p><h2 id="calc-h" class="split" data-split><span class="w"><span class="" style="--wi:0">How</span></span> <span class="w"><span class="" style="--wi:1">many</span></span> <span class="w"><span class="" style="--wi:2">reviews</span></span> <span class="w"><span class="" style="--wi:3">are</span></span> <span class="w"><span class="" style="--wi:4">you</span></span> <span class="w"><span class="" style="--wi:5">missing?</span></span></h2><p class="sub">Two numbers from your seller dashboard. No signup needed.</p></div>
     <div class="calc" data-reveal>
       <div class="calc-in">
         <div class="field"><label for="c-orders">Orders delivered per month</label>
@@ -580,12 +862,12 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
           <div class="num"><button type="button" data-step="-1" data-for="c-reviews" aria-label="Decrease reviews by 1">−</button>
           <input id="c-reviews" type="number" inputmode="numeric" min="0" step="1" value="3">
           <button type="button" data-step="1" data-for="c-reviews" aria-label="Increase reviews by 1">+</button></div></div>
+        <div class="people" id="people" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="people-l" aria-hidden="true"><span class="b"><i></i>Left a review</span><span><i></i>Stayed silent</span></div>
       </div>
       <div class="calc-out" aria-live="polite">
         <div class="big" id="c-silent">81</div>
         <p>customers stayed silent this month</p>
-        <div class="bar" aria-hidden="true"><i id="c-bar"></i></div>
-        <div class="bar-legend" aria-hidden="true"><span>Reviewed</span><span>Silent</span></div>
         <p class="ratio">That&#x27;s <b id="c-ratio">96</b> out of every 100 customers you never heard from.</p>
         <form class="lead" id="lead" novalidate>
           <label for="lead-contact">Send me the full report + the free Amazon India review rules 2026 checklist</label>
@@ -600,17 +882,18 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
 
 <section class="section section--light" id="faq" aria-labelledby="faq-h">
   <div class="wrap">
-    <div class="head" data-reveal><p class="eyebrow">FAQ</p><h2 id="faq-h">Questions sellers ask before they start</h2></div>
-    <div class="faq" data-reveal><details><summary><span>Is this allowed by Amazon?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>ReviewBuddie is built around Amazon&#x27;s customer review rules. Every customer gets the same neutral request, nobody is offered anything in return, and we never filter who gets asked. Marketplace policies change, so we keep our flows up to date, and we suggest you also check the latest guidelines in Seller Central.</p></div></details><details><summary><span>Do you give customers incentives for reviews?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>No, never. No discounts, gifts, cashback or free products in exchange for a review. Warranty registration and product guides are part of the product experience, and customers get them whether or not they ever leave a review.</p></div></details><details><summary><span>Do customers need an app?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>No. They scan the QR code with their phone camera and everything opens in the browser. No app download, no login.</p></div></details><details><summary><span>Which marketplaces do you support?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>Amazon, Flipkart, Myntra, Nykaa and FirstCry. The review request takes customers straight to your product&#x27;s review page on the marketplace they bought from.</p></div></details><details><summary><span>How much does it cost?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>ReviewBuddie is free for founding sellers during early access. We&#x27;ll share pricing well before launch, and you&#x27;ll never be charged without agreeing to it first.</p></div></details><details><summary><span>How long does setup take?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>Add your product, upload your guides, print the QR insert and put it in your boxes. Founding sellers get personal setup help from our team on WhatsApp.</p></div></details><details><summary><span>Is customer data safe?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>Customer details collected through warranty registration belong to you. We don&#x27;t sell or share them with anyone, and customers can ask for their data to be deleted at any time.</p></div></details><details><summary><span>Can I see a demo?</span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="ans"><p>Yes. Message us on WhatsApp and we&#x27;ll walk you through it on a short call.</p></div></details></div>
+    <div class="head"><p class="eyebrow">FAQ</p><h2 id="faq-h" class="split" data-split><span class="w"><span class="" style="--wi:0">Questions</span></span> <span class="w"><span class="" style="--wi:1">sellers</span></span> <span class="w"><span class="" style="--wi:2">ask</span></span> <span class="w"><span class="" style="--wi:3">before</span></span> <span class="w"><span class="" style="--wi:4">they</span></span> <span class="w"><span class="" style="--wi:5">start</span></span></h2></div>
+    <div class="faq" data-reveal><details><summary><span>Is this allowed by Amazon?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>ReviewBuddie is built around Amazon&#x27;s customer review rules. Every customer gets the same neutral request, nobody is offered anything in return, and we never filter who gets asked. Marketplace policies change, so we keep our flows up to date, and we suggest you also check the latest guidelines in Seller Central.</p></div></details><details><summary><span>Do you give customers incentives for reviews?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>No, never. No discounts, gifts, cashback or free products in exchange for a review. Warranty registration and product guides are part of the product experience, and customers get them whether or not they ever leave a review.</p></div></details><details><summary><span>Do customers need an app?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>No. They scan the QR code with their phone camera and everything opens in the browser. No app download, no login.</p></div></details><details><summary><span>Which marketplaces do you support?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>Amazon, Flipkart, Myntra, Nykaa and FirstCry. The review request takes customers straight to your product&#x27;s review page on the marketplace they bought from.</p></div></details><details><summary><span>How much does it cost?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>ReviewBuddie is free for founding sellers during early access. We&#x27;ll share pricing well before launch, and you&#x27;ll never be charged without agreeing to it first.</p></div></details><details><summary><span>How long does setup take?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>Add your product, upload your guides, print the QR insert and put it in your boxes. Founding sellers get personal setup help from our team on WhatsApp.</p></div></details><details><summary><span>Is customer data safe?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>Customer details collected through warranty registration belong to you. We don&#x27;t sell or share them with anyone, and customers can ask for their data to be deleted at any time.</p></div></details><details><summary><span>Can I see a demo?</span><span class="pl"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans"><p>Yes. Message us on WhatsApp and we&#x27;ll walk you through it on a short call.</p></div></details></div>
     <div class="cta-row" data-reveal><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="faq"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a></div>
   </div>
 </section>
 
-<section class="section section--dark final" id="final" aria-labelledby="final-h">
-  <div class="wrap" data-reveal>
-    <h2 id="final-h">Every delivered order is a chance to hear from your customer.</h2>
-    <p class="hinglish" lang="hi-Latn">Abse reviews ka tension khatam.</p>
-    <div class="cta-row cta-row--center"><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="final"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a><p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p></div>
+<section class="section section--dark final" id="final" aria-labelledby="final-h" data-anim>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="floaties" aria-hidden="true"><span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M17 20.5h3.5V17"/></svg></span><span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><span><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span></div>
+  <div class="wrap">
+    <h2 id="final-h" class="split" data-split><span class="w"><span class="" style="--wi:0">Every</span></span> <span class="w"><span class="" style="--wi:1">delivered</span></span> <span class="w"><span class="" style="--wi:2">order</span></span> <span class="w"><span class="" style="--wi:3">is</span></span> <span class="w"><span class="" style="--wi:4">a</span></span> <span class="w"><span class="grad" style="--wi:5">chance</span></span> <span class="w"><span class="grad" style="--wi:6">to</span></span> <span class="w"><span class="grad" style="--wi:7">hear</span></span> <span class="w"><span class="grad" style="--wi:8">from</span></span> <span class="w"><span class="grad" style="--wi:9">your</span></span> <span class="w"><span class="grad" style="--wi:10">customer.</span></span></h2>
+    <p class="hinglish grad" lang="hi-Latn">Abse reviews ka tension khatam.</p>
+    <div class="cta-row cta-row--center" data-reveal><a href="#early-access" class="btn btn--primary btn--block" data-open-form data-track="hero_cta_click">Get early access<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="link-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20ReviewBuddie%2C%20I%20sell%20on%20Indian%20marketplaces%20and%20want%20to%20know%20more%20about%20early%20access." target="_blank" rel="noopener" data-track="whatsapp_click" data-track-label="final"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span>Chat on WhatsApp</span></a><p class="reassure">Free for founding sellers · No customer incentives · Built within marketplace rules</p></div>
   </div>
 </section>
 </main>
@@ -701,6 +984,90 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
   } else {
     $$('[data-reveal]').forEach(function (el) { el.classList.add('in'); });
   }
+
+  /* ---------- headline word reveal ---------- */
+  var splits = $$('[data-split]');
+  if ('IntersectionObserver' in window && !RM) {
+    var sio2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); sio2.unobserve(e.target); } });
+    }, { threshold: 0.2 });
+    splits.forEach(function (el) { sio2.observe(el); });
+  } else splits.forEach(function (el) { el.classList.add('in'); });
+  requestAnimationFrame(function () { var h1 = $('#h1'); if (h1) h1.classList.add('in'); });
+
+  /* ---------- scroll progress bar ---------- */
+  var bar = $('.progress-top'), barRaf = 0;
+  addEventListener('scroll', function () {
+    if (barRaf) return;
+    barRaf = requestAnimationFrame(function () {
+      barRaf = 0;
+      var max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.setProperty('--sp', max > 0 ? (scrollY / max).toFixed(4) : 0);
+    });
+  }, { passive: true });
+
+  /* ---------- run looping animations only while on screen ---------- */
+  var animEls = $$('[data-anim]');
+  if ('IntersectionObserver' in window) {
+    var aio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('anim-on'); e.target.classList.remove('paused'); }
+        else e.target.classList.add('paused');
+      });
+    }, { threshold: 0.15 });
+    animEls.forEach(function (el) { el.classList.add('paused'); aio.observe(el); });
+  } else animEls.forEach(function (el) { el.classList.add('anim-on'); });
+
+  /* ---------- phone scene players (stand in for product videos) ---------- */
+  $$('[data-player]').forEach(function (pl) {
+    var scenes = $$('.scr', pl), idx = -1, timer = null, visible = false;
+    var cap = pl.dataset.cap ? document.getElementById(pl.dataset.cap) : null;
+    var stage = pl.closest('.stage'), fls = stage && pl.dataset.floats ? $$('.fl', stage) : [];
+    var caps = cap ? $$('.sr-only li', stage).map(function (li) { return li.textContent; }) : [];
+    function show(i) {
+      if (scenes.length === 1) {
+        scenes[0].classList.remove('on'); void scenes[0].offsetWidth;
+      }
+      scenes.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+      idx = i;
+      if (cap) {
+        cap.classList.remove('swap'); void cap.offsetWidth; cap.classList.add('swap');
+        $('b', cap).textContent = i + 1; $('span', cap).textContent = caps[i];
+      }
+      if (fls.length) {
+        if (i === 0) fls.forEach(function (f) { f.classList.remove('show'); });
+        var k = i === 2 ? 0 : i === 3 ? 1 : i === 4 ? 2 : -1;
+        if (k >= 0) {
+          if (matchMedia('(max-width:719px)').matches) fls.forEach(function (f) { f.classList.remove('show'); });
+          fls[k].classList.add('show');
+        }
+      }
+    }
+    function next() {
+      clearTimeout(timer);
+      if (!visible || document.hidden) return;
+      show((idx + 1) % scenes.length);
+      timer = setTimeout(next, +scenes[idx].dataset.d || 4500);
+    }
+    if (RM) { show(scenes.length > 2 ? 1 : 0); return; }
+    show(0); timer = setTimeout(next, +scenes[0].dataset.d || 4500);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        var was = visible; visible = es[0].isIntersecting;
+        if (visible && !was) { clearTimeout(timer); timer = setTimeout(next, +scenes[idx].dataset.d || 4500); }
+      }, { threshold: 0.25 }).observe(pl);
+    } else visible = true;
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && visible) { clearTimeout(timer); timer = setTimeout(next, 1200); } });
+  });
+
+  /* ---------- spotlight that follows the pointer on dark cards ---------- */
+  $$('.card').forEach(function (c) {
+    c.addEventListener('pointermove', function (ev) {
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+    });
+  });
 
   /* ---------- number animation ---------- */
   function animateNum(el, to, dur) {
@@ -896,7 +1263,7 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
   });
 
   /* ---------- calculator ---------- */
-  var cO = $('#c-orders'), cR = $('#c-reviews'), out = $('#c-silent'), ratio = $('#c-ratio'), barI = $('#c-bar'), used = false;
+  var cO = $('#c-orders'), cR = $('#c-reviews'), out = $('#c-silent'), ratio = $('#c-ratio'), dots = $$('#people i'), used = false;
   function clampInputs() {
     var o = Math.max(0, Math.min(1000000, Math.round(+cO.value || 0)));
     var r = Math.max(0, Math.min(o, Math.round(+cR.value || 0)));
@@ -906,7 +1273,8 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
     var v = clampInputs(), silent = v.o - v.r, pct = v.o ? Math.round(silent / v.o * 100) : 0;
     animateNum(out, silent, 600);
     ratio.textContent = pct;
-    barI.style.width = (v.o ? Math.max(2, v.r / v.o * 100) : 0) + '%';
+    var on = v.o ? Math.max(v.r ? 1 : 0, Math.round(v.r / v.o * 100)) : 0;
+    dots.forEach(function (d, i) { d.classList.toggle('on', i < on); });
     if (fromUser && !used) { used = true; track('calculator_used'); }
   }
   [cO, cR].forEach(function (inp) {
@@ -987,12 +1355,20 @@ dialog.modal[open]{animation:sheet .35s var(--ease)}
     // flow diagram draws itself as it scrolls through the viewport (not pinned)
     var flow = $('#flow'), line = $('.flow-line b', flow), nodes = $$('li', flow);
     var vertical = !matchMedia('(min-width:1024px)').matches;
+    nodes.forEach(function (n) { n.classList.remove('lit'); });
     gsap.set(line, vertical ? { scaleY: 0 } : { scaleX: 0 });
-    gsap.set(nodes, { autoAlpha: 0.25, y: 8 });
-    var ftl = gsap.timeline({ scrollTrigger: { trigger: flow, start: 'top 75%', end: 'bottom 60%', scrub: 0.5 } });
+    gsap.set(nodes, { autoAlpha: 0.3, y: 10 });
+    var ftl = gsap.timeline({
+      scrollTrigger: { trigger: flow, start: 'top 78%', end: 'bottom 55%', scrub: 0.5 },
+      onUpdate: function () {
+        var pr = ftl.progress();
+        nodes.forEach(function (n, i) { n.classList.toggle('lit', pr >= i / (nodes.length - 1) * 0.92); });
+      }
+    });
     ftl.to(line, vertical ? { scaleY: 1, ease: 'none', duration: nodes.length } : { scaleX: 1, ease: 'none', duration: nodes.length }, 0);
     nodes.forEach(function (n, i) { ftl.to(n, { autoAlpha: 1, y: 0, duration: 0.6 }, i * 0.95); });
   }
+  $$('#flow li').forEach(function (n) { n.classList.add('lit'); });
   if (window.gsap) initGsap();
   else window.addEventListener('load', initGsap);
 })();

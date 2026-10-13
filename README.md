@@ -25,7 +25,7 @@ In `content.json`:
 
 ## Media
 
-Every video and image is a labelled placeholder until you fill its paths under `media` in `content.json`. The brief and spec for each one are written inside its placeholder box.
+Until real files exist, every video slot plays a coded, looping animation of the product (phone scenes, print-to-box, dashboard). The moment you fill a slot's file paths under `media` in `content.json` and rebuild, the real video or image replaces the animation. The scene copy (names, product, messages) lives under `scenes`.
 
 | Key | Use | Spec |
 | --- | --- | --- |

@@ -9,42 +9,54 @@
     "SITE_URL": "https://reviewbuddie.com/",
     "FOUNDING_SPOTS": 50
   },
-
   "meta": {
     "title": "ReviewBuddie – More honest reviews for Indian marketplace sellers",
     "description": "ReviewBuddie turns a QR code in your box into warranty registration, product guides and a compliant review request. Built for Amazon & Flipkart sellers in India.",
     "og_image": "og-image.png"
   },
-
   "nav": {
     "links": [
-      { "label": "How it works", "href": "#how" },
-      { "label": "Features", "href": "#features" },
-      { "label": "FAQ", "href": "#faq" },
-      { "label": "Blog", "href": "/blog" }
+      {
+        "label": "How it works",
+        "href": "#how"
+      },
+      {
+        "label": "Features",
+        "href": "#features"
+      },
+      {
+        "label": "FAQ",
+        "href": "#faq"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      }
     ],
     "cta": "Get early access",
     "menu_label": "Menu",
     "close_label": "Close menu"
   },
-
   "cta": {
     "primary": "Get early access",
     "whatsapp": "Chat on WhatsApp",
     "reassure": "Free for founding sellers · No customer incentives · Built within marketplace rules"
   },
-
   "hero": {
     "eyebrow": "For Amazon, Flipkart, Myntra, Nykaa & FirstCry sellers",
     "h1": "Most of your customers never leave a review. Fix the reason, not the rating.",
     "sub": "ReviewBuddie turns a QR code on your box into warranty registration, product guides and a simple review request, so happy customers actually speak up."
   },
-
   "strip": {
     "label": "Built for sellers on",
-    "items": ["Amazon", "Flipkart", "Myntra", "Nykaa", "FirstCry"]
+    "items": [
+      "Amazon",
+      "Flipkart",
+      "Myntra",
+      "Nykaa",
+      "FirstCry"
+    ]
   },
-
   "problem": {
     "eyebrow": "Sound familiar?",
     "delivered_label": "Orders delivered",
@@ -55,10 +67,26 @@
     "h2": "Your customers aren't unhappy. They're just silent.",
     "sub": "Most buyers who like your product never say so. Nothing makes it easy for them.",
     "reasons": [
-      { "icon": "clock", "title": "They forget", "body": "By the time they've used the product, the order page is long gone." },
-      { "icon": "steps", "title": "It feels like effort", "body": "Open the app, find the order, scroll to the review box. Most stop halfway." },
-      { "icon": "pen", "title": "Writing is hard", "body": "They liked it, but don't know what to say or how to say it." },
-      { "icon": "map", "title": "They don't know where to go", "body": "Nobody showed them where their words would actually help other buyers." }
+      {
+        "icon": "clock",
+        "title": "They forget",
+        "body": "By the time they've used the product, the order page is long gone."
+      },
+      {
+        "icon": "steps",
+        "title": "It feels like effort",
+        "body": "Open the app, find the order, scroll to the review box. Most stop halfway."
+      },
+      {
+        "icon": "pen",
+        "title": "Writing is hard",
+        "body": "They liked it, but don't know what to say or how to say it."
+      },
+      {
+        "icon": "map",
+        "title": "They don't know where to go",
+        "body": "Nobody showed them where their words would actually help other buyers."
+      }
     ],
     "before_title": "Waiting for reviews",
     "before": [
@@ -73,45 +101,68 @@
       "One tap to the right review page"
     ]
   },
-
   "pick": {
     "eyebrow": "Is it for me?",
     "h2": "Which marketplace do you sell on?",
     "sub": "Tap yours to see where ReviewBuddie fits in.",
     "items": [
       {
-        "id": "amazon", "label": "Amazon",
+        "id": "amazon",
+        "label": "Amazon",
         "title": "Selling on Amazon India",
         "body": "Your customer's inbox is full of order emails. A QR insert reaches them in the one moment they're paying full attention: opening the box.",
-        "points": ["Warranty registration right at unboxing", "Setup and care guides before a question becomes a complaint", "A neutral review request linking straight to your product's review page"]
+        "points": [
+          "Warranty registration right at unboxing",
+          "Setup and care guides before a question becomes a complaint",
+          "A neutral review request linking straight to your product's review page"
+        ]
       },
       {
-        "id": "flipkart", "label": "Flipkart",
+        "id": "flipkart",
+        "label": "Flipkart",
         "title": "Selling on Flipkart",
         "body": "Most Flipkart buyers shop on their phone and rarely open an order again once it arrives. The QR brings them back to your product while it's still in their hands.",
-        "points": ["Works in the phone camera, no app to install", "Your guides and videos in the first minute of use", "A simple request to rate and review on Flipkart"]
+        "points": [
+          "Works in the phone camera, no app to install",
+          "Your guides and videos in the first minute of use",
+          "A simple request to rate and review on Flipkart"
+        ]
       },
       {
-        "id": "myntra", "label": "Myntra",
+        "id": "myntra",
+        "label": "Myntra",
         "title": "Selling on Myntra",
         "body": "Fit, fabric and care decide whether a fashion order stays or goes back. Show size and care guides first, then ask how it went.",
-        "points": ["Care and styling guides on the customer's phone", "Fewer \"how do I wash this?\" doubts", "A review request once they've actually worn it"]
+        "points": [
+          "Care and styling guides on the customer's phone",
+          "Fewer \"how do I wash this?\" doubts",
+          "A review request once they've actually worn it"
+        ]
       },
       {
-        "id": "nykaa", "label": "Nykaa",
+        "id": "nykaa",
+        "label": "Nykaa",
         "title": "Selling on Nykaa",
         "body": "Beauty buyers want to know how to use a product properly before they judge it. Give them the how-to first, then a simple review request.",
-        "points": ["How-to-use videos right after scanning", "Ingredient and routine guides in one place", "A request timed for after they've tried it"]
+        "points": [
+          "How-to-use videos right after scanning",
+          "Ingredient and routine guides in one place",
+          "A request timed for after they've tried it"
+        ]
       },
       {
-        "id": "firstcry", "label": "FirstCry",
+        "id": "firstcry",
+        "label": "FirstCry",
         "title": "Selling on FirstCry",
         "body": "Parents are busy, and baby products come with questions. Warranty registration and short how-to videos help first. A gentle review request follows once they've used it.",
-        "points": ["Quick warranty registration for gear and gadgets", "Assembly and safety videos for tired parents", "A respectful, one-time review request"]
+        "points": [
+          "Quick warranty registration for gear and gadgets",
+          "Assembly and safety videos for tired parents",
+          "A respectful, one-time review request"
+        ]
       }
     ]
   },
-
   "how": {
     "eyebrow": "How it works",
     "h2": "How do I get more reviews on Amazon India without breaking the rules?",
@@ -138,27 +189,65 @@
     ],
     "flow_title": "What your customer goes through",
     "flow": [
-      { "icon": "box", "title": "Parcel delivered", "sub": "QR insert inside the box" },
-      { "icon": "qr", "title": "QR scanned", "sub": "Phone camera, no app" },
-      { "icon": "shield", "title": "Warranty registered", "sub": "Name, WhatsApp, order ID" },
-      { "icon": "play", "title": "Guide watched", "sub": "Your setup or care video" },
-      { "icon": "chat", "title": "Review requested", "sub": "One neutral, timely request" }
+      {
+        "icon": "box",
+        "title": "Parcel delivered",
+        "sub": "QR insert inside the box"
+      },
+      {
+        "icon": "qr",
+        "title": "QR scanned",
+        "sub": "Phone camera, no app"
+      },
+      {
+        "icon": "shield",
+        "title": "Warranty registered",
+        "sub": "Name, WhatsApp, order ID"
+      },
+      {
+        "icon": "play",
+        "title": "Guide watched",
+        "sub": "Your setup or care video"
+      },
+      {
+        "icon": "chat",
+        "title": "Review requested",
+        "sub": "One neutral, timely request"
+      }
     ]
   },
-
   "features": {
     "eyebrow": "Features",
     "h2": "What happens after the parcel arrives",
     "sub": "Four tools that work together, all from one QR code.",
     "swipe_hint": "Swipe to see all four",
     "cards": [
-      { "title": "Warranty registration", "body": "A short form on the customer's phone: name, WhatsApp number and order ID. Every registration shows up in your dashboard.", "media": "how2" },
-      { "title": "Product education", "body": "Add setup videos, user manuals and care guides. Customers see them right after scanning, when questions come up.", "media": "feat_education" },
-      { "title": "Review requests", "body": "One neutral request at the right time, linking straight to your product's review page on the marketplace they bought from. Every customer gets the same request.", "media": "how3" },
-      { "title": "Seller dashboard", "body": "See scans, warranty registrations, guide views and review requests by product and by marketplace.", "media": "feat_dashboard" }
+      {
+        "title": "Warranty registration",
+        "body": "A short form on the customer's phone: name, WhatsApp number and order ID. Every registration shows up in your dashboard.",
+        "media": "how2",
+        "anim": "warranty"
+      },
+      {
+        "title": "Product education",
+        "body": "Add setup videos, user manuals and care guides. Customers see them right after scanning, when questions come up.",
+        "media": "feat_education",
+        "anim": "guide"
+      },
+      {
+        "title": "Review requests",
+        "body": "One neutral request at the right time, linking straight to your product's review page on the marketplace they bought from. Every customer gets the same request.",
+        "media": "how3",
+        "anim": "request"
+      },
+      {
+        "title": "Seller dashboard",
+        "body": "See scans, warranty registrations, guide views and review requests by product and by marketplace.",
+        "media": "feat_dashboard",
+        "anim": "dashboard"
+      }
     ]
   },
-
   "trust": {
     "eyebrow": "Who's behind this?",
     "h2": "Built by sellers who ship every day",
@@ -176,19 +265,45 @@
     "founding_body": "The first 50 sellers get early pricing and personal setup help on WhatsApp. In return, we ask for honest feedback on what works and what doesn't.",
     "founding_cta": "Apply as a founding seller"
   },
-
   "samples": {
     "header": "Sample reviews — layout preview",
     "note": "These are placeholders to test the layout. They are not real sellers.",
     "badge": "Sample",
     "items": [
-      { "initial": "A", "name": "Seller A", "city": "Jaipur", "category": "Home décor", "marketplace": "Amazon", "quote": "Setup was simple. We printed the insert and had it in boxes the same week." },
-      { "initial": "B", "name": "Seller B", "city": "Surat", "category": "Ethnic wear", "marketplace": "Myntra", "quote": "Customers open the care guide before washing. We finally hear from people who bought from us." },
-      { "initial": "C", "name": "Seller C", "city": "Pune", "category": "Baby care", "marketplace": "FirstCry", "quote": "Parents register the warranty and watch the assembly video first. More of them answer the review request now." },
-      { "initial": "D", "name": "Seller D", "city": "Kochi", "category": "Skincare", "marketplace": "Nykaa", "quote": "It feels like a service for the customer, not a push for reviews. People respond to that." }
+      {
+        "initial": "A",
+        "name": "Seller A",
+        "city": "Jaipur",
+        "category": "Home décor",
+        "marketplace": "Amazon",
+        "quote": "Setup was simple. We printed the insert and had it in boxes the same week."
+      },
+      {
+        "initial": "B",
+        "name": "Seller B",
+        "city": "Surat",
+        "category": "Ethnic wear",
+        "marketplace": "Myntra",
+        "quote": "Customers open the care guide before washing. We finally hear from people who bought from us."
+      },
+      {
+        "initial": "C",
+        "name": "Seller C",
+        "city": "Pune",
+        "category": "Baby care",
+        "marketplace": "FirstCry",
+        "quote": "Parents register the warranty and watch the assembly video first. More of them answer the review request now."
+      },
+      {
+        "initial": "D",
+        "name": "Seller D",
+        "city": "Kochi",
+        "category": "Skincare",
+        "marketplace": "Nykaa",
+        "quote": "It feels like a service for the customer, not a push for reviews. People respond to that."
+      }
     ]
   },
-
   "calc": {
     "eyebrow": "Free calculator",
     "h2": "How many reviews are you missing?",
@@ -203,35 +318,56 @@
     "lead_button": "Send it to me",
     "lead_done": "Done. We'll send your report and the checklist shortly."
   },
-
   "faq": {
     "eyebrow": "FAQ",
     "h2": "Questions sellers ask before they start",
     "items": [
-      { "q": "Is this allowed by Amazon?", "a": "ReviewBuddie is built around Amazon's customer review rules. Every customer gets the same neutral request, nobody is offered anything in return, and we never filter who gets asked. Marketplace policies change, so we keep our flows up to date, and we suggest you also check the latest guidelines in Seller Central." },
-      { "q": "Do you give customers incentives for reviews?", "a": "No, never. No discounts, gifts, cashback or free products in exchange for a review. Warranty registration and product guides are part of the product experience, and customers get them whether or not they ever leave a review." },
-      { "q": "Do customers need an app?", "a": "No. They scan the QR code with their phone camera and everything opens in the browser. No app download, no login." },
-      { "q": "Which marketplaces do you support?", "a": "Amazon, Flipkart, Myntra, Nykaa and FirstCry. The review request takes customers straight to your product's review page on the marketplace they bought from." },
-      { "q": "How much does it cost?", "a": "ReviewBuddie is free for founding sellers during early access. We'll share pricing well before launch, and you'll never be charged without agreeing to it first." },
-      { "q": "How long does setup take?", "a": "Add your product, upload your guides, print the QR insert and put it in your boxes. Founding sellers get personal setup help from our team on WhatsApp." },
-      { "q": "Is customer data safe?", "a": "Customer details collected through warranty registration belong to you. We don't sell or share them with anyone, and customers can ask for their data to be deleted at any time." },
-      { "q": "Can I see a demo?", "a": "Yes. Message us on WhatsApp and we'll walk you through it on a short call." }
+      {
+        "q": "Is this allowed by Amazon?",
+        "a": "ReviewBuddie is built around Amazon's customer review rules. Every customer gets the same neutral request, nobody is offered anything in return, and we never filter who gets asked. Marketplace policies change, so we keep our flows up to date, and we suggest you also check the latest guidelines in Seller Central."
+      },
+      {
+        "q": "Do you give customers incentives for reviews?",
+        "a": "No, never. No discounts, gifts, cashback or free products in exchange for a review. Warranty registration and product guides are part of the product experience, and customers get them whether or not they ever leave a review."
+      },
+      {
+        "q": "Do customers need an app?",
+        "a": "No. They scan the QR code with their phone camera and everything opens in the browser. No app download, no login."
+      },
+      {
+        "q": "Which marketplaces do you support?",
+        "a": "Amazon, Flipkart, Myntra, Nykaa and FirstCry. The review request takes customers straight to your product's review page on the marketplace they bought from."
+      },
+      {
+        "q": "How much does it cost?",
+        "a": "ReviewBuddie is free for founding sellers during early access. We'll share pricing well before launch, and you'll never be charged without agreeing to it first."
+      },
+      {
+        "q": "How long does setup take?",
+        "a": "Add your product, upload your guides, print the QR insert and put it in your boxes. Founding sellers get personal setup help from our team on WhatsApp."
+      },
+      {
+        "q": "Is customer data safe?",
+        "a": "Customer details collected through warranty registration belong to you. We don't sell or share them with anyone, and customers can ask for their data to be deleted at any time."
+      },
+      {
+        "q": "Can I see a demo?",
+        "a": "Yes. Message us on WhatsApp and we'll walk you through it on a short call."
+      }
     ]
   },
-
   "final": {
     "h2": "Every delivered order is a chance to hear from your customer.",
     "hinglish": "Abse reviews ka tension khatam."
   },
-
-  "sticky": { "note": "Free for founding sellers" },
-
+  "sticky": {
+    "note": "Free for founding sellers"
+  },
   "cookie": {
     "text": "We use one analytics cookie to see which parts of this page help sellers.",
     "accept": "OK",
     "decline": "No thanks"
   },
-
   "form": {
     "title": "Get early access",
     "sub": "Founding sellers get early pricing and personal setup help.",
@@ -239,70 +375,136 @@
     "whatsapp": "WhatsApp number",
     "whatsapp_hint": "10-digit mobile number",
     "marketplace": "Main marketplace",
-    "marketplace_options": ["Amazon", "Flipkart", "Myntra", "Nykaa", "FirstCry", "More than one"],
+    "marketplace_options": [
+      "Amazon",
+      "Flipkart",
+      "Myntra",
+      "Nykaa",
+      "FirstCry",
+      "More than one"
+    ],
     "orders": "Orders per month",
-    "orders_options": ["Under 100", "100 – 500", "500 – 2,000", "2,000 – 10,000", "10,000+"],
+    "orders_options": [
+      "Under 100",
+      "100 – 500",
+      "500 – 2,000",
+      "2,000 – 10,000",
+      "10,000+"
+    ],
     "submit": "Request early access",
     "consent": "We'll only use your number to contact you about ReviewBuddie.",
     "done_title": "You're on the list",
     "done_body": "Thanks! We'll message you on WhatsApp soon.",
     "close": "Close"
   },
-
   "footer": {
     "tagline": "The post-purchase experience platform for Indian marketplace sellers.",
     "company": "A Havels Group company.",
     "links": [
-      { "label": "Blog", "href": "/blog" },
-      { "label": "Amazon India review policy guide", "href": "/guides/amazon-india-review-policy" },
-      { "label": "ReviewBuddie vs GetReviews", "href": "/compare/getreviews" },
-      { "label": "ReviewBuddie vs FeedbackFive", "href": "/compare/feedbackfive" },
-      { "label": "ReviewBuddie vs SageMailer", "href": "/compare/sagemailer" },
-      { "label": "Privacy", "href": "/privacy" },
-      { "label": "Terms", "href": "/terms" },
-      { "label": "Contact", "href": "/contact" }
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Amazon India review policy guide",
+        "href": "/guides/amazon-india-review-policy"
+      },
+      {
+        "label": "ReviewBuddie vs GetReviews",
+        "href": "/compare/getreviews"
+      },
+      {
+        "label": "ReviewBuddie vs FeedbackFive",
+        "href": "/compare/feedbackfive"
+      },
+      {
+        "label": "ReviewBuddie vs SageMailer",
+        "href": "/compare/sagemailer"
+      },
+      {
+        "label": "Privacy",
+        "href": "/privacy"
+      },
+      {
+        "label": "Terms",
+        "href": "/terms"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
     ],
     "legal": "ReviewBuddie is not affiliated with Amazon, Flipkart, Myntra, Nykaa or FirstCry."
   },
-
   "media": {
     "hero": {
-      "type": "video", "name": "hero",
+      "type": "video",
+      "name": "hero",
       "label": "Hero video",
       "spec": "Mobile cut 4:5 · Desktop cut 16:9 · 8–10s loop · ≤1MB · WebM + MP4",
       "brief": "Parcel opens → QR scan → warranty registered → how-to video → gentle review request → customer writes with AI help. On-screen captions, no sound.",
-      "ratio_mb": "4 / 5", "ratio_dt": "16 / 9",
-      "src_mb_webm": "", "src_mb_mp4": "", "src_dt_webm": "", "src_dt_mp4": "",
-      "poster_mb": "", "poster_dt": "", "captions": ""
+      "ratio_mb": "4 / 5",
+      "ratio_dt": "16 / 9",
+      "src_mb_webm": "",
+      "src_mb_mp4": "",
+      "src_dt_webm": "",
+      "src_dt_mp4": "",
+      "poster_mb": "",
+      "poster_dt": "",
+      "captions": "",
+      "anim": "journey"
     },
     "how1": {
-      "type": "video", "name": "how_qr_insert", "phone": true,
+      "type": "video",
+      "name": "how_qr_insert",
+      "phone": true,
       "label": "Step 1 video",
       "spec": "9:16 phone screen · 6–8s loop · ≤600KB",
       "brief": "Seller prints the QR insert and drops it into a product box. Caption: \"Print once. Pack as usual.\"",
-      "src_webm": "", "src_mp4": "", "poster": "", "captions": ""
+      "src_webm": "",
+      "src_mp4": "",
+      "poster": "",
+      "captions": "",
+      "anim": "print"
     },
     "how2": {
-      "type": "video", "name": "how_warranty_guide", "phone": true,
+      "type": "video",
+      "name": "how_warranty_guide",
+      "phone": true,
       "label": "Step 2 video",
       "spec": "9:16 phone screen · 6–8s loop · ≤600KB",
       "brief": "Customer scans the QR, fills a 3-field warranty form, then plays a how-to video. Caption: \"Warranty registered.\"",
-      "src_webm": "", "src_mp4": "", "poster": "", "captions": ""
+      "src_webm": "",
+      "src_mp4": "",
+      "poster": "",
+      "captions": "",
+      "anim": "scan,warranty,guide"
     },
     "how3": {
-      "type": "video", "name": "how_review_request", "phone": true,
+      "type": "video",
+      "name": "how_review_request",
+      "phone": true,
       "label": "Step 3 video",
       "spec": "9:16 phone screen · 6–8s loop · ≤600KB",
       "brief": "Days later: a WhatsApp-style message asks how the product is. Customer picks their own rating, taps a few points, AI drafts it, customer edits and taps \"Post on Amazon\".",
-      "src_webm": "", "src_mp4": "", "poster": "", "captions": ""
+      "src_webm": "",
+      "src_mp4": "",
+      "poster": "",
+      "captions": "",
+      "anim": "request,rate,draft"
     },
     "feat_education": {
-      "type": "image", "phone": true,
+      "type": "image",
+      "phone": true,
       "label": "UI screenshot",
       "spec": "9:16 phone screen · AVIF + WebP · 720×1280",
       "brief": "Customer's product guide screen: setup video thumbnail, \"User manual (PDF)\", \"Care tips\" list.",
       "alt": "Product guide screen showing a setup video, user manual and care tips",
-      "src_avif": "", "src_webp": "", "width": 720, "height": 1280
+      "src_avif": "",
+      "src_webp": "",
+      "width": 720,
+      "height": 1280,
+      "anim": "guide"
     },
     "feat_dashboard": {
       "type": "image",
@@ -310,7 +512,11 @@
       "spec": "4:3 browser frame · AVIF + WebP · 1200×900",
       "brief": "Seller dashboard: scans, warranty registrations, guide views and review requests per product, filter by marketplace.",
       "alt": "ReviewBuddie seller dashboard with scans, registrations and review requests per product",
-      "src_avif": "", "src_webp": "", "width": 1200, "height": 900
+      "src_avif": "",
+      "src_webp": "",
+      "width": 1200,
+      "height": 900,
+      "anim": "dashboard"
     },
     "founder": {
       "type": "image",
@@ -318,7 +524,88 @@
       "spec": "1:1 · AVIF + WebP · 480×480 · natural light, real workspace",
       "brief": "[FOUNDER NAME] at the Havels Group warehouse or desk, with real product boxes in view.",
       "alt": "[FOUNDER NAME], founder of Havels Group",
-      "src_avif": "", "src_webp": "", "width": 480, "height": 480
+      "src_avif": "",
+      "src_webp": "",
+      "width": 480,
+      "height": 480
     }
+  },
+  "scenes": {
+    "brand": "Brontix",
+    "product": "WiFi Router X200",
+    "customer": "Priya Sharma",
+    "first": "Priya",
+    "city": "Pune",
+    "whatsapp": "98765 43210",
+    "order": "402-8815563-2290",
+    "captions": [
+      "The customer scans the QR in the box",
+      "They register their warranty",
+      "They watch your setup guide",
+      "Days later, one gentle review request",
+      "They pick their own rating and points",
+      "AI tidies up their words. They post it."
+    ],
+    "scan_hint": "Point your camera at the QR code",
+    "scan_toast": "Brontix · WiFi Router X200",
+    "warranty_title": "Register your warranty",
+    "warranty_btn": "Register warranty",
+    "warranty_done": "12-month warranty active",
+    "guide_title": "Setup guide",
+    "guide_chapters": [
+      "Unbox and check parts",
+      "Plug in and power on",
+      "Connect the app"
+    ],
+    "request_day": "3 days later",
+    "request_msg": "Hi Priya! How is your WiFi Router X200 working out? If you have a minute, sharing your experience on Amazon helps other buyers decide.",
+    "request_btns": [
+      "Share my experience",
+      "I need help"
+    ],
+    "rate_title": "How would you rate it?",
+    "rate_chips": [
+      "Easy setup",
+      "Good range",
+      "Bit pricey",
+      "Clear guide"
+    ],
+    "draft_title": "Your review, in your words",
+    "draft": "Setup was easy and the range covers my whole flat. A bit pricey, but the setup video helped a lot.",
+    "draft_note": "Made from your rating and points. Edit anything.",
+    "draft_btn": "Copy & post on Amazon",
+    "draft_done": "Opening Amazon review page…",
+    "floats": [
+      "Warranty registered · Priya, Pune",
+      "Setup guide watched · 2:14",
+      "Review requested · Day 3"
+    ],
+    "print_title": "QR insert · WiFi Router X200",
+    "print_btn": "Print insert",
+    "print_done": "Packed as usual",
+    "dash_note": "Demo data",
+    "dash_kpis": [
+      [
+        "Scans",
+        128
+      ],
+      [
+        "Warranties",
+        96
+      ],
+      [
+        "Guide views",
+        143
+      ],
+      [
+        "Requests sent",
+        88
+      ]
+    ],
+    "dash_feed": [
+      "Priya · Pune registered a warranty",
+      "Rahul · Delhi watched the setup guide",
+      "Anjali · Jaipur got a review request"
+    ]
   }
 }
