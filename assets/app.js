@@ -250,6 +250,91 @@
   }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
   $$(".reveal").forEach(function (el) { rio.observe(el); });
 
+  /* ---------- 01 core flow: one screen plays each step, the list lights up in sync ---------- */
+  var cf = $("[data-cf]");
+  if (cf) (function () {
+    var tabs = $$(".cf-step", cf), scenes = $$(".cf-scene", cf), url = $("[data-cf-url]", cf);
+    var navs = $$(".cf-nav[data-n]", cf), main = $(".cf-main", cf), cursor = $(".cf-cursor", cf);
+    var typed = $(".cf-typed", cf), launch = $(".cf-launch", cf), copy = $(".cf-link b", cf);
+    var base = scenes.map(function (s) { return s.className; });
+    $(".cf-card", cf).setAttribute("data-cur", "card");
+    var setText = function (el, t) { return function () { el.textContent = t; }; };
+    var SC = [
+      { dur: 6400, url: "products/new", nav: 1, steps: [[300, "cur:input"], [900, "t1"], [1000, "type"], [2100, "t2"], [2700, "t3"], [4300, "t4"]] },
+      { dur: 7000, url: "promotions/new", nav: 2, steps: [[300, "t1"], [1500, "cur:card"], [2200, "t2"], [3000, "t3"], [4200, "t4"], [5000, "t5"], [5600, "t6"]] },
+      { dur: 6600, url: "campaigns/new", nav: 3, steps: [[300, "t1"], [1300, "t2"], [1900, "cur:launch"], [2600, "t3"], [2900, "t4"], [2900, setText(launch, "Campaign live ✓")], [3300, "t5"]] },
+      { dur: 6400, url: "campaigns/spin-mop", nav: 3, steps: [[300, "cur:copy"], [1000, "t1"], [1000, setText(copy, "Copied ✓")], [1600, "t2"], [2600, "t3"], [3600, "t4"]] }
+    ];
+    var cur = 0, timers = [], visible = false;
+    var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
+    function clear() { timers.forEach(clearTimeout); timers = []; }
+
+    function cursorTo(name, scene) {
+      var t = $('[data-cur="' + name + '"]', scene);
+      if (!t) return;
+      var m = main.getBoundingClientRect(), r = t.getBoundingClientRect();
+      cursor.style.left = (r.left - m.left + r.width * 0.62) + "px";
+      cursor.style.top = (r.top - m.top + r.height * 0.55) + "px";
+      later(function () { cursor.classList.remove("click"); void cursor.offsetWidth; cursor.classList.add("click"); }, 720);
+    }
+    function type(el) {
+      var full = el.getAttribute("data-type"), k = 0;
+      el.classList.add("typing");
+      (function step() {
+        el.textContent = full.slice(0, ++k);
+        if (k < full.length) later(step, 38 + Math.random() * 30);
+        else later(function () { el.classList.remove("typing"); }, 300);
+      })();
+    }
+    function run(action, scene) {
+      if (typeof action === "function") return action();
+      if (action === "type") return reduce ? (typed.textContent = typed.getAttribute("data-type")) : type(typed);
+      if (action.indexOf("cur:") === 0) return reduce || cursorTo(action.slice(4), scene);
+      scene.classList.add(action);
+    }
+
+    function go(k) {
+      clear();
+      cur = k;
+      var sc = SC[k], scene = scenes[k];
+      tabs.forEach(function (t, n) {
+        var on = n === k, bar = $(".cf-step__bar", t);
+        t.setAttribute("aria-selected", on);
+        t.tabIndex = on ? 0 : -1;
+        t.classList.toggle("done", n < k);
+        bar.classList.remove("run");
+        if (on && !reduce) { t.style.setProperty("--dur", sc.dur + "ms"); void bar.offsetWidth; bar.classList.add("run"); }
+      });
+      scenes.forEach(function (s, n) { if (n === k) s.className = base[n] + " on"; else s.classList.remove("on"); });
+      void scene.offsetWidth;
+      typed.textContent = ""; launch.textContent = "Launch campaign"; copy.textContent = "Copy";
+      url.textContent = sc.url;
+      url.classList.remove("flash"); void url.offsetWidth; url.classList.add("flash");
+      navs.forEach(function (n) { n.classList.toggle("on", +n.getAttribute("data-n") === sc.nav); });
+      cursor.style.left = "78%"; cursor.style.top = "112%";
+      if (reduce) { sc.steps.forEach(function (s) { run(s[1], scene); }); return; }
+      sc.steps.forEach(function (s) { later(function () { run(s[1], scene); }, s[0]); });
+      later(function () { if (visible) go((cur + 1) % SC.length); }, sc.dur);
+    }
+
+    tabs.forEach(function (t, k) {
+      t.addEventListener("click", function () { go(k); track("core_flow_step", { step: k + 1 }); });
+      t.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        go((cur + d + tabs.length) % tabs.length);
+        tabs[cur].focus();
+      });
+    });
+    new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible) go(cur); else clear();
+    }, { threshold: 0.35 }).observe(cf);
+    go(0);
+    clear();
+  })();
+
   /* ---------- 02 film strip: lift one phone at a time, dots on mobile ---------- */
   var film = $("[data-film]");
   if (film) {

@@ -175,41 +175,105 @@
   </div>
 </section>
 
-<!-- ================= 01 CORE FLOW · assembly line ================= -->
+<!-- ================= 01 CORE FLOW · one screen, steps light up in sync ================= -->
 <section class="grp" id="core">
   <div class="wrap">
     <header class="grp__head">
       <p class="eyebrow reveal"><span class="eyebrow__n">01</span> Core flow</p>
       <h2 class="h2 reveal">Live in minutes.</h2>
-      <p class="lead reveal">Add a product, pick a reward, launch. ReviewBuddie prints the insert and makes the link. These are the real screens.</p>
+      <p class="lead reveal">Add a product, pick a reward, launch. Watch it happen in the panel.</p>
     </header>
-    <div class="line">
-      <article class="line__step reveal">
-        <span class="line__n">1</span>
-        <div class="shot"><div class="win__top"><i></i><i></i><i></i><span>products/new</span></div><img src="assets/shots/panel-product-add.webp" alt="Add New Product screen: product type, target country and marketplace setup" width="1600" height="1000" loading="lazy"></div>
-        <h3>Add product by link</h3>
-        <p>Paste an ASIN, Shopify URL or any listing link. Title and images come in by themselves. AI suggests review tags.</p>
-      </article>
-      <article class="line__step reveal">
-        <span class="line__n">2</span>
-        <div class="shot"><div class="win__top"><i></i><i></i><i></i><span>promotions/new</span></div><img src="assets/shots/panel-promo-create.webp" alt="Create Promotion screen with reward type, animation picker and live claim card preview" width="1600" height="1000" loading="lazy"></div>
-        <h3>Create a promotion</h3>
-        <p>Warranty, cashback, coupon, gift card, download, giveaway or your own. A branded, animated claim card comes with it.</p>
-      </article>
-      <article class="line__step reveal">
-        <span class="line__n">3</span>
-        <div class="shot"><div class="win__top"><i></i><i></i><i></i><span>campaigns/new</span></div><img src="assets/shots/panel-campaign-add.webp" alt="Add New Campaign screen linking a promotion to products" width="1600" height="1000" loading="lazy"></div>
-        <h3>Launch a campaign</h3>
-        <p>Product + promotion = campaign. Pause, resume or add products anytime.</p>
-      </article>
-      <aside class="line__out reveal">
-        <div class="insert-card">
-          <svg class="qr"><use href="#qr"/></svg>
-          <b>Scan to claim</b><small>Spin Mop · Warranty</small>
+
+    <div class="cf" data-cf>
+      <div class="cf__list" role="tablist" aria-label="Core flow steps">
+        <button class="cf-step" role="tab" aria-selected="true" aria-controls="cf-screen"><span class="cf-step__n">1</span><span class="cf-step__t">Add product by link</span>
+          <span class="cf-step__b"><span class="cf-step__d">Paste an Amazon ASIN, Shopify URL or any listing link. Title and images come in by themselves, one product maps to many marketplaces, and AI suggests review tags.</span><span class="cf-step__how">Products → Add product → paste link</span></span><i class="cf-step__bar"></i></button>
+        <button class="cf-step" role="tab" aria-selected="false" aria-controls="cf-screen"><span class="cf-step__n">2</span><span class="cf-step__t">Create a promotion</span>
+          <span class="cf-step__b"><span class="cf-step__d">Warranty, extended warranty, cashback, coupon, gift card, download, giveaway or your own. Promotion Studio turns it into a branded, animated claim card.</span><span class="cf-step__how">Promotions → New → pick a reward → set claim rule</span></span><i class="cf-step__bar"></i></button>
+        <button class="cf-step" role="tab" aria-selected="false" aria-controls="cf-screen"><span class="cf-step__n">3</span><span class="cf-step__t">Launch a campaign</span>
+          <span class="cf-step__b"><span class="cf-step__d">Product + promotion = campaign. You get a print-ready QR insert for the box. Pause, resume or add products anytime.</span><span class="cf-step__how">Campaigns → New → product + promotion → launch</span></span><i class="cf-step__bar"></i></button>
+        <button class="cf-step" role="tab" aria-selected="false" aria-controls="cf-screen"><span class="cf-step__n">4</span><span class="cf-step__t">Share the link</span>
+          <span class="cf-step__b"><span class="cf-step__d">Same funnel without a printed insert. Paste it in WhatsApp, email, SMS, order messages or your Instagram bio. Works for services and digital sellers too.</span><span class="cf-step__how">Campaign → Copy link → paste anywhere</span></span><i class="cf-step__bar"></i></button>
+      </div>
+
+      <div class="cf__screen reveal" id="cf-screen" role="tabpanel" aria-label="Animated demo of the ReviewBuddie panel">
+        <div class="win__top"><i></i><i></i><i></i><span>app.reviewbuddie.com/<b data-cf-url>products/new</b></span></div>
+        <div class="cf-body">
+          <aside class="cf-side" aria-hidden="true">
+            <span class="cf-side__logo"><svg viewBox="0 0 298 306"><g fill="#0096DB"><path d="M0 0h145v83H0z"/><path d="M145 0h48a101.5 101.5 0 0 1 0 203h-48z"/><path d="M0 120h76v75H0z"/><path d="M76 195h77v77H76z"/><path d="M190 203h36a72 72 0 0 1 72 72v31H190z"/></g></svg>reviewbuddie</span>
+            <span class="cf-side__lbl">Set up in 3 steps</span>
+            <span class="cf-nav" data-n="1"><i></i>Products<em>1</em></span>
+            <span class="cf-nav" data-n="2"><i></i>Promotions<em>2</em></span>
+            <span class="cf-nav" data-n="3"><i></i>Campaigns<em>3</em></span>
+            <span class="cf-side__lbl">Customers</span>
+            <span class="cf-nav"><i></i>Claim Center</span>
+            <span class="cf-nav"><i></i>Customers</span>
+          </aside>
+          <div class="cf-main" aria-hidden="true">
+
+            <!-- 1 · add product -->
+            <div class="cf-scene cf-s1">
+              <p class="cf-h">Add a product</p>
+              <div class="cf-input" data-cur="input"><span class="cf-input__ico"></span><span class="cf-input__ph">Paste an ASIN, Shopify URL or listing link</span><span class="cf-typed" data-type="amazon.in/dp/B0CX7Q2M9K"></span><span class="cf-input__go">Fetching…</span></div>
+              <div class="cf-prod">
+                <span class="cf-prod__img"><svg viewBox="0 0 64 64"><rect x="14" y="30" width="36" height="26" rx="5" fill="#7FB6D9"/><rect x="18" y="26" width="28" height="6" rx="3" fill="#A8D0EA"/><path d="M32 6v24" stroke="#46566A" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="30" r="6" fill="#E8EEF4"/></svg></span>
+                <span class="cf-prod__t"><b>Spin Mop Pro · 360° bucket set</b><small>Home &amp; Kitchen · 4 images · ₹1,299</small>
+                  <span class="cf-mk"><span class="mk--amz">amazon</span><span class="mk--fk">Flipkart</span><span class="mk--sh">shopify</span><span class="cf-mk__more">+2</span></span></span>
+              </div>
+              <div class="cf-tags"><small>✦ AI-suggested review tags</small><span>Easy to assemble</span><span>360° wringer</span><span>Dries floors fast</span></div>
+            </div>
+
+            <!-- 2 · create promotion -->
+            <div class="cf-scene cf-s2">
+              <p class="cf-h">Pick a reward</p>
+              <div class="cf-fan">
+                <span class="cf-card" style="--i:0"><i>🛡</i>Warranty</span>
+                <span class="cf-card" style="--i:1"><i>⏳</i>Extended warranty</span>
+                <span class="cf-card" style="--i:2"><i>₹</i>Cashback</span>
+                <span class="cf-card" style="--i:3"><i>%</i>Coupon</span>
+                <span class="cf-card" style="--i:4"><i>🎁</i>Gift card</span>
+                <span class="cf-card" style="--i:5"><i>★</i>Giveaway</span>
+              </div>
+              <div class="cf-claim">
+                <span class="cf-claim__brand"><b>B</b>Brontix</span>
+                <span class="cf-claim__h">Secure your <em>purchase!</em></span>
+                <svg class="cf-claim__shield" viewBox="0 0 40 46"><path d="M20 2 37 8v14c0 11-7 18-17 22C10 40 3 33 3 22V8z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="m12 23 6 6 11-12" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="cf-claim__btn">Claim my warranty</span>
+                <span class="cf-claim__dots"><i></i><i></i><i></i></span>
+              </div>
+              <p class="cf-rule">Claim rule: <b>review &amp; rating</b> · never tied to stars</p>
+            </div>
+
+            <!-- 3 · launch campaign -->
+            <div class="cf-scene cf-s3">
+              <p class="cf-h">Launch a campaign</p>
+              <div class="cf-join">
+                <span class="cf-tile cf-tile--p"><svg viewBox="0 0 64 64"><rect x="14" y="30" width="36" height="26" rx="5" fill="#7FB6D9"/><rect x="18" y="26" width="28" height="6" rx="3" fill="#A8D0EA"/><path d="M32 6v24" stroke="#46566A" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="30" r="6" fill="#E8EEF4"/></svg>Spin Mop Pro</span>
+                <span class="cf-plus">+</span>
+                <span class="cf-tile cf-tile--r"><i>🛡</i>12-month warranty</span>
+              </div>
+              <span class="cf-launch" data-cur="launch">Launch campaign</span>
+              <div class="cf-print">
+                <span class="cf-slot"></span>
+                <div class="cf-paper"><svg class="qr"><use href="#qr"/></svg><b>Scan to claim</b><small>Spin Mop Pro · Warranty</small></div>
+              </div>
+            </div>
+
+            <!-- 4 · share link -->
+            <div class="cf-scene cf-s4">
+              <p class="cf-h">Share the link</p>
+              <div class="cf-link"><span>reviewbuddie.link/spin-mop</span><b data-cur="copy">Copy</b></div>
+              <div class="cf-dest">
+                <div class="cf-d cf-d--wa"><span class="cf-d__h">WhatsApp</span><p>Thanks for your order! Register your warranty here: <u>reviewbuddie.link/spin-mop</u></p></div>
+                <div class="cf-d cf-d--mail"><span class="cf-d__h">Email</span><p><b>Your Spin Mop is on its way</b> Activate your 12-month warranty: <u>reviewbuddie.link/spin-mop</u></p></div>
+                <div class="cf-d cf-d--ig"><span class="cf-d__h">Instagram bio</span><p><b>@brontix.home</b> Bought from us? Claim your warranty 👇 <u>reviewbuddie.link/spin-mop</u></p></div>
+              </div>
+            </div>
+
+            <span class="cf-cursor"></span>
+          </div>
         </div>
-        <div class="link-pill"><span>reviewbuddie.link/spin-mop</span><button type="button" data-copy="https://reviewbuddie.link/spin-mop">Copy</button></div>
-        <p>Print the insert for the box, or share the link on WhatsApp, email, SMS or your Instagram bio. Works for services too.</p>
-      </aside>
+      </div>
     </div>
   </div>
 </section>
