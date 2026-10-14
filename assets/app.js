@@ -31,7 +31,7 @@
     }, { threshold: threshold || 0.4 }).observe(el);
   }
   // timeline helper: [[delay, fn], ...], optionally looped; returns cancel
-  var PACE = 0.72; // < 1 speeds every demo up
+  var PACE = 0.79; // < 1 speeds every demo up
   function timeline(steps, loopAfter) {
     var timers = [], alive = true;
     (function run() {
@@ -74,11 +74,11 @@
 
   /* ---------- hero "video" ---------- */
   var HERO = [
-    { dur: 2300, cap: "Customer scans your QR. Your page opens, no app.", tap: [50, 75], feed: ["QR scanned", "Spin Mop · insert in the box", "qr"] },
-    { dur: 2500, cap: "They pick where they bought and watch your setup video.", tap: [50, 83], feed: ["Routed to Amazon", "Setup video watched", "ok"] },
-    { dur: 2300, cap: "They rate honestly. Feedback comes to you privately.", tap: [64, 51], feed: ["Private feedback · 4★", "“Easy to assemble”", "ok"] },
-    { dur: 2600, cap: "AI helps them put their experience into words.", tap: [80, 89], feed: ["Review drafted", "Edited by the customer", "ai"] },
-    { dur: 2900, cap: "They post it on Amazon. The claim lands in your Claim Center.", tap: [50, 95], feed: ["New claim · Warranty", "Approve in one tap", "cash"] }
+    { dur: 2550, cap: "Customer scans your QR. Your page opens, no app.", tap: [50, 75], feed: ["QR scanned", "Spin Mop · insert in the box", "qr"] },
+    { dur: 2750, cap: "They pick where they bought and watch your setup video.", tap: [50, 83], feed: ["Routed to Amazon", "Setup video watched", "ok"] },
+    { dur: 2550, cap: "They rate honestly. Feedback comes to you privately.", tap: [64, 51], feed: ["Private feedback · 4★", "“Easy to assemble”", "ok"] },
+    { dur: 2850, cap: "AI helps them put their experience into words.", tap: [80, 89], feed: ["Review drafted", "Edited by the customer", "ai"] },
+    { dur: 3200, cap: "They post it on Amazon. The claim lands in your Claim Center.", tap: [50, 95], feed: ["New claim · Warranty", "Approve in one tap", "cash"] }
   ];
   var ICON = { qr: '<span class="ic ic--qr"></span>', ok: '<span class="ic ic--ok"></span>', ai: '<span class="ic ic--ai">✦</span>', cash: '<span class="ic ic--cash">₹</span>' };
 
@@ -340,7 +340,7 @@
   var film = $("[data-film]");
   if (film) (function () {
     var frames = $$(".film__f", film), dots = $$(".film__dots button", film), pp = $(".film__pp", film);
-    var n = frames.length, cur = 0, playing = !reduce, visible = false, timers = [], DUR = 2800;
+    var n = frames.length, cur = 0, playing = !reduce, visible = false, timers = [], DUR = 3100;
     function clear() { timers.forEach(clearTimeout); timers = []; }
     function layout() {
       var gap = parseFloat(getComputedStyle(film).getPropertyValue("--gap")) || 150, half = Math.floor(n / 2);
