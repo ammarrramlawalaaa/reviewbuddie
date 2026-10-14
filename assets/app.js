@@ -398,22 +398,73 @@
     layout();
   })();
 
-  /* ---------- 03 dashboard widgets ---------- */
-  var kpi = $("[data-kpi]");
-  if (kpi) whileVisible(kpi, function () {
-    var bell = $(".bell", kpi);
-    bell.classList.remove("ping");
-    var t = setTimeout(function () { bell.classList.add("ping"); }, 1000);
-    return function () { clearTimeout(t); };
-  });
-  var check = $("[data-check]");
-  if (check) whileVisible(check, function () {
-    var items = $$("li", check);
-    items.forEach(function (li) { li.classList.remove("done"); });
-    var steps = items.map(function (li, k) { return [600 + k * 700, function () { li.classList.add("done"); }]; });
-    steps.push([600 + items.length * 700 + 2400, function () { items.forEach(function (li) { li.classList.remove("done"); }); }]);
-    return timeline(steps, 600 + items.length * 700 + 3000);
-  });
+  /* ---------- 03 fix-the-leak: tap a fix, the funnel refills ---------- */
+  var leak = $("[data-leak]");
+  if (leak) (function () {
+    var rows = $$("li", leak), fixes = $$(".fix", leak), total = $("[data-total]", leak), gain = $("[data-gain]", leak);
+    var won = $("[data-won]", leak), reset = $(".leak__reset", leak);
+    var SCANS = 412;
+    // conversion from the previous step: [leaking, fixed]
+    var RATE = { 1: [0.62, 0.84], 2: [0.78, 0.94], 3: [0.86, 0.86], 4: [0.68, 0.88] };
+    var on = { 1: false, 2: false, 4: false }, shown = [SCANS, 0, 0, 0, 0], started = false;
+    function counts() {
+      var c = [SCANS];
+      for (var k = 1; k <= 4; k++) c[k] = Math.round(c[k - 1] * RATE[k][on[k] ? 1 : 0]);
+      return c;
+    }
+    var BASE = (function () { var c = [SCANS]; for (var k = 1; k <= 4; k++) c[k] = Math.round(c[k - 1] * RATE[k][0]); return c[4]; })();
+    function tween(el, from, to) {
+      if (reduce || from === to) { el.textContent = to; return; }
+      var t0 = performance.now();
+      (function f(t) {
+        var p = clamp((t - t0) / 800, 0, 1);
+        el.textContent = Math.round(from + (to - from) * ease(p));
+        if (p < 1) requestAnimationFrame(f);
+      })(t0);
+    }
+    function render() {
+      var c = counts();
+      rows.forEach(function (li, k) {
+        $("i", li).style.width = (c[k] / SCANS) * 100 + "%";
+        tween($("b", li), shown[k], c[k]);
+        var em = $("em", li);
+        if (!em) return;
+        var drop = Math.round((1 - c[k] / c[k - 1]) * 100), fixable = k in on;
+        li.classList.toggle("leaky", fixable && !on[k]);
+        li.classList.toggle("fixed", fixable && on[k]);
+        em.textContent = fixable ? (on[k] ? "fixed · " : "") + "−" + drop + "% drop" : "";
+      });
+      tween(total, shown[4], c[4]);
+      var g = c[4] - BASE, n = fixes.filter(function (f) { return on[f.getAttribute("data-fix")]; }).length;
+      gain.textContent = g > 0 ? "+" + g + " reviews / month" : "No fixes yet";
+      gain.classList.toggle("up", g > 0);
+      gain.classList.remove("pop"); void gain.offsetWidth; if (g > 0) gain.classList.add("pop");
+      won.textContent = g;
+      leak.classList.toggle("all", n === fixes.length);
+      reset.hidden = n === 0;
+      shown = c;
+    }
+    fixes.forEach(function (f) {
+      f.addEventListener("click", function () {
+        var k = f.getAttribute("data-fix");
+        on[k] = !on[k];
+        f.setAttribute("aria-pressed", on[k]);
+        leak.classList.add("touched");
+        render();
+        track("leak_fix", { fix: k, on: on[k] });
+      });
+    });
+    reset.addEventListener("click", function () {
+      Object.keys(on).forEach(function (k) { on[k] = false; });
+      fixes.forEach(function (f) { f.setAttribute("aria-pressed", "false"); });
+      render();
+    });
+    // fill the funnel the first time it comes into view
+    new IntersectionObserver(function (es, io) {
+      if (!es[0].isIntersecting || started) return;
+      started = true; io.disconnect(); render();
+    }, { threshold: 0.3 }).observe(leak);
+  })();
 
   /* ---------- 04 coded scenes ---------- */
   $$("[data-scene]").forEach(function (sc) {

@@ -310,40 +310,38 @@
   </div>
 </section>
 
-<!-- ================= 03 DASHBOARD & ANALYTICS · live widgets ================= -->
+<!-- ================= 03 DASHBOARD & ANALYTICS · fix-the-leak game ================= -->
 <section class="grp" id="analytics">
   <div class="wrap">
     <header class="grp__head">
       <p class="eyebrow reveal"><span class="eyebrow__n">03</span> Dashboard &amp; analytics</p>
       <h2 class="h2 reveal">Know what to do today, <span class="hl">and where reviews drop off.</span></h2>
-      <p class="lead reveal">Your dashboard shows what needs a hand. Analytics shows every step from scan to posted review, with the drop-off per step.</p>
+      <p class="lead reveal">Analytics shows every step from scan to posted review, flags where people leave and tells you what to fix. Try it.</p>
     </header>
-    <div class="dash-grid">
-      <div class="widget widget--kpi reveal" data-kpi>
-        <div class="kpi"><span>Reviews posted this month</span><b data-count="231">0</b><small class="up">↑ 22% vs last month</small></div>
-        <div class="kpi"><span>Scans</span><b data-count="412">0</b><small class="up">↑ 9%</small></div>
-        <div class="kpi"><span>Claims to deliver</span><b data-count="13">0</b><small>needs you</small></div>
-        <div class="bell" aria-hidden="true"><i></i><em>3</em></div>
-      </div>
-      <div class="widget widget--funnel reveal" data-funnel>
-        <h3>Customer journey · last 30 days</h3>
+    <div class="leak reveal" data-leak>
+      <div class="leak__funnel">
+        <div class="leak__head"><h3>Customer journey · last 30 days</h3><span class="leak__ex">Example data</span></div>
         <ol>
-          <li><span>QR scans</span><i style="--w:100%"></i><b>412</b></li>
-          <li><span>Claim started</span><i style="--w:77%"></i><b>318</b><em>−23% drop</em></li>
-          <li><span>Claim completed</span><i style="--w:70%"></i><b>289</b></li>
-          <li><span>Review written</span><i style="--w:62%"></i><b>256</b></li>
-          <li><span>Review posted</span><i style="--w:56%"></i><b>231</b></li>
+          <li data-s="0"><span class="leak__lbl">QR scans</span><span class="leak__bar"><i></i></span><b>412</b></li>
+          <li data-s="1"><span class="leak__lbl">Claim started</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
+          <li data-s="2"><span class="leak__lbl">Claim completed</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
+          <li data-s="3"><span class="leak__lbl">Review written</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
+          <li data-s="4"><span class="leak__lbl">Review posted</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
         </ol>
-        <p class="tip">Tip: most people leave at the first form. Add your setup video above it. <span>Suggested by Intel</span></p>
       </div>
-      <div class="widget widget--check reveal" data-check>
-        <h3>Setup checklist</h3>
-        <ul><li>Add your first product</li><li>Create a promotion</li><li>Launch a campaign</li><li>Print the QR insert</li></ul>
+      <div class="leak__side">
+        <p class="leak__hint">Your funnel is leaking. <b>Tap a fix</b> the dashboard suggests:</p>
+        <button type="button" class="fix" data-fix="1" aria-pressed="false"><span class="fix__ic">▶</span><span class="fix__t"><b>Put your setup video first</b><small>Plugs the leak at “Claim started”</small></span><span class="fix__st"></span></button>
+        <button type="button" class="fix" data-fix="2" aria-pressed="false"><span class="fix__ic">✂</span><span class="fix__t"><b>Cut the form to 3 fields</b><small>Plugs the leak at “Claim completed”</small></span><span class="fix__st"></span></button>
+        <button type="button" class="fix" data-fix="4" aria-pressed="false"><span class="fix__ic">💬</span><span class="fix__t"><b>WhatsApp reminder on day 3</b><small>Plugs the leak at “Review posted”</small></span><span class="fix__st"></span></button>
+        <div class="leak__out" aria-live="polite">
+          <small>Reviews posted this month</small>
+          <b data-total>0</b>
+          <span class="leak__gain" data-gain>No fixes yet</span>
+        </div>
+        <p class="leak__done">You just found <b data-won>0</b> extra reviews a month. Your real funnel is one QR away. <a href="#" data-link="signup" data-track="leak_cta">See your own funnel →</a></p>
+        <button type="button" class="leak__reset" hidden>Reset</button>
       </div>
-      <figure class="widget widget--shot reveal">
-        <div class="win__top"><i></i><i></i><i></i><span>app.reviewbuddie.com/analytics</span></div>
-        <img src="assets/shots/panel-analytics-funnel.webp" alt="Analytics funnel screen with drop-off at every step" width="1600" height="1000" loading="lazy">
-      </figure>
     </div>
     <ul class="facts reveal">
       <li>Reviews, scans and claims vs last period</li>

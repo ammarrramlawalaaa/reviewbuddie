@@ -21,7 +21,7 @@ Open `index.html` in a browser; no build step.
 4. **Feature sections**, each in its own format so nothing repeats:
    - 01 Core flow – one panel screen plays each step (paste link → product fills in, reward cards fan out and one flips into a branded claim card, product + reward click together and a QR insert prints, link copied into WhatsApp / email / Instagram) while the step list beside it lights up in sync; click a step to jump to it
    - 02 Smart Funnel – spotlight carousel of the five real customer screens: the active phone sits centre stage, taps its main button, then dims and slides aside as the next one moves in; prev/next arrows, step pills, pause/play, swipe on phones
-   - 03 Dashboard & analytics – live widgets (counters, animated drop-off funnel with a flagged step, setup checklist ticking) beside the real analytics screen
+   - 03 Dashboard & analytics – "fix the leak" game: a leaky funnel (example data) with three suggested fixes; tapping one plugs that step, the bars refill and a reviews counter shows the monthly gain, ending in a sign-up nudge
    - 04 Claims & customers – three coded loops: claim cards selected and delivered with one amber duplicate left behind, anonymous buyers turning into named contacts, a ticket resolved before it becomes a 1-star review
    - 05 Pages – two interactive builders: Brand Hub section toggles with a live phone preview, and an ad page with coupon unlock, countdown and offer switch
    - 06 Team – a living task board (statuses change, one task goes overdue and the bell pings) synced with an SOP checklist
@@ -37,7 +37,7 @@ Design rules: blue is the only decorative accent; green = done, coral = warning,
 - Real hero video (optional): set `data-video="media/hero.mp4"` on `#stage` in `index.html`; the coded demo is skipped automatically.
 - Replace screens: drop new files into `assets/shots/` with the same names (desktop screens 1600×1000, phone screens 540×1169).
 - The QR code is an inline SVG `<symbol id="qr">` at the top of `index.html` (encodes https://reviewbuddie.com). Regenerate it if the link changes.
-- Analytics: every CTA pushes `{event:"cta_click", id}` to `window.dataLayer`; the interactive demos push `hub_toggle` and `ad_demo_unlock`.
+- Analytics: every CTA pushes `{event:"cta_click", id}` to `window.dataLayer`; the interactive demos push `hub_toggle`, `ad_demo_unlock`, `leak_fix`, `core_flow_step` and `journey_step`.
 
 ## Notes
 
