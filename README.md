@@ -20,7 +20,7 @@ Open `index.html` in a browser; no build step.
 3. **How it works** – scroll-driven 3D box: flaps open, the QR insert (a real QR for reviewbuddie.com) rises, a phone scans it, result chips appear.
 4. **Feature sections**, each in its own format so nothing repeats:
    - 01 Core flow – one panel screen plays each step (paste link → product fills in, reward cards fan out and one flips into a branded claim card, product + reward click together and a QR insert prints, link copied into WhatsApp / email / Instagram) while the step list beside it lights up in sync; click a step to jump to it
-   - 02 Smart Funnel – film strip of the five real customer screens (horizontal snap-scroll on phones)
+   - 02 Smart Funnel – spotlight carousel of the five real customer screens: the active phone sits centre stage, taps its main button, then dims and slides aside as the next one moves in; prev/next arrows, step pills, pause/play, swipe on phones
    - 03 Dashboard & analytics – live widgets (counters, animated drop-off funnel with a flagged step, setup checklist ticking) beside the real analytics screen
    - 04 Claims & customers – three coded loops: claim cards selected and delivered with one amber duplicate left behind, anonymous buyers turning into named contacts, a ticket resolved before it becomes a 1-star review
    - 05 Pages – two interactive builders: Brand Hub section toggles with a live phone preview, and an ad page with coupon unlock, countdown and offer switch

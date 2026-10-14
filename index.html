@@ -287,14 +287,27 @@
       <p class="lead reveal">A mobile web flow from scan to claim. No app, no account, no review gating. Same path for every customer, every rating.</p>
     </header>
   </div>
-  <div class="film" data-film>
-    <figure class="film__f reveal"><div class="pframe"><img src="assets/shots/funnel-landing.webp" alt="Branded claim page: Secure your purchase" width="540" height="1169" loading="lazy"></div><figcaption><b>1 · Scan</b><p>The phone camera reads the QR. Your branded page opens in the browser.</p></figcaption></figure>
-    <figure class="film__f reveal"><div class="pframe"><img src="assets/shots/funnel-order.webp" alt="Order details with setup video, manual and marketplace picker" width="540" height="1169" loading="lazy"></div><figcaption><b>2 · Pick where they bought</b><p>20+ marketplaces, Amazon in 22 regions. Your setup video and manual sit right there.</p></figcaption></figure>
-    <figure class="film__f reveal"><div class="pframe"><img src="assets/shots/funnel-rate.webp" alt="Private feedback step with stars and experience tags" width="540" height="1169" loading="lazy"></div><figcaption><b>3 · Rate honestly</b><p>Stars and tags come to you privately first. A low rating gets help before anything else.</p></figcaption></figure>
-    <figure class="film__f reveal"><div class="pframe"><img src="assets/shots/funnel-ai.webp" alt="AI Review Assistant drafting a review from the customer's tags" width="540" height="1169" loading="lazy"></div><figcaption><b>4 · Write with AI</b><p>Their tags become a draft in their words and language. They edit, copy, post.</p></figcaption></figure>
-    <figure class="film__f reveal"><div class="pframe"><img src="assets/shots/funnel-registered.webp" alt="Warranty registered with the review ready to copy and post" width="540" height="1169" loading="lazy"></div><figcaption><b>5 · Claim the reward</b><p>One tap to the review page. The claim lands in your Claim Center. Cashback goes out on UPI, PayPal, SEPA and more.</p></figcaption></figure>
+  <div class="film reveal" data-film aria-roledescription="carousel" aria-label="Customer journey, five screens">
+    <div class="film__stage">
+      <figure class="film__f" data-tap="50,75"><div class="pframe"><img src="assets/shots/funnel-landing.webp" alt="Branded claim page: Secure your purchase" width="540" height="1169" loading="lazy"><span class="film__tap" aria-hidden="true"></span></div><figcaption><b>1 · Scan</b><p>The phone camera reads the QR. Your branded page opens in the browser.</p></figcaption></figure>
+      <figure class="film__f" data-tap="50,83"><div class="pframe"><img src="assets/shots/funnel-order.webp" alt="Order details with setup video, manual and marketplace picker" width="540" height="1169" loading="lazy"><span class="film__tap" aria-hidden="true"></span></div><figcaption><b>2 · Pick where they bought</b><p>20+ marketplaces, Amazon in 22 regions. Your setup video and manual sit right there.</p></figcaption></figure>
+      <figure class="film__f" data-tap="64,51"><div class="pframe"><img src="assets/shots/funnel-rate.webp" alt="Private feedback step with stars and experience tags" width="540" height="1169" loading="lazy"><span class="film__tap" aria-hidden="true"></span></div><figcaption><b>3 · Rate honestly</b><p>Stars and tags come to you privately first. A low rating gets help before anything else.</p></figcaption></figure>
+      <figure class="film__f" data-tap="80,89"><div class="pframe"><img src="assets/shots/funnel-ai.webp" alt="AI Review Assistant drafting a review from the customer's tags" width="540" height="1169" loading="lazy"><span class="film__tap" aria-hidden="true"></span></div><figcaption><b>4 · Write with AI</b><p>Their tags become a draft in their words and language. They edit, copy, post.</p></figcaption></figure>
+      <figure class="film__f" data-tap="50,95"><div class="pframe"><img src="assets/shots/funnel-registered.webp" alt="Warranty registered with the review ready to copy and post" width="540" height="1169" loading="lazy"><span class="film__tap" aria-hidden="true"></span></div><figcaption><b>5 · Claim the reward</b><p>One tap to the review page. The claim lands in your Claim Center. Cashback goes out on UPI, PayPal, SEPA and more.</p></figcaption></figure>
+    </div>
+    <button type="button" class="film__nav film__nav--prev" aria-label="Previous screen"><i></i></button>
+    <button type="button" class="film__nav film__nav--next" aria-label="Next screen"><i></i></button>
+    <div class="film__ctrl">
+      <div class="film__dots" role="tablist" aria-label="Jump to a screen">
+        <button type="button" role="tab" aria-selected="true"><span>1</span><em>Scan</em><i></i></button>
+        <button type="button" role="tab" aria-selected="false"><span>2</span><em>Pick</em><i></i></button>
+        <button type="button" role="tab" aria-selected="false"><span>3</span><em>Rate</em><i></i></button>
+        <button type="button" role="tab" aria-selected="false"><span>4</span><em>Write</em><i></i></button>
+        <button type="button" role="tab" aria-selected="false"><span>5</span><em>Claim</em><i></i></button>
+      </div>
+      <button type="button" class="film__pp" aria-label="Pause"><span></span></button>
+    </div>
   </div>
-  <div class="film__dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
 </section>
 
 <!-- ================= 03 DASHBOARD & ANALYTICS · live widgets ================= -->

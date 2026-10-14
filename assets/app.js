@@ -335,24 +335,67 @@
     clear();
   })();
 
-  /* ---------- 02 film strip: lift one phone at a time, dots on mobile ---------- */
+  /* ---------- 02 spotlight carousel: one screen centre stage, controls on the sides ---------- */
   var film = $("[data-film]");
-  if (film) {
-    var frames = $$(".film__f", film), dots = $$(".film__dots i");
-    if (!reduce) whileVisible(film, function () {
-      var k = 0;
-      frames[0].classList.add("lift");
-      var t = setInterval(function () {
-        k = (k + 1) % frames.length;
-        frames.forEach(function (f, n) { f.classList.toggle("lift", n === k); });
-      }, 2200);
-      return function () { clearInterval(t); frames.forEach(function (f) { f.classList.remove("lift"); }); };
-    }, 0.3);
-    film.addEventListener("scroll", function () {
-      var n = Math.round(film.scrollLeft / (frames[0].offsetWidth + 14));
-      dots.forEach(function (d, i) { d.classList.toggle("on", i === clamp(n, 0, dots.length - 1)); });
-    }, { passive: true });
-  }
+  if (film) (function () {
+    var frames = $$(".film__f", film), dots = $$(".film__dots button", film), pp = $(".film__pp", film);
+    var n = frames.length, cur = 0, playing = !reduce, visible = false, timers = [], DUR = 4000;
+    function clear() { timers.forEach(clearTimeout); timers = []; }
+    function layout() {
+      var gap = parseFloat(getComputedStyle(film).getPropertyValue("--gap")) || 150, half = Math.floor(n / 2);
+      frames.forEach(function (f, i) {
+        var o = ((i - cur + n + half) % n) - half, a = Math.abs(o);
+        f.style.transform = "translateX(" + o * gap + "px) scale(" + (1 - a * 0.14) + ")";
+        f.style.opacity = a === 0 ? 1 : a === 1 ? 0.45 : 0.08;
+        f.style.zIndex = 10 - a;
+        f.classList.toggle("on", a === 0);
+        f.setAttribute("aria-hidden", a !== 0);
+      });
+    }
+    function go(k) {
+      clear();
+      cur = (k + n) % n;
+      layout();
+      dots.forEach(function (d, i) {
+        var bar = $("i", d), on = i === cur;
+        d.setAttribute("aria-selected", on);
+        bar.classList.remove("run");
+        if (on && playing) { d.style.setProperty("--dur", DUR + "ms"); void bar.offsetWidth; bar.classList.add("run"); }
+      });
+      if (!playing || !visible) return;
+      var f = frames[cur], tap = $(".film__tap", f), xy = f.getAttribute("data-tap").split(",");
+      timers.push(setTimeout(function () {
+        tap.style.left = xy[0] + "%"; tap.style.top = xy[1] + "%";
+        tap.classList.remove("go"); void tap.offsetWidth; tap.classList.add("go");
+      }, DUR - 1200));
+      timers.push(setTimeout(function () { go(cur + 1); }, DUR));
+    }
+    function setPlaying(on) {
+      playing = on;
+      pp.classList.toggle("paused", !on);
+      pp.setAttribute("aria-label", on ? "Pause" : "Play");
+      go(cur);
+    }
+    $(".film__nav--prev", film).addEventListener("click", function () { go(cur - 1); });
+    $(".film__nav--next", film).addEventListener("click", function () { go(cur + 1); });
+    dots.forEach(function (d, i) { d.addEventListener("click", function () { go(i); track("journey_step", { step: i + 1 }); }); });
+    frames.forEach(function (f, i) { f.addEventListener("click", function () { if (i !== cur) go(i); }); });
+    pp.addEventListener("click", function () { setPlaying(!playing); });
+    if (reduce) pp.classList.add("paused");
+    var x0 = null;
+    $(".film__stage", film).addEventListener("pointerdown", function (e) { x0 = e.clientX; });
+    $(".film__stage", film).addEventListener("pointerup", function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1));
+    });
+    window.addEventListener("resize", layout);
+    new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible) go(cur); else clear();
+    }, { threshold: 0.4 }).observe(film);
+    layout();
+  })();
 
   /* ---------- 03 dashboard widgets ---------- */
   var kpi = $("[data-kpi]");
