@@ -398,43 +398,30 @@
     layout();
   })();
 
-  /* ---------- 03 fix-the-leak: tap a fix, the funnel refills ---------- */
+  /* ---------- 03 3D funnel: customers pour in, leak through cracks, fixes seal them ---------- */
   var leak = $("[data-leak]");
   if (leak) (function () {
-    var rows = $$("li", leak), fixes = $$(".fix", leak), total = $("[data-total]", leak), gain = $("[data-gain]", leak);
-    var won = $("[data-won]", leak), reset = $(".leak__reset", leak);
-    var SCANS = 412;
-    // conversion from the previous step: [leaking, fixed]
+    var rows = $$("ol li", leak), fixes = $$(".fix", leak), total = $("[data-total]", leak), gain = $("[data-gain]", leak);
+    var won = $("[data-won]", leak), reset = $(".leak__reset", leak), cv = $(".leak__cv", leak), ctx = cv.getContext("2d");
+    var SCANS = 412, NAMES = ["QR scans", "Claim started", "Claim completed", "Review written", "Review posted"];
     var RATE = { 1: [0.62, 0.84], 2: [0.78, 0.94], 3: [0.86, 0.86], 4: [0.68, 0.88] };
-    var on = { 1: false, 2: false, 4: false }, shown = [SCANS, 0, 0, 0, 0], started = false;
-    function counts() {
-      var c = [SCANS];
-      for (var k = 1; k <= 4; k++) c[k] = Math.round(c[k - 1] * RATE[k][on[k] ? 1 : 0]);
-      return c;
-    }
+    var on = { 1: false, 2: false, 4: false }, shown = [SCANS, 0, 0, 0, 0], label = [SCANS, 0, 0, 0, 0], started = false;
+    var seal = { 1: 0, 2: 0, 4: 0 }; // 0 = open crack, 1 = sealed (animated)
+    function counts() { var c = [SCANS]; for (var k = 1; k <= 4; k++) c[k] = Math.round(c[k - 1] * RATE[k][on[k] ? 1 : 0]); return c; }
     var BASE = (function () { var c = [SCANS]; for (var k = 1; k <= 4; k++) c[k] = Math.round(c[k - 1] * RATE[k][0]); return c[4]; })();
-    function tween(el, from, to) {
-      if (reduce || from === to) { el.textContent = to; return; }
+    function tween(get, set, from, to) {
+      if (reduce || from === to) return set(to);
       var t0 = performance.now();
-      (function f(t) {
-        var p = clamp((t - t0) / 800, 0, 1);
-        el.textContent = Math.round(from + (to - from) * ease(p));
-        if (p < 1) requestAnimationFrame(f);
-      })(t0);
+      (function f(t) { var p = clamp((t - t0) / 800, 0, 1); set(Math.round(from + (to - from) * ease(p))); if (p < 1) requestAnimationFrame(f); })(t0);
     }
     function render() {
       var c = counts();
       rows.forEach(function (li, k) {
-        $("i", li).style.width = (c[k] / SCANS) * 100 + "%";
-        tween($("b", li), shown[k], c[k]);
-        var em = $("em", li);
-        if (!em) return;
-        var drop = Math.round((1 - c[k] / c[k - 1]) * 100), fixable = k in on;
-        li.classList.toggle("leaky", fixable && !on[k]);
-        li.classList.toggle("fixed", fixable && on[k]);
-        em.textContent = fixable ? (on[k] ? "fixed · " : "") + "−" + drop + "% drop" : "";
+        $("b", li).textContent = c[k];
+        var em = $("em", li); if (em) em.textContent = k in on ? (on[k] ? " (fixed)" : " (leaking)") : "";
+        (function (k) { tween(null, function (v) { label[k] = v; }, shown[k], c[k]); })(k);
       });
-      tween(total, shown[4], c[4]);
+      tween(null, function (v) { total.textContent = v; }, shown[4], c[4]);
       var g = c[4] - BASE, n = fixes.filter(function (f) { return on[f.getAttribute("data-fix")]; }).length;
       gain.textContent = g > 0 ? "+" + g + " reviews / month" : "No fixes yet";
       gain.classList.toggle("up", g > 0);
@@ -444,6 +431,144 @@
       reset.hidden = n === 0;
       shown = c;
     }
+
+    /* geometry */
+    var W, H, dpr, cx, y0, yb, ys, rT, rB, lx, rimY = [];
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var narrow = W < 520;
+      cx = W * (narrow ? 0.34 : 0.4); rT = Math.min(W * (narrow ? 0.27 : 0.27), 200); rB = rT * 0.16;
+      y0 = H * 0.15; yb = H * 0.76; ys = H * 0.86; lx = cx + rT + (narrow ? 14 : 34);
+      rimY = [0, 1, 2, 3, 4].map(function (k) { return y0 + (yb - y0) * (k / 4); });
+    }
+    function R(y) { var t = clamp((y - y0) / (yb - y0), 0, 1); return rB + (rT - rB) * Math.pow(1 - t, 1.5); }
+    var D = 0.24; // ellipse depth ratio (perspective)
+
+    /* particles */
+    var P = [], spawnAcc = 0, last = 0, raf = null, stars = 0, pulse = 0;
+    function spawn() {
+      P.push({ y: y0 - 4, th: Math.random() * Math.PI * 2, rho: Math.sqrt(Math.random()) * 0.82, k: 1, st: 0, vx: 0, vy: 0, x: 0, a: 1, sp: 0.9 + Math.random() * 0.3 });
+    }
+    function step(dt) {
+      spawnAcc += dt * (W < 520 ? 18 : 26);
+      while (spawnAcc > 1) { spawn(); spawnAcc--; }
+      for (var i = P.length - 1; i >= 0; i--) {
+        var p = P[i];
+        if (p.st === 0) {                       // inside the funnel
+          var t = (p.y - y0) / (yb - y0);
+          p.y += dt * (52 + 120 * t) * p.sp;
+          p.th += dt * (0.6 + 1.6 * t);
+          while (p.k <= 4 && p.y >= rimY[p.k]) {
+            var k = p.k, rate = RATE[k][on[k] ? 1 : 0];
+            if (Math.random() > rate) {        // leaks out through the crack on the front-right
+              p.st = 1; var r = R(rimY[k]);
+              p.x = cx + r * 0.94; p.y = rimY[k] + r * D * 0.35;
+              p.vx = 40 + Math.random() * 70; p.vy = -20 - Math.random() * 30; p.c = k === 3 ? "#9AA6B2" : "#EF6C4D";
+              break;
+            }
+            p.k++;
+          }
+          if (p.st === 0 && p.y >= yb) { p.st = 2; p.x = cx + (Math.random() - 0.5) * rB * 0.8; p.vy = 90; }
+        } else if (p.st === 1) {               // leaking: arc out and fade
+          p.vy += 420 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.a -= dt * 0.9;
+          if (p.a <= 0 || p.y > H + 10) P.splice(i, 1);
+        } else {                               // falls out of the spout as a review star
+          p.vy += 300 * dt; p.y += p.vy * dt;
+          if (p.y > H * 0.95) { P.splice(i, 1); stars++; pulse = 1; }
+        }
+      }
+      [1, 2, 4].forEach(function (k) { seal[k] += ((on[k] ? 1 : 0) - seal[k]) * Math.min(1, dt * 6); });
+      pulse = Math.max(0, pulse - dt * 3);
+    }
+
+    function ell(y, r, a0, a1) { ctx.beginPath(); ctx.ellipse(cx, y, r, r * D, 0, a0, a1); }
+    function draw(time) {
+      ctx.clearRect(0, 0, W, H);
+      // body (glass)
+      var g = ctx.createLinearGradient(cx - rT, 0, cx + rT, 0);
+      g.addColorStop(0, "rgba(0,150,219,.20)"); g.addColorStop(0.45, "rgba(56,189,248,.07)"); g.addColorStop(1, "rgba(0,119,184,.24)");
+      ctx.beginPath();
+      for (var y = y0; y <= yb; y += 3) ctx.lineTo(cx - R(y), y);
+      ctx.lineTo(cx - rB, ys); ctx.lineTo(cx + rB, ys);
+      for (y = yb; y >= y0; y -= 3) ctx.lineTo(cx + R(y), y);
+      ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+      ctx.strokeStyle = "rgba(0,119,184,.35)"; ctx.lineWidth = 1.2; ctx.stroke();
+      // back halves of the rims
+      rimY.forEach(function (ry, k) { ell(ry, R(ry), Math.PI, Math.PI * 2); ctx.strokeStyle = k ? "rgba(0,119,184,.18)" : "rgba(0,119,184,.4)"; ctx.lineWidth = k ? 1 : 1.6; ctx.stroke(); });
+      // top opening
+      ell(y0, rT, 0, Math.PI * 2); ctx.fillStyle = "rgba(0,150,219,.08)"; ctx.fill();
+      // particles inside
+      P.forEach(function (p) {
+        if (p.st !== 0) return;
+        var r = R(p.y) * p.rho, px = cx + r * Math.cos(p.th), py = p.y + r * D * Math.sin(p.th);
+        ctx.globalAlpha = Math.sin(p.th) > 0 ? 1 : 0.55;
+        ctx.fillStyle = "#0096DB"; ctx.beginPath(); ctx.arc(px, py, W < 520 ? 2.4 : 3, 0, 7); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      // front halves of the rims
+      rimY.forEach(function (ry, k) { ell(ry, R(ry), 0, Math.PI); ctx.strokeStyle = k ? "rgba(0,119,184,.45)" : "rgba(0,119,184,.75)"; ctx.lineWidth = k ? 1.3 : 2; ctx.stroke(); });
+      // cracks / seals
+      [1, 2, 4].forEach(function (k) {
+        var ry = rimY[k], r = R(ry), s = seal[k];
+        var a0 = 0.05, a1 = 0.55;
+        ell(ry, r, a0, a1);
+        ctx.lineCap = "round";
+        if (s < 0.98) {
+          var glow = 0.55 + 0.45 * Math.sin(time / 260 + k);
+          ctx.strokeStyle = "rgba(239,108,77," + (0.25 * glow * (1 - s)) + ")"; ctx.lineWidth = 12; ctx.stroke();
+          ell(ry, r, a0, a1); ctx.strokeStyle = "rgba(239,108,77," + (1 - s) + ")"; ctx.lineWidth = 3.5; ctx.stroke();
+        }
+        if (s > 0.02) { ell(ry, r, a0, a0 + (a1 - a0) * s); ctx.strokeStyle = "rgba(31,184,102," + s + ")"; ctx.lineWidth = 4.5; ctx.stroke(); }
+        ctx.lineCap = "butt";
+      });
+      // leaking + star particles
+      P.forEach(function (p) {
+        if (p.st === 1) { ctx.globalAlpha = Math.max(0, p.a); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, W < 520 ? 2.4 : 3, 0, 7); ctx.fill(); }
+        if (p.st === 2) { ctx.globalAlpha = 1; ctx.fillStyle = "#F5A524"; ctx.font = (W < 520 ? 13 : 16) + "px sans-serif"; ctx.textAlign = "center"; ctx.fillText("★", p.x, p.y); }
+      });
+      ctx.globalAlpha = 1;
+      // tray
+      var ty = H * 0.95;
+      ctx.fillStyle = "rgba(245,165,36," + (0.18 + pulse * 0.3) + ")";
+      ctx.beginPath(); ctx.ellipse(cx, ty, rT * 0.55 + pulse * 6, 9 + pulse * 2, 0, 0, 7); ctx.fill();
+      // labels
+      var narrow = W < 520;
+      rimY.forEach(function (ry, k) {
+        var r = R(ry), ex = cx + r, ey = ry;
+        ctx.strokeStyle = "rgba(92,107,120,.35)"; ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(ex + 4, ey); ctx.lineTo(lx - 6, ey); ctx.stroke(); ctx.setLineDash([]);
+        ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#5C6B78"; ctx.font = "500 " + (narrow ? 11 : 13) + "px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(NAMES[k], lx, ey - 4);
+        ctx.fillStyle = "#16232E"; ctx.font = "800 " + (narrow ? 15 : 19) + "px Sora, sans-serif";
+        ctx.fillText(label[k], lx, ey + (narrow ? 13 : 17));
+        if (k in on) {
+          var c = counts(), drop = Math.round((1 - c[k] / c[k - 1]) * 100);
+          var txt = on[k] ? "✓ −" + drop + "%" : "−" + drop + "%";
+          var bx = lx + ctx.measureText(String(label[k])).width + 8;
+          ctx.font = "700 " + (narrow ? 10 : 11.5) + "px 'Plus Jakarta Sans', sans-serif";
+          var tw = ctx.measureText(txt).width + 12, bh = narrow ? 16 : 19, by = ey + (narrow ? 2 : 3);
+          ctx.fillStyle = on[k] ? "#E3F6EA" : "#FDECE7";
+          ctx.beginPath(); ctx.roundRect(bx, by, tw, bh, bh / 2); ctx.fill();
+          ctx.fillStyle = on[k] ? "#166534" : "#C2410C"; ctx.fillText(txt, bx + 6, by + bh - (narrow ? 4.5 : 5.5));
+        }
+      });
+    }
+    function loop(t) {
+      var dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+      step(dt); draw(t);
+      raf = requestAnimationFrame(loop);
+    }
+    var warmed = false;
+    function play() {
+      if (raf || reduce) return;
+      if (!warmed) { warmed = true; for (var i = 0; i < 240; i++) step(1 / 60); stars = 0; }
+      last = 0; raf = requestAnimationFrame(loop);
+    }
+    function stop() { if (raf) cancelAnimationFrame(raf); raf = null; }
+
     fixes.forEach(function (f) {
       f.addEventListener("click", function () {
         var k = f.getAttribute("data-fix");
@@ -451,19 +576,23 @@
         f.setAttribute("aria-pressed", on[k]);
         leak.classList.add("touched");
         render();
+        if (reduce) draw(0);
         track("leak_fix", { fix: k, on: on[k] });
       });
     });
     reset.addEventListener("click", function () {
       Object.keys(on).forEach(function (k) { on[k] = false; });
       fixes.forEach(function (f) { f.setAttribute("aria-pressed", "false"); });
-      render();
+      render(); if (reduce) draw(0);
     });
-    // fill the funnel the first time it comes into view
-    new IntersectionObserver(function (es, io) {
-      if (!es[0].isIntersecting || started) return;
-      started = true; io.disconnect(); render();
-    }, { threshold: 0.3 }).observe(leak);
+    size();
+    window.addEventListener("resize", function () { size(); if (!raf) draw(0); });
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) {
+        if (!started) { started = true; render(); }
+        if (reduce) { setTimeout(function () { draw(0); }, 50); } else play();
+      } else stop();
+    }, { threshold: 0.2 }).observe(leak);
   })();
 
   /* ---------- 04 coded scenes ---------- */

@@ -319,18 +319,19 @@
       <p class="lead reveal">Analytics shows every step from scan to posted review, flags where people leave and tells you what to fix. Try it.</p>
     </header>
     <div class="leak reveal" data-leak>
-      <div class="leak__funnel">
-        <div class="leak__head"><h3>Customer journey · last 30 days</h3><span class="leak__ex">Example data</span></div>
-        <ol>
-          <li data-s="0"><span class="leak__lbl">QR scans</span><span class="leak__bar"><i></i></span><b>412</b></li>
-          <li data-s="1"><span class="leak__lbl">Claim started</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
-          <li data-s="2"><span class="leak__lbl">Claim completed</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
-          <li data-s="3"><span class="leak__lbl">Review written</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
-          <li data-s="4"><span class="leak__lbl">Review posted</span><span class="leak__bar"><i></i></span><b>0</b><em></em></li>
+      <div class="leak__viz">
+        <canvas class="leak__cv" aria-hidden="true"></canvas>
+        <span class="leak__ex">Example data</span>
+        <ol class="sr" aria-label="Customer journey, last 30 days">
+          <li data-s="0">QR scans: <b>412</b></li>
+          <li data-s="1">Claim started: <b>0</b><em></em></li>
+          <li data-s="2">Claim completed: <b>0</b><em></em></li>
+          <li data-s="3">Review written: <b>0</b><em></em></li>
+          <li data-s="4">Review posted: <b>0</b><em></em></li>
         </ol>
       </div>
       <div class="leak__side">
-        <p class="leak__hint">Your funnel is leaking. <b>Tap a fix</b> the dashboard suggests:</p>
+        <p class="leak__hint">Every dot is a customer who scanned your QR. The red cracks are where they leave. <b>Tap a fix</b> to seal one:</p>
         <button type="button" class="fix" data-fix="1" aria-pressed="false"><span class="fix__ic">▶</span><span class="fix__t"><b>Put your setup video first</b><small>Plugs the leak at “Claim started”</small></span><span class="fix__st"></span></button>
         <button type="button" class="fix" data-fix="2" aria-pressed="false"><span class="fix__ic">✂</span><span class="fix__t"><b>Cut the form to 3 fields</b><small>Plugs the leak at “Claim completed”</small></span><span class="fix__st"></span></button>
         <button type="button" class="fix" data-fix="4" aria-pressed="false"><span class="fix__ic">💬</span><span class="fix__t"><b>WhatsApp reminder on day 3</b><small>Plugs the leak at “Review posted”</small></span><span class="fix__st"></span></button>

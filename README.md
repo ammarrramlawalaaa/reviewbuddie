@@ -21,7 +21,7 @@ Open `index.html` in a browser; no build step.
 4. **Feature sections**, each in its own format so nothing repeats:
    - 01 Core flow – one panel screen plays each step (paste link → product fills in, reward cards fan out and one flips into a branded claim card, product + reward click together and a QR insert prints, link copied into WhatsApp / email / Instagram) while the step list beside it lights up in sync; click a step to jump to it
    - 02 Smart Funnel – spotlight carousel of the five real customer screens: the active phone sits centre stage, taps its main button, then dims and slides aside as the next one moves in; prev/next arrows, step pills, pause/play, swipe on phones
-   - 03 Dashboard & analytics – "fix the leak" game: a leaky funnel (example data) with three suggested fixes; tapping one plugs that step, the bars refill and a reviews counter shows the monthly gain, ending in a sign-up nudge
+   - 03 Dashboard & analytics – a 3D glass funnel (canvas): customers pour in as dots, leak out through glowing red cracks at the weak steps and drop out the spout as ★ reviews. Three suggested fixes seal a crack each (it turns green), fewer dots spill and the reviews counter climbs (example data, 116 → 246/month), ending in a sign-up nudge
    - 04 Claims & customers – three coded loops: claim cards selected and delivered with one amber duplicate left behind, anonymous buyers turning into named contacts, a ticket resolved before it becomes a 1-star review
    - 05 Pages – two interactive builders: Brand Hub section toggles with a live phone preview, and an ad page with coupon unlock, countdown and offer switch
    - 06 Team – a living task board (statuses change, one task goes overdue and the bell pings) synced with an SOP checklist
